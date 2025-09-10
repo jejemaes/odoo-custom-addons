@@ -1,0 +1,212 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Model -->
+    <record id="model_rental_booking" model="ir.model">
+        <field name="name">Rental Bookings</field>
+        <field name="model">x_rental_booking</field>
+        <field name="is_mail_thread" eval="True"/>
+        <field name="is_mail_activity" eval="True"/>
+    </record>
+
+    <!-- Fields -->
+    <record id="rental_booking_field_name" model="ir.model.fields">
+        <field name="name">x_name</field>
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Name</field>
+        <field name="model">x_rental_booking</field>
+        <field name="model_id" ref="model_rental_booking"/>
+        <field name="on_delete" eval="False"/>
+        <field name="required" eval="True"/>
+        <field name="translate" eval="True"/>
+    </record>
+
+    <record id="rental_booking_field_user_id" model="ir.model.fields">
+        <field name="name">x_user_id</field>
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="domain">[('share', '=', False)]</field>
+        <field name="field_description">Responsable</field>
+        <field name="model">x_rental_booking</field>
+        <field name="model_id" ref="model_rental_booking"/>
+        <field name="relation">res.users</field>
+        <field name="tracking">5</field>
+    </record>
+
+    <record id="rental_booking_field_resource_id" model="ir.model.fields">
+        <field name="name">x_resource_id</field>
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Resource</field>
+        <field name="model">x_rental_booking</field>
+        <field name="model_id" ref="model_rental_booking"/>
+        <field name="relation">resource.resource</field>
+        <field name="required" eval="True"/>
+        <field name="on_delete">cascade</field>
+        <field name="tracking">1</field>
+    </record>
+
+    <record id="rental_booking_field_partner_id" model="ir.model.fields">
+        <field name="name">x_partner_id</field>
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Contact</field>
+        <field name="model">x_rental_booking</field>
+        <field name="model_id" ref="model_rental_booking"/>
+        <field name="relation">res.partner</field>
+    </record>
+    <record id="rental_booking_field_partner_name" model="ir.model.fields">
+        <field name="name">x_partner_name</field>
+        <field name="ttype">char</field>
+        <field name="related" eval="False"/>
+        <field name="field_description">Partner Name</field>
+        <field name="model">x_rental_booking</field>
+        <field name="model_id" ref="model_rental_booking"/>
+        <field name="readonly" eval="False"/>
+        <field name="store" eval="True"/>
+        <field name="depends">x_partner_id</field>
+        <field name="compute"><![CDATA[
+for record in self:
+    if record.x_partner_id:
+        record["x_partner_name"] = record.x_partner_id.display_name
+]]></field>
+    </record>
+    <record id="rental_booking_field_partner_phone" model="ir.model.fields">
+        <field name="name">x_partner_phone</field>
+        <field name="ttype">char</field>
+        <field name="related" eval="False"/>
+        <field name="field_description">Phone</field>
+        <field name="model">x_rental_booking</field>
+        <field name="model_id" ref="model_rental_booking"/>
+        <field name="readonly" eval="False"/>
+        <field name="store" eval="True"/>
+        <field name="depends">x_partner_id</field>
+        <field name="compute"><![CDATA[
+for record in self:
+    if record.x_partner_id:
+        record["x_partner_phone"] = record.x_partner_id.phone
+]]></field>
+    </record>
+    <record id="rental_booking_field_partner_email" model="ir.model.fields">
+        <field name="name">x_partner_email</field>
+        <field name="ttype">char</field>
+        <field name="related" eval="False"/>
+        <field name="field_description">E-mail</field>
+        <field name="model">x_rental_booking</field>
+        <field name="model_id" ref="model_rental_booking"/>
+        <field name="readonly" eval="False"/>
+        <field name="store" eval="True"/>
+        <field name="depends">x_partner_id</field>
+        <field name="compute"><![CDATA[
+for record in self:
+    if record.x_partner_id:
+        record["x_partner_email"] = record.x_partner_id.email
+]]></field>
+    </record>
+    <record id="rental_booking_field_partner_shipping_id" model="ir.model.fields">
+        <field name="name">x_partner_shipping_id</field>
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Delivery Adress</field>
+        <field name="model">x_rental_booking</field>
+        <field name="model_id" ref="model_rental_booking"/>
+        <field name="relation">res.partner</field>
+    </record>
+
+    <record id="rental_booking_field_date_start" model="ir.model.fields">
+        <field name="name">x_date_start</field>
+        <field name="ttype">datetime</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Start Date</field>
+        <field name="model">x_rental_booking</field>
+        <field name="model_id" ref="model_rental_booking"/>
+        <field name="on_delete" eval="False"/>
+        <field name="required" eval="True"/>
+        <field name="tracking">2</field>
+    </record>
+    <record id="rental_booking_field_date_stop" model="ir.model.fields">
+        <field name="name">x_date_stop</field>
+        <field name="ttype">datetime</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Date Stop</field>
+        <field name="model">x_rental_booking</field>
+        <field name="model_id" ref="model_rental_booking"/>
+        <field name="on_delete" eval="False"/>
+        <field name="required" eval="True"/>
+        <field name="tracking">2</field>
+    </record>
+
+    <record id="rental_booking_field_notes" model="ir.model.fields">
+        <field name="name">x_notes</field>
+        <field name="ttype">html</field>
+        <field name="copied" eval="False"/>
+        <field name="field_description">Notes</field>
+        <field name="model">x_rental_booking</field>
+        <field name="model_id" ref="model_rental_booking"/>
+        <field name="on_delete" eval="False"/>
+    </record>
+
+    <record id="rental_booking_field_status" model="ir.model.fields">
+        <field name="name">x_status</field>
+        <field name="ttype">selection</field>
+        <field name="copied" eval="False"/>
+        <field name="field_description">Status</field>
+        <field name="model">x_rental_booking</field>
+        <field name="model_id" ref="model_rental_booking"/>
+        <field name="on_delete" eval="False"/>
+        <field name="selection">[('request', 'Request'), ('draft', 'Draft'), ('confirm', 'Confirm'), ('done', 'Done'), ('cancelled', 'Cancelled')]</field>
+        <field name="tracking">3</field>
+    </record>
+
+    <record id="rental_booking_field_sale_order_line_id" model="ir.model.fields">
+        <field name="name">x_sale_order_line_id</field>
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="False"/>
+        <field name="field_description">Sale Order Line</field>
+        <field name="model">x_rental_booking</field>
+        <field name="model_id" ref="model_rental_booking"/>
+        <field name="relation">sale.order.line</field>
+        <field name="on_delete">cascade</field>
+    </record>
+    <record id="rental_booking_field_sale_order_id" model="ir.model.fields">
+        <field name="name">x_sale_order_id</field>
+        <field name="ttype">many2one</field>
+        <field name="related">x_sale_order_line_id.order_id</field>
+        <field name="field_description">Sale Order</field>
+        <field name="model">x_rental_booking</field>
+        <field name="model_id" ref="model_rental_booking"/>
+        <field name="readonly" eval="True"/>
+        <field name="relation">sale.order</field>
+        <field name="store" eval="True"/>
+    </record>
+
+    <record id="rental_booking_field_company_id" model="ir.model.fields">
+        <field name="name">x_company_id</field>
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Company</field>
+        <field name="model">x_rental_booking</field>
+        <field name="model_id" ref="model_rental_booking"/>
+        <field name="relation">res.company</field>
+        <field name="on_delete">cascade</field>
+    </record>
+
+    <!-- Default Values -->
+    <record id="rental_booking_default_value_status" model="ir.default">
+        <field name="field_id" ref="rental_booking_field_status"/>
+        <field name="json_value">"draft"</field>
+    </record>
+
+    <!-- Constraint -->
+    <!-- It must be in the SQL file -->
+    <record id="rental_booking_constraint_dates" model="ir.model.constraint">
+        <field name="name">x_rental_booking_dates_chronological</field>
+        <field name="message">Start date must be before the end date of the booking.</field>
+        <field name="model" ref="model_rental_booking"/>
+        <field name="module" ref="base.module_rental"/>
+        <field name="type">u</field>
+        <field name="definition">CHECK(x_date_start &gt;= x_date_stop)</field>
+    </record>
+
+</odoo>

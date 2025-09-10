@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+  <record id="sale_order_line_field_rental_date_start" model="ir.model.fields">
+    <field name="name">x_rental_date_start</field>
+    <field name="ttype">datetime</field>
+    <field name="copied" eval="False"/>
+    <field name="field_description">Rental Start Date</field>
+    <field name="model">sale.order.line</field>
+    <field name="model_id" ref="sale.model_sale_order_line"/>
+  </record>
+
+  <record id="sale_order_line_field_rental_date_stop" model="ir.model.fields">
+    <field name="name">x_rental_date_stop</field>
+    <field name="ttype">datetime</field>
+    <field name="copied" eval="False"/>
+    <field name="field_description">Rental Stop Date</field>
+    <field name="model">sale.order.line</field>
+    <field name="model_id" ref="sale.model_sale_order_line"/>
+  </record>
+
+  <record id="sale_order_line_field_is_rental" model="ir.model.fields">
+    <field name="name">x_is_rental</field>
+    <field name="ttype">boolean</field>
+    <field name="copied" eval="True"/>
+    <field name="field_description">Is Rental Line</field>
+    <field name="model">sale.order.line</field>
+    <field name="model_id" ref="sale.model_sale_order_line"/>
+  </record>
+
+  <record id="sale_order_line_field_resource_ids" model="ir.model.fields">
+      <field name="name">x_resource_ids</field>
+      <field name="ttype">many2many</field>
+      <field name="copied" eval="True"/>
+      <field name="field_description">Resources</field>
+      <field name="model">sale.order.line</field>
+      <field name="model_id" ref="sale.model_sale_order_line"/>
+      <field name="domain">[('resource_type', '=', 'material')]</field>
+      <field name="on_delete" eval="False"/>
+      <field name="relation">resource.resource</field>
+      <field name="relation_table">x_sale_order_line_resource_rel</field>
+  </record>
+
+  <record id="sale_order_line_field_resource_overlap_message" model="ir.model.fields">
+      <field name="name">x_rental_overlap_message</field>
+      <field name="ttype">char</field>
+      <field name="store" eval="False"/>
+      <field name="model">sale.order.line</field>
+      <field name="model_id" ref="sale.model_sale_order_line"/>
+      <field name="field_description">Overlap Message</field>
+      <field name="depends">x_rental_date_start,x_rental_date_stop,x_resource_ids</field>
+      <field name="compute"><![CDATA[
+rental_lines = self.filtered(lambda line: line.x_rental_date_start and line.x_rental_date_stop and line.x_resource_ids)
+if rental_lines:
+    for line in rental_lines:
+        query = """
+            SELECT
+              x_resource_id AS resource_id,
+              count(*) AS overlap_count
+            FROM x_rental_booking
+            WHERE
+              x_resource_id IN %s
+              AND TSRANGE(x_date_start, x_date_stop, '[]') && TSRANGE(%s::timestamp, %s::timestamp, '[]')
+              AND x_status != 'cancelled'
+            GROUP BY x_resource_id
+        """
+        self.env.cr.execute(query, (tuple(line.x_resource_ids.ids), line.x_rental_date_start, line.x_rental_date_stop),)
+        count_map = {item['resource_id']: item['overlap_count'] for item in self.env.cr.dictfetchall()}
+        if count_map:
+            resource_map = {r.id: r.name for r in self.env['resource.resource'].browse(list(count_map))}
+            line['x_rental_overlap_message'] =  "\n".join([f"{resource_map[k]} has already {v} rental booking(s) during the chosen period." for k,v in count_map.items()])
+        else:
+            line['x_rental_overlap_message'] = None
+else:
+    for line in self - rental_lines:
+        line['x_rental_overlap_message'] = None
+]]></field>
+    </record>
+
+</odoo>

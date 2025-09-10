@@ -1,0 +1,2 @@
+ALTER TABLE x_rental_booking DROP CONSTRAINT IF EXISTS x_rental_booking_dates_chronological;
+ALTER TABLE x_rental_booking ADD CONSTRAINT x_rental_booking_dates_chronological CHECK(x_date_start <= x_date_stop);

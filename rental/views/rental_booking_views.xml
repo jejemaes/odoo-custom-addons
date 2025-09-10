@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        Views
+    -->
+    <record id="rental_booking_view_search" model="ir.ui.view">
+        <field name="name">rental.booking.search</field>
+        <field name="model">x_rental_booking</field>
+        <field name="arch" type="xml">
+            <search string="Search Rental Booking">
+                <field name="x_name"/>
+                <field name="x_partner_id" operator="child_of"/>
+                <field name="x_resource_id"/>
+                <field name="x_sale_order_id"/>
+                <field name="x_company_id" groups="base.group_multi_company"/>
+                <filter name="filter_request_booking" string="Request" domain="[('x_status', '=', 'request')]"/>
+                <filter name="filter_draft_booking" string="Draft Bookings" domain="[('x_status', '=', 'draft')]"/>
+                <filter name="filter_confirm_booking" string="Confirmed Bookings" domain="[('x_status', '=', 'confirm')]"/>
+                <filter name="filter_cancel_booking" string="Cancelled Bookings" domain="[('x_status', '=', 'cancelled')]"/>
+                <filter name="filter_past_booking" string="Past Bookings" domain="[('x_status', '=', 'done')]"/>
+                <separator/>
+                <filter name="filter_date" date="x_date_start" default_period="month" string="Period"/>
+                <separator invisible="1"/>
+                <filter invisible="1" string="Late Activities" name="activities_overdue"
+                        domain="[('my_activity_date_deadline', '&lt;', 'today')]"
+                        help="Show all opportunities for which the next action date is before today"/>
+                <filter invisible="1" string="Today Activities" name="activities_today"
+                        domain="[('my_activity_date_deadline', '=', 'today')]"/>
+                <filter invisible="1" string="Future Activities" name="activities_upcoming_all"
+                        domain="[('my_activity_date_deadline', '&gt;', 'today')]"/>
+                <separator/>
+                <group>
+                    <filter string="Resource" name="resource" domain="[]" context="{'group_by':'x_resource_id'}"/>
+                    <filter string="Sale Order" name="sale_order" domain="[]" context="{'group_by':'x_sale_order_id'}"/>
+                    <filter string="Company" name="company" domain="[]" context="{'group_by':'x_company_id'}" groups="base.group_multi_company"/>
+                    <filter string="Date" name="leave_month" domain="[]" context="{'group_by':'x_date_start'}"/>
+                </group>
+           </search>
+        </field>
+    </record>
+
+    <record id="rental_booking_view_form" model="ir.ui.view">
+        <field name="name">rental.booking.form</field>
+        <field name="model">x_rental_booking</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                  <field name="x_status" widget="statusbar" statusbar_visible="draft,confirm,cancelled" options="{'clickable': '1'}"/>
+                </header>
+                <sheet string="Rental Booking">
+                    <div class="oe_title">
+                        <h1>
+                            <field name="x_name" required="1" placeholder="Name..."/>
+                        </h1>
+                    </div>
+                    <group name="rental_booking_detail">
+                        <group name="rental_booking_detail_left">
+                            <field name="x_date_start" string="Dates" widget="daterange" options="{'end_date_field': 'x_date_stop'}"/>
+                            <field name="x_date_stop" invisible="1"/>
+                            <field name="x_resource_id" options="{'no_create': True}"/>
+                            <field name="x_partner_id"/>
+                            <field name="x_partner_email" widget="email"/>
+                            <field name="x_partner_phone" widget="phone" options="{'enable_sms': True}"/>
+                            <field name="x_partner_shipping_id" context="{'search_default_customer':1, 'show_address': 1}" options='{"always_reload": True}' domain="[('commercial_partner_id', '=', x_partner_id)]"/>
+                        </group>
+                        <group name="rental_booking_detail_right">
+                            <field name="x_user_id" widget="many2one_avatar_user"/>
+                            <field name="x_sale_order_line_id" readonly="1"/>
+                            <field name="x_sale_order_id" readonly="1"/>
+                            <field name="x_company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="x_notes" placeholder="Write notes here ..." nolabel="1" colspan="2"/>
+                    </group>
+                </sheet>
+                <chatter/>
+              </form>
+        </field>
+    </record>
+
+    <record id="rental_booking_view_form_quick_create" model="ir.ui.view">
+        <field name="name">rental.booking.form</field>
+        <field name="model">x_rental_booking</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet string="Rental Booking">
+                    <group name="rental_booking_detail">
+                        <field name="x_name"/>
+                        <field name="x_status"/>
+                        <field name="x_date_start" string="Dates" widget="daterange" options="{'end_date_field': 'x_date_stop'}"/>
+                        <field name="x_date_stop" invisible="1"/>
+                        <field name="x_resource_id" options="{'no_create': True}"/>
+                    </group>
+                    <group>
+                        <field name="x_notes" placeholder="Write notes here ..." nolabel="1" colspan="2"/>
+                    </group>
+                </sheet>
+                <chatter/>
+              </form>
+        </field>
+    </record>
+
+    <record id="rental_booking_view_calendar" model="ir.ui.view">
+        <field name="name">rental.booking.calendar</field>
+        <field name="model">x_rental_booking</field>
+        <field name="arch" type="xml">
+            <calendar date_start="x_date_start" date_stop="x_date_stop" mode="month" string="Resource" color="x_resource_id" quick_create_view_id="%(rental.rental_booking_view_form_quick_create)d">
+                <field name="x_name"/>
+                <field name="x_resource_id" avatar_field="image_128" filters="1"/>
+                <field name="x_partner_id"/>
+                <field name="x_status" filters="1"/>
+            </calendar>
+        </field>
+    </record>
+
+<!--
+    <record id="rental_booking_view_gantt" model="ir.ui.view">
+        <field name="name">Default gantt view for rental.booking</field>
+        <field name="model">x_rental_booking</field>
+        <field name="type">gantt</field>
+        <field name="arch" type="xml">
+            <gantt date_start="x_date_start" date_stop="x_date_stop" string="Rental Booking Schedule"/>
+        </field>
+    </record> -->
+
+    <record id="rental_booking_view_tree" model="ir.ui.view">
+        <field name="name">rental.booking.list</field>
+        <field name="model">x_rental_booking</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <list string="Rental Bookings">
+                <field name="x_name"/>
+                <field name="x_resource_id" options="{'no_create': True}"/>
+                <field name="x_date_start"/>
+                <field name="x_date_stop"/>
+                <field name="x_status" optional="show" decoration-success="x_status == 'confirm'" decoration-info="x_status == 'draft'" decoration-primary="x_status == 'done'" widget="badge"/>
+                <field name="x_user_id" options="{'no_create': True}" optional="show"/>
+                <field name="x_sale_order_id" optional="hide"/>
+                <field name="x_company_id" options="{'no_create': True}" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="rental_booking_view_kanban" model="ir.ui.view">
+        <field name="name">rental.booking.kanban</field>
+        <field name="model">x_rental_booking</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" default_group_by="x_status" >
+                <field name="x_name"/>
+                <field name="x_resource_id"/>
+                <field name="x_partner_id"/>
+                <field name="x_date_start"/>
+                <field name="x_date_stop"/>
+                <field name="x_status"/>
+                <field name="x_user_id"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="d-flex flex-column o_kanban_attachment" t-att-data-id="record.id.raw_value">
+                            <div>
+                                <field name="x_name" class="fw-bold fs-3"/>
+                            </div>
+                            <div class="flex-shrink-1 flex-auto">
+                                <span class="text-muted">
+                                    From <t t-esc="record.x_date_start.value"/> To <t t-esc="record.x_date_stop.value"/>
+                                </span>
+                                <br/>
+                                <span class="text-muted">
+                                    <t t-esc="record.x_resource_id.value"/>
+                                </span>
+                            </div>
+                            <footer class="d-flex px-2 justify-content-between">
+                                <div class="fw-bolder p-2">
+                                    <t t-if="record.x_status.raw_value == 'request'"><t t-set="state_css">bg-warning</t></t>
+                                    <t t-if="record.x_status.raw_value == 'draft'"><t t-set="state_css">bg-info</t></t>
+                                    <t t-if="record.x_status.raw_value == 'confirm'"><t t-set="state_css">bg-success</t></t>
+                                    <t t-if="record.x_status.raw_value == 'done'"><t t-set="state_css">bg-light</t></t>
+                                    <t t-if="record.x_status.raw_value == 'cancelled'"><t t-set="state_css">bg-light</t></t>
+                                    <span t-attf-class="badge rounded-pill #{state_css}"> <t t-esc="record.x_status.value"/></span>
+                                </div>
+                                <div class="ml-auto p-2 d-flex d-flex-row justify-content-end ms-2 gap-2">
+                                    <field name="activity_ids" widget="kanban_activity"/>
+                                    <field name="x_user_id" widget="many2one_avatar_user"/>
+                                </div>
+                            </footer>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!--
+        Actions
+    -->
+    <record id="rental_booking_action_from_sale_order" model="ir.actions.act_window">
+        <field name="name">Rental Bookings</field>
+        <field name="res_model">x_rental_booking</field>
+        <field name="search_view_id" ref="rental_booking_view_search"/>
+        <field name="context">{
+            "search_default_x_sale_order_id": active_id,
+        }</field>
+    </record>
+
+    <record id="rental_booking_action" model="ir.actions.act_window">
+        <field name="name">Rental Bookings</field>
+        <field name="res_model">x_rental_booking</field>
+        <field name="search_view_id" ref="rental_booking_view_search"/>
+        <field name="context">{
+            "search_default_filter_draft_booking": 1,
+            "search_default_filter_confirm_booking": 1,
+        }</field>
+    </record>
+
+    <record id="rental_booking_action_view_calendar" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="rental_booking_view_calendar"/>
+        <field name="act_window_id" ref="rental_booking_action"/>
+    </record>
+
+    <record id="rental_booking_action_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="rental_booking_view_kanban"/>
+        <field name="act_window_id" ref="rental_booking_action"/>
+    </record>
+
+<!--     <record id="rental_booking_action_view_gantt" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">gantt</field>
+        <field name="view_id" ref="rental_booking_view_gantt"/>
+        <field name="act_window_id" ref="rental_booking_action"/>
+    </record> -->
+
+    <record id="rental_booking_action_view_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="5"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="rental_booking_view_tree"/>
+        <field name="act_window_id" ref="rental_booking_action"/>
+    </record>
+
+    <record id="rental_booking_action_view_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="15"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="rental_booking_view_form"/>
+        <field name="act_window_id" ref="rental_booking_action"/>
+    </record>
+
+</odoo>

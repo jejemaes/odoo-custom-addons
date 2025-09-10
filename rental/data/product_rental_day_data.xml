@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="resource_day_monday" model="x_product_rental_day">
+        <field name="x_name">Monday</field>
+        <field name="x_dayofweek">1</field>
+    </record>
+
+    <record id="resource_day_tuesday" model="x_product_rental_day">
+        <field name="x_name">Tuesday</field>
+        <field name="x_dayofweek">2</field>
+    </record>
+
+    <record id="resource_day_wednesday" model="x_product_rental_day">
+        <field name="x_name">Wednesday</field>
+        <field name="x_dayofweek">3</field>
+    </record>
+
+    <record id="resource_day_thursday" model="x_product_rental_day">
+        <field name="x_name">Thursday</field>
+        <field name="x_dayofweek">4</field>
+    </record>
+
+    <record id="resource_day_friday" model="x_product_rental_day">
+        <field name="x_name">Friday</field>
+        <field name="x_dayofweek">5</field>
+    </record>
+
+    <record id="resource_day_saturday" model="x_product_rental_day">
+        <field name="x_name">Saturday</field>
+        <field name="x_dayofweek">6</field>
+    </record>
+
+    <record id="resource_day_sunday" model="x_product_rental_day">
+        <field name="x_name">Sunday</field>
+        <field name="x_dayofweek">7</field>
+    </record>
+</odoo>

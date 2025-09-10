@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+  <record id="product_template_field_rent_ok" model="ir.model.fields">
+    <field name="name">x_rent_ok</field>
+    <field name="ttype">boolean</field>
+    <field name="copied" eval="False"/>
+    <field name="field_description">Rental</field>
+    <field name="model">product.template</field>
+    <field name="model_id" ref="product.model_product_template"/>
+  </record>
+
+  <record id="product_template_field_product_rental_price_ids" model="ir.model.fields">
+    <field name="name">x_product_rental_price_ids</field>
+    <field name="ttype">one2many</field>
+    <field name="copied" eval="False"/>
+    <field name="field_description">Rental Prices</field>
+    <field name="model">product.template</field>
+    <field name="model_id" ref="product.model_product_template"/>
+    <field name="relation">x_product_rental_price</field>
+    <field name="relation_field">x_product_template_id</field>
+  </record>
+
+</odoo>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="rental_create_sale_order_view_form" model="ir.ui.view">
+        <field name="name">rental.link.sale.order.view.form</field>
+        <field name="model">x_rental_link_sale_order</field>
+        <field name="arch" type="xml">
+            <form string="Link to Sales Order">
+                <group>
+                    <group>
+                        <field name="x_product_template_id" invisible="1"/>
+                        <field name="x_resource_id" invisible="1"/>
+                        <field name="x_product_id" domain="[('product_tmpl_id', '=', x_product_template_id)]"/>
+                        <field name="x_date_stop" required="1" invisible="1"/>
+                        <field name="x_date_start" required="1" widget="daterange" options="{'end_date_field': 'x_date_stop'}" string="Rental Dates"/>
+                    </group>
+                    <group>
+                        <field name="x_rental_booking_id" invisible="1"/>
+                        <field name="x_partner_id"/>
+                        <field name="x_partner_shipping_id"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Create Sales Order" type="action" name="%(action_create_sale_order_from_rental_booking)d" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel" type="object" class="btn btn-secondary oe_inline"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="rental_create_sale_order_action_multi" model="ir.actions.act_window">
+        <field name="name">Create Sales Order</field>
+        <field name="res_model">x_rental_link_sale_order</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="rental_create_sale_order_view_form"/>
+        <field name="target">new</field>
+        <field name="context">{'default_x_rental_booking_id': active_id}</field>
+    </record>
+
+    <record id="rental_booking_view_form_extension" model="ir.ui.view">
+        <field name="name">rental.booking.form.sale.rental</field>
+        <field name="model">x_rental_booking</field>
+        <field name="inherit_id" ref="rental.rental_booking_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='x_status']" position="before">
+                <button string="Create Sales Order" type="action" name="%(rental.rental_create_sale_order_action_multi)d" invisible="x_sale_order_id != False or x_status in ['cancel', 'done']"/>
+            </xpath>
+       </field>
+    </record>
+
+</odoo>

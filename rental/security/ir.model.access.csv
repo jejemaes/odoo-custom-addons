@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_rental_booking_user,rental.rental_booking.user,rental.model_rental_booking,rental.group_rental_user,1,1,1,0
+access_rental_booking_user_all,rental.rental_booking.user.all,rental.model_rental_booking,rental.group_rental_user_all,1,1,1,0
+access_rental_booking_manager,rental.rental_booking.manager,rental.model_rental_booking,rental.group_rental_manager,1,1,1,1
+access_resource_resource_manager,resource.resource,resource.model_resource_resource,rental.group_rental_manager,1,1,1,1
+access_product_rental_day_all,rental.x_product_rental_day,rental.model_product_rental_day,base.group_user,1,0,0,0
+access_product_rental_price_manager,rental.x_product_rental_price,model_product_rental_price,product.group_product_manager,1,1,1,1
+access_rental_link_sale_order_manager,rental.create_link_sale_orde_wizard,rental.model_rental_link_sale_order,rental.group_rental_user,1,1,1,1
