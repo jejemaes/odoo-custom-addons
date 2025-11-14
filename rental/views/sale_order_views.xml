@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<!--
+		Sale Order Views
+	-->
+    <record id="sale_order_view_form_line_subview_rental" model="ir.ui.view">
+        <field name="name">sale.order.form.view.rental</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_invoice']" position="before">
+                <button type="action"
+                    name="%(rental.rental_booking_action_from_sale_order)d"
+                    class="oe_stat_button"
+                    icon="fa-table"
+                    invisible="x_rental_booking_count == 0">
+                   <field name="x_rental_booking_count" widget="statinfo" string="Rental Bookings"/>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list" position="attributes">
+                <attribute name="editable"></attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/form//field[@name='product_id']" position="attributes">
+                <attribute name="invisible">x_is_rental</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/form//field[@name='product_id']" position="after">
+                <field name="product_id" string="Rental Product" domain="[('x_rent_ok', '=', True)]" invisible="not x_is_rental" options="{'no_create': True}"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/form//label[@for='product_uom_qty']" position="before">
+                <field name="x_is_rental" invisible="1" force_save="1"/>
+                <field name="product_template_id" invisible="1"/>
+                <field name="x_rental_date_stop" required="1" invisible="1"/>
+                <field name="x_rental_date_start" invisible="not x_is_rental" required="1" widget="daterange" options="{'end_date_field': 'x_rental_date_stop'}" string="Rental Dates"/>
+                <field name="x_resource_ids" invisible="not x_is_rental" widget="many2many_tags" options="{'no_create': True}" domain="[('resource_type', '=', 'material'), ('x_product_id', '=', product_template_id)]" required="1"/>
+                <field name="x_rental_overlap_message" invisible="not x_rental_overlap_message" readonly="1"  string="" role="alert" class="alert alert-warning"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/form//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="readonly">x_is_rental</attribute>
+                <attribute name="force_save">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+    <!--
+        Sale Order Line Views
+    -->
+    <record id="sale_order_line_view_form_rental" model="ir.ui.view">
+        <field name="name">sale.order.line.view.form.rental</field>
+        <field name="model">sale.order.line</field>
+        <field name="inherit_id" ref="sale.sale_order_line_view_form_readonly"/>
+        <field name="mode">extension</field>
+        <field name="priority">50</field>
+        <field name="arch" type="xml">
+            <field name="product_id" position="attributes">
+                <attribute name="invisible">x_is_rental</attribute>
+            </field>
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="product_id" domain="[('x_rent_ok', '=', True)]" invisible="not x_is_rental" options="{'no_create': True}"/>
+                <field name="x_rental_date_start" invisible="not x_is_rental" required="1" widget="daterange" options="{'end_date_field': 'x_rental_date_stop'}" string="Rental Dates"/>
+                <field name="x_rental_date_stop" required="1" invisible="1"/>
+                <field name="x_is_rental" invisible="1" force_save="1"/>
+                <field name="product_template_id" invisible="1"/>
+                <field name="x_resource_ids" invisible="not x_is_rental" widget="many2many_tags" options="{'no_create': True}" domain="[('resource_type', '=', 'material'), ('x_product_id', '=', product_template_id)]" required="1"/>
+                <field name="x_rental_overlap_message" class="alert alert-warning" readonly="1" role="alert" invisible="not x_rental_overlap_message" nolabel="1"/>
+            </xpath>
+            <xpath expr="//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="readonly">x_is_rental</attribute>
+                <attribute name="force_save">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!--
+        Sale Order Line Actions
+    -->
+
+    <!--
+        Sale Order Actions
+    -->
+    <record id="sale_order_view_form_rental" model="ir.ui.view">
+        <field name="name">sale.order.form.rental</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//create[@name='add_section_control']" position="after">
+                <create name="add_rental_line" string="Add a rental" context="{'default_x_is_rental': True}"/>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

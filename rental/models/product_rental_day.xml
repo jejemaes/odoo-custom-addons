@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Model -->
+    <record id="model_product_rental_day" model="ir.model">
+        <field name="name">Rental Day</field>
+        <field name="model">x_product_rental_day</field>
+        <field name="is_mail_thread" eval="False"/>
+        <field name="is_mail_activity" eval="False"/>
+    </record>
+
+    <!-- Fields -->
+    <record id="product_rental_day_field_name" model="ir.model.fields">
+        <field name="name">x_name</field>
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Name</field>
+        <field name="model">x_product_rental_day</field>
+        <field name="model_id" ref="model_product_rental_day"/>
+        <field name="required" eval="True"/>
+        <field name="translate" eval="True"/>
+    </record>
+
+    <record id="product_rental_day_field_dayofweek" model="ir.model.fields">
+        <field name="name">x_dayofweek</field>
+        <field name="ttype">integer</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Day Of Week</field>
+        <field name="model">x_product_rental_day</field>
+        <field name="model_id" ref="model_product_rental_day"/>
+        <field name="required" eval="True"/>
+    </record>
+
+</odoo>

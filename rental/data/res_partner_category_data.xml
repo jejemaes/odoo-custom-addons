@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_partner_category_rental_team" model="res.partner.category">
+        <field name="name">Team Rental</field>
+        <field name="color" eval="2"/>
+    </record>
+
+    <record id="res_partner_category_rental_customer" model="res.partner.category">
+        <field name="name">Rental Customer</field>
+        <field name="color" eval="4"/>
+    </record>
+
+</odoo>

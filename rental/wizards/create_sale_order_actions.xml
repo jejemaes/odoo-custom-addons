@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_create_sale_order_from_rental_booking" model="ir.actions.server">
+        <field name="name">Create Sales Order from Rental Booking</field>
+        <field name="model_id" ref="rental.model_rental_link_sale_order"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+
+for wizard in records:
+    sale_order = env["sale.order"].with_context(no_rental_booking_creation=True).sudo().create({
+        "partner_id": wizard.x_partner_id.id,
+        "partner_shipping_id": wizard.x_partner_shipping_id.id or wizard.x_partner_id.id,
+        "order_line": [
+            (0, False, {
+                "name": f"{wizard.x_product_id.display_name}\nFrom {wizard.x_date_start.isoformat()} to {wizard.x_date_stop.isoformat()}",
+                "x_is_rental": True,
+                "product_id": wizard.x_product_id.id,
+                "product_uom_qty": 1.0,
+                "x_rental_date_start": wizard.x_date_start,
+                "x_rental_date_stop": wizard.x_date_stop,
+                "x_resource_ids": [(4, wizard.x_resource_id.id)],
+            }),
+        ]
+    })
+    wizard.x_rental_booking_id.write({
+        "x_sale_order_line_id": sale_order.order_line[0].id,
+        "x_status": "draft",
+    })
+
+    action = {
+        "type": "ir.actions.act_window",
+        "res_model": "sale.order",
+        "views": [[False, "form"]],
+        "res_id": sale_order.id,
+        "context": {"create": False, "show_sale": True},
+    }
+]]></field>
+    </record>
+
+</odoo>
