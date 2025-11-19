@@ -4,7 +4,7 @@
     <!-- After creation of rental booking request -->
     <record id="action_create_rental_booking_request" model="ir.actions.server">
         <field name="name">Rental Booking: Create Request</field>
-        <field name="model_id" ref="rental.model_rental_booking"/>
+        <field name="model_id" ref="x_rental.model_rental_booking"/>
         <field name="state">code</field>
         <field name="code"><![CDATA[
 # Available variables:
@@ -22,7 +22,7 @@
 # To return an action, assign: action = {...}
 
 partner_to_subscribe = set()
-partner_tag = env.ref("rental.res_partner_category_rental_team", raise_if_not_found=False)
+partner_tag = env.ref("x_rental.res_partner_category_rental_team", raise_if_not_found=False)
 if partner_tag: # and "website_id" in env.context:
     partners = env["res.partner"].search([("category_id", "=", partner_tag.id)])
     partner_to_subscribe |= set(partners.ids)
@@ -32,7 +32,7 @@ if record.x_partner_email:
     if partners:
         partner = partners[0]
     else:
-        customer_tag = env.ref("rental.res_partner_category_rental_customer", raise_if_not_found=False)
+        customer_tag = env.ref("x_rental.res_partner_category_rental_customer", raise_if_not_found=False)
 
         partner = env["res.partner"].create({
             "name": record.x_partner_name,
@@ -44,18 +44,15 @@ if record.x_partner_email:
     record.write({"x_partner_id": partner.id})
 
 record.message_subscribe(partner_ids=list(partner_to_subscribe))
-
-_logger.info(f"coucou ############################## {str(partners)}")
-_logger.info(f"ctx ############################## {str(env.context)}")
 ]]></field>
     </record>
 
     <record id="automation_rule_create_rental_booking_request" model="base.automation">
         <field name="name">Rental Booking: Create Request</field>
-        <field name="model_id" ref="rental.model_rental_booking"/>
+        <field name="model_id" ref="x_rental.model_rental_booking"/>
         <field name="trigger">on_create</field>
         <field name="filter_domain">[("x_status", "=", "request")]</field>
-        <field name="action_server_ids" eval="[(4, ref('rental.action_create_rental_booking_request'))]"/>
+        <field name="action_server_ids" eval="[(4, ref('x_rental.action_create_rental_booking_request'))]"/>
     </record>
 
 </odoo>

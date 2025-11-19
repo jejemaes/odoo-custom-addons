@@ -17,7 +17,7 @@
     <field name="field_description">Rental Prices</field>
     <field name="model">product.template</field>
     <field name="model_id" ref="product.model_product_template"/>
-    <field name="relation">x_product_rental_price</field>
+    <field name="relation">x_rental.product_rental_price</field>
     <field name="relation_field">x_product_template_id</field>
   </record>
 

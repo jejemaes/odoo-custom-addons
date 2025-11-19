@@ -4,7 +4,7 @@
     <!-- Model -->
     <record id="model_product_rental_day" model="ir.model">
         <field name="name">Rental Day</field>
-        <field name="model">x_product_rental_day</field>
+        <field name="model">x_rental.product_rental_day</field>
         <field name="is_mail_thread" eval="False"/>
         <field name="is_mail_activity" eval="False"/>
     </record>

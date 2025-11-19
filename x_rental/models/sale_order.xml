@@ -11,7 +11,7 @@
         <field name="selectable" eval="False"/>
         <field name="store" eval="False"/>
         <field name="compute"><![CDATA[
-data = self.env['x_rental_booking']._read_group([('x_sale_order_id', 'in', self.ids)], groupby=['x_sale_order_id'], aggregates=['__count'])
+data = self.env['x_rental.booking']._read_group([('x_sale_order_id', 'in', self.ids)], groupby=['x_sale_order_id'], aggregates=['__count'])
 mapped_data = {int(sale_order_id): rental_count for sale_order_id, rental_count in data}
 for order in self:
     order["x_rental_booking_count"] = mapped_data.get(order.id, 0)
