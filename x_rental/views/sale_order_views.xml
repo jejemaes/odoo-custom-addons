@@ -11,7 +11,7 @@
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_view_invoice']" position="before">
                 <button type="action"
-                    name="%(rental.rental_booking_action_from_sale_order)d"
+                    name="%(x_rental.rental_booking_action_from_sale_order)d"
                     class="oe_stat_button"
                     icon="fa-table"
                     invisible="x_rental_booking_count == 0">

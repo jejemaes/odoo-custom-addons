@@ -4,7 +4,7 @@
     <!-- Model -->
     <record id="model_product_rental_price" model="ir.model">
         <field name="name">Rental Price</field>
-        <field name="model">x_product_rental_price</field>
+        <field name="model">x_rental.product_rental_price</field>
         <field name="is_mail_thread" eval="False"/>
         <field name="is_mail_activity" eval="False"/>
     </record>
@@ -39,7 +39,7 @@
         <field name="model">x_product_rental_price</field>
         <field name="model_id" ref="model_product_rental_price"/>
         <field name="on_delete" eval="False"/>
-        <field name="relation">x_product_rental_day</field>
+        <field name="relation">x_rental.product_rental_day</field>
         <field name="relation_table">x_product_rental_price_day_rel</field>
     </record>
 

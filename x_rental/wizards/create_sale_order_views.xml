@@ -3,7 +3,7 @@
 
     <record id="rental_create_sale_order_view_form" model="ir.ui.view">
         <field name="name">rental.link.sale.order.view.form</field>
-        <field name="model">x_rental_link_sale_order</field>
+        <field name="model">x_rental.link_sale_order</field>
         <field name="arch" type="xml">
             <form string="Link to Sales Order">
                 <group>
@@ -30,7 +30,7 @@
 
     <record id="rental_create_sale_order_action_multi" model="ir.actions.act_window">
         <field name="name">Create Sales Order</field>
-        <field name="res_model">x_rental_link_sale_order</field>
+        <field name="res_model">x_rental.link_sale_order</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="rental_create_sale_order_view_form"/>
         <field name="target">new</field>
@@ -39,11 +39,11 @@
 
     <record id="rental_booking_view_form_extension" model="ir.ui.view">
         <field name="name">rental.booking.form.sale.rental</field>
-        <field name="model">x_rental_booking</field>
-        <field name="inherit_id" ref="rental.rental_booking_view_form"/>
+        <field name="model">x_rental.booking</field>
+        <field name="inherit_id" ref="x_rental.rental_booking_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='x_status']" position="before">
-                <button string="Create Sales Order" type="action" name="%(rental.rental_create_sale_order_action_multi)d" invisible="x_sale_order_id != False or x_status in ['cancel', 'done']"/>
+                <button string="Create Sales Order" type="action" name="%(x_rental.rental_create_sale_order_action_multi)d" invisible="x_sale_order_id != False or x_status in ['cancel', 'done']"/>
             </xpath>
        </field>
     </record>
