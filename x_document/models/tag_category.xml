@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Model -->
+    <record id="model_document_tag_category" model="ir.model">
+        <field name="model">x_document.tag_category</field>
+        <field name="name">Tag Category</field>
+    </record>
+
+    <!-- Fields -->
+    <record id="model_document_tag_category_field_name" model="ir.model.fields">
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Description</field>
+        <field name="model">x_document.tag_category</field>
+        <field name="model_id" ref="model_document_tag_category"/>
+        <field name="name">x_name</field>
+        <field name="on_delete" eval="False"/>
+        <field name="required" eval="True"/>
+        <field name="translate">standard</field>
+    </record>
+    <record id="model_document_tag_category_field_sequence" model="ir.model.fields">
+        <field name="ttype">integer</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Sequence</field>
+        <field name="model">x_document.tag_category</field>
+        <field name="model_id" ref="model_document_tag_category"/>
+        <field name="name">x_sequence</field>
+        <field name="on_delete" eval="False"/>
+    </record>
+    <record id="model_document_tag_category_field_color" model="ir.model.fields">
+        <field name="ttype">integer</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Color</field>
+        <field name="model">x_document.tag_category</field>
+        <field name="model_id" ref="model_document_tag_category"/>
+        <field name="name">x_color</field>
+        <field name="on_delete" eval="False"/>
+    </record>
+
+</odoo>

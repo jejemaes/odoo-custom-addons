@@ -1,0 +1,18 @@
+<templates>
+
+    <t t-name="x_document.DocumentFileUploader">
+        <FileUploader
+            acceptedFileExtensions="props.acceptedFileExtensions"
+            fileUploadClass="'document_file_uploader'"
+            multiUpload="true"
+            onUploaded.bind="onFileUploaded"
+            onUploadComplete.bind="onUploadComplete">
+            <t t-set-slot="toggler">
+                <button type="button" class="btn btn-primary" data-hotkey="shift+i">
+                    Upload
+                </button>
+            </t>
+        </FileUploader>
+    </t>
+
+</templates>

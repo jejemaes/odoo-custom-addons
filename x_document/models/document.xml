@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Model -->
+    <record id="model_document_document" model="ir.model">
+        <field name="name">Document</field>
+        <field name="model">x_document.document</field>
+        <field name="is_mail_thread" eval="True"/>
+        <field name="is_mail_activity" eval="True"/>
+    </record>
+
+    <!-- Fields -->
+    <record id="model_document_document_field_name" model="ir.model.fields">
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Name</field>
+        <field name="model">x_document.document</field>
+        <field name="model_id" ref="model_document_document"/>
+        <field name="name">x_name</field>
+        <field name="on_delete" eval="False"/>
+        <field name="required" eval="True"/>
+        <field name="tracking">1</field>
+        <field name="translate">standard</field>
+    </record>
+    <record id="model_document_document_field_user_id" model="ir.model.fields">
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="domain">[('share', '=', False)]</field>
+        <field name="field_description">Responsable</field>
+        <field name="model">x_document.document</field>
+        <field name="model_id" ref="model_document_document"/>
+        <field name="name">x_user_id</field>
+        <field name="relation">res.users</field>
+        <field name="tracking">1</field>
+    </record>
+    <record id="model_document_document_field_date" model="ir.model.fields">
+        <field name="ttype">date</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Date</field>
+        <field name="model">x_document.document</field>
+        <field name="model_id" ref="model_document_document"/>
+        <field name="name">x_date</field>
+        <field name="on_delete" eval="False"/>
+    </record>
+    <record id="model_document_document_field_thumbnail" model="ir.model.fields">
+        <field name="ttype">binary</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Thumbnail</field>
+        <field name="model">x_document.document</field>
+        <field name="model_id" ref="model_document_document"/>
+        <field name="name">x_thumbnail</field>
+    </record>
+    <record id="model_document_document_field_tag_ids" model="ir.model.fields">
+        <field name="ttype">many2many</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Tags</field>
+        <field name="model">x_document.document</field>
+        <field name="model_id" ref="model_document_document"/>
+        <field name="name">x_tag_ids</field>
+        <field name="on_delete" eval="False"/>
+        <field name="relation">x_document.tag</field>
+        <field name="relation_table">x_document_document_tags_rel</field>
+    </record>
+
+    <record id="model_document_document_field_document_type" model="ir.model.fields">
+        <field name="ttype">selection</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Document Type</field>
+        <field name="model">x_document.document</field>
+        <field name="model_id" ref="model_document_document"/>
+        <field name="name">x_document_type</field>
+        <field name="on_delete" eval="False"/>
+        <field name="selection">[('file', 'File'), ('text', 'Text'), ('url', 'Url')]</field>
+        <field name="required" eval="True"/>
+    </record>
+    <record id="model_document_document_field_folder_id" model="ir.model.fields">
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Folder</field>
+        <field name="model">x_document.document</field>
+        <field name="model_id" ref="model_document_document"/>
+        <field name="name">x_folder_id</field>
+        <field name="relation">x_document.folder</field>
+        <field name="domain" eval="False"/>
+    </record>
+    <record id="model_document_document_field_file_content" model="ir.model.fields">
+        <field name="ttype">binary</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">File Content</field>
+        <field name="model">x_document.document</field>
+        <field name="model_id" ref="model_document_document"/>
+        <field name="name">x_file_content</field>
+    </record>
+    <record id="model_document_document_field_text_content" model="ir.model.fields">
+        <field name="ttype">html</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Text Content</field>
+        <field name="model">x_document.document</field>
+        <field name="model_id" ref="model_document_document"/>
+        <field name="name">x_text_content</field>
+    </record>
+    <record id="model_document_document_field_url" model="ir.model.fields">
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Url</field>
+        <field name="model">x_document.document</field>
+        <field name="model_id" ref="model_document_document"/>
+        <field name="name">x_url</field>
+        <field name="required" eval="False"/>
+        <field name="tracking">5</field>
+    </record>
+
+    <record id="model_document_document_field_mimetype" model="ir.model.fields">
+        <field name="ttype">char</field>
+        <field name="copied" eval="False"/>
+        <field name="field_description">Mimetype</field>
+        <field name="model">x_document.document</field>
+        <field name="model_id" ref="model_document_document"/>
+        <field name="name">x_mimetype</field>
+        <field name="required" eval="False"/>
+        <field name="readonly" eval="True"/>
+        <field name="store" eval="True"/>
+        <field name="depends">x_document_type,x_file_content</field>
+        <field name="compute"><![CDATA[
+attachment_data = self.env['ir.attachment'].search_read([('res_id', 'in', self.ids), ('res_model', '=', self._name), ('res_field', '=', 'x_file_content')], ["res_id", "mimetype"])
+mimetype_map = {item["res_id"]: item["mimetype"] for item in attachment_data}
+
+for document in self:
+    mimetype = None
+    if document.x_document_type == 'text':
+        mimetype = "text/html"
+    elif document.x_document_type == 'file':
+        mimetype = mimetype_map.get(document.id, "unknonw")
+    elif document.x_document_type == 'url':
+        mimetype = "text/uri-list"
+    document['x_mimetype'] = mimetype
+        ]]>
+        </field>
+    </record>
+
+    <!-- Default Value -->
+    <record id="model_document_document_field_document_type_default_value" model="ir.default" >
+        <field name="field_id" ref="model_document_document_field_document_type"/>
+        <field name="json_value">"file"</field>
+    </record>
+
+</odoo>
