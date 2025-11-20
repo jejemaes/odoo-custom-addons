@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <!-- Contract -->
+  <record id="sponsor_contract_rule_system" model="ir.model.access">
+    <field name="group_id" ref="group_sponsor_manager"/>
+    <field name="model_id" ref="model_sponsor_contract"/>
+    <field name="name">Sponsor Contract group_sponsor_manager</field>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    <field name="perm_write" eval="True"/>
+  </record>
+  <record id="sponsor_contract_rule_user" model="ir.model.access">
+    <field name="group_id" ref="group_sponsor_user"/>
+    <field name="model_id" ref="model_sponsor_contract"/>
+    <field name="name">Sponsor Contract group_sponsor_user</field>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="False"/>
+    <field name="perm_write" eval="True"/>
+  </record>
+
+  <!-- Contract Line -->
+  <record id="sponsor_contract_line_rule_system" model="ir.model.access">
+    <field name="group_id" ref="group_sponsor_manager"/>
+    <field name="model_id" ref="model_sponsor_contract_line"/>
+    <field name="name">Sponsor Contract Line group_sponsor_manager</field>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    <field name="perm_write" eval="True"/>
+  </record>
+  <record id="sponsor_contract_line_rule_user" model="ir.model.access">
+    <field name="group_id" ref="group_sponsor_user"/>
+    <field name="model_id" ref="model_sponsor_contract_line"/>
+    <field name="name">Sponsor Contract Line group_sponsor_user</field>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="False"/>
+    <field name="perm_write" eval="True"/>
+  </record>
+
+  <!-- Sponsors -->
+  <record id="sponsor_sponsor_rule_system" model="ir.model.access">
+    <field name="group_id" ref="group_sponsor_manager"/>
+    <field name="model_id" ref="model_sponsor_sponsor"/>
+    <field name="name">Sponsor Sponsor group_sponsor_manager</field>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    <field name="perm_write" eval="True"/>
+  </record>
+  <record id="sponsor_sponsor_rule_user" model="ir.model.access">
+    <field name="group_id" ref="group_sponsor_user"/>
+    <field name="model_id" ref="model_sponsor_sponsor"/>
+    <field name="name">Sponsor Sponsor group_sponsor_user</field>
+    <field name="perm_create" eval="False"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="False"/>
+    <field name="perm_write" eval="False"/>
+  </record>
+
+  <!-- Stage -->
+  <record id="sponsor_stage_rule_system" model="ir.model.access">
+    <field name="group_id" ref="group_sponsor_manager"/>
+    <field name="model_id" ref="model_sponsor_stage"/>
+    <field name="name">Sponsor Stage group_sponsor_manager</field>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    <field name="perm_write" eval="True"/>
+  </record>
+  <record id="sponsor_stage_rule_user" model="ir.model.access">
+    <field name="group_id" ref="group_sponsor_user"/>
+    <field name="model_id" ref="model_sponsor_stage"/>
+    <field name="name">Sponsor Stage group_sponsor_user</field>
+    <field name="perm_create" eval="False"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="False"/>
+    <field name="perm_write" eval="False"/>
+  </record>
+
+  <!-- Payment Method -->
+  <record id="sponsor_payment_method_rule_system" model="ir.model.access">
+    <field name="group_id" ref="group_sponsor_manager"/>
+    <field name="model_id" ref="model_sponsor_payment_method"/>
+    <field name="name">Sponsor Stage group_sponsor_manager</field>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    <field name="perm_write" eval="True"/>
+  </record>
+  <record id="sponsor_payment_method_rule_user" model="ir.model.access">
+    <field name="group_id" ref="group_sponsor_user"/>
+    <field name="model_id" ref="model_sponsor_payment_method"/>
+    <field name="name">Sponsor Stage group_sponsor_user</field>
+    <field name="perm_create" eval="False"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="False"/>
+    <field name="perm_write" eval="False"/>
+  </record>
+</odoo>

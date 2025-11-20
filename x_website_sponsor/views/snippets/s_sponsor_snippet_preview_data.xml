@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Multi record preview -->
+    <template id="s_sponsors_snippet_preview_data" name="Sponsors Picture Preview Data">
+        <div class="s_dialog_preview row">
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="s_events_event w-100">
+                    <a class="s_events_event_cover position-relative d-flex align-items-center rounded overflow-hidden text-decoration-none ratio ratio-1x1" href="#">
+                        <div class="o_record_cover_container d-flex flex-column o_colored_level o_cc h-100 w-100 bg-600 position-absolute">
+                            <div class="o_record_cover_component o_record_cover_image " style="background-image: url('/base/static/src/img/res_partner_1-image.png');"/>
+                            <div class="o_record_cover_component o_record_cover_filter oe_black" style="opacity: 0.4;"/>
+                        </div>
+                        <div class="text-center w-100 h-100 px-3 d-flex flex-column justify-content-center flex-grow-1">
+                            <h3 class="text-white">Partner Name 1</h3>
+                            <time class="text-white" datetime="2024-08-05 07:00:00">
+                                <span>July 26, 2024</span>
+                                <span class="s_events_event_time">
+                                    - <span>9:00 AM</span>
+                                    (Europe/Brussels)
+                                </span>
+                            </time>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="s_events_event w-100">
+                    <a class="s_events_event_cover position-relative d-flex align-items-center rounded overflow-hidden text-decoration-none ratio ratio-1x1" href="#">
+                        <div class="o_record_cover_container d-flex flex-column o_colored_level o_cc h-100 w-100 bg-600 position-absolute">
+                            <div class="o_record_cover_component o_record_cover_image " style="background-image: url('/base/static/src/img/res_partner_2-image.png');"/>
+                            <div class="o_record_cover_component o_record_cover_filter oe_black" style="opacity: 0.4;"/>
+                        </div>
+                        <div class="text-center w-100 h-100 px-3 d-flex flex-column justify-content-center flex-grow-1">
+                            <h3 class="text-white">Partner Name 2</h3>
+                            <time class="text-white" datetime="2024-08-10 08:00:00">
+                                <span>October 24, 2024</span>
+                                <span class="s_events_event_time">
+                                    - <span>1:15 AM</span>
+                                    (Europe/Brussels)
+                                </span>
+                            </time>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="s_events_event w-100">
+                    <a class="s_events_event_cover position-relative d-flex align-items-center rounded overflow-hidden text-decoration-none ratio ratio-1x1" href="#">
+                        <div class="o_record_cover_container d-flex flex-column o_colored_level o_cc h-100 w-100 bg-600 position-absolute">
+                            <div class="o_record_cover_component o_record_cover_image " style="background-image: url('/base/static/src/img/res_partner_3-image.png');"/>
+                            <div class="o_record_cover_component o_record_cover_filter oe_black" style="opacity: 0.4;"/>
+                        </div>
+                        <div class="text-center w-100 h-100 px-3 d-flex flex-column justify-content-center flex-grow-1">
+                            <h3 class="text-white">Partner Name 3</h3>
+                            <time class="text-white" datetime="2024-11-08 20:15:00">
+                                <span>November 23, 2024</span>
+                                <span class="s_events_event_time">
+                                    - <span>8:15 PM</span>
+                                    (Europe/Brussels)
+                                </span>
+                            </time>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template id="s_sponsors_snippet_card_preview_data" name="Sponsors Card Preview Data">
+        <div class="s_dialog_preview row">
+            <div class="col-3">
+                <div class="card h-100">
+                    <div class="card-img-top position-relative">
+                        <div class="ratio ratio-16x9">
+                            <img class="img img-fluid object-fit-cover" src="/base/static/src/img/res_partner_1-image.png"/>
+                        </div>
+                        <div class="position-absolute top-0 end-0 me-3 mt-3 p-3 rounded-circle bg-white shadow-sm text-center text-dark" style="width: 5rem; height: 5rem;">
+                            <span class="fw-bold text-uppercase">AUG</span>
+                            <span class="fw-light lh-1">23</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <strong>8:15 PM</strong>
+                        <h5 class="mb-2 mt-0">Partner Name 1</h5>
+                        <p class="text-muted">Headline of partner 1</p>
+                    </div>
+                    <div class="card-footer mt-auto border-0 p-3 pt-0 bg-transparent">
+                        <strong>Los Angeles, CA, United States</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card h-100">
+                    <div class="card-img-top position-relative">
+                        <div class="ratio ratio-16x9">
+                            <img class="img img-fluid object-fit-cover" src="/base/static/src/img/res_partner_2-image.png"/>
+                        </div>
+                        <div class="position-absolute top-0 end-0 me-3 mt-3 p-3 rounded-circle bg-white shadow-sm text-center text-dark" style="width: 5rem; height: 5rem;">
+                            <span class="fw-bold text-uppercase">AUG</span>
+                            <span class="fw-light lh-1">23</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <strong>8:15 PM</strong>
+                        <h5 class="mb-2 mt-0">Partner Name 2</h5>
+                        <p class="text-muted">Headline of partner 2</p>
+                    </div>
+                    <div class="card-footer mt-auto border-0 p-3 pt-0 bg-transparent">
+                        <strong>Los Angeles, CA, United States</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card h-100">
+                    <div class="card-img-top position-relative">
+                        <div class="ratio ratio-16x9">
+                            <img class="img img-fluid object-fit-cover" src="/website_event/static/src/img/event_previews/event_3.jpg"/>
+                        </div>
+                        <div class="position-absolute top-0 end-0 me-3 mt-3 p-3 rounded-circle bg-white shadow-sm text-center text-dark" style="width: 5rem; height: 5rem;">
+                            <span class="fw-bold text-uppercase">AUG</span>
+                            <span class="fw-light lh-1">23</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <strong>8:15 PM</strong>
+                        <h5 class="mb-2 mt-0">Partner Name 1</h5>
+                        <p class="text-muted">Headline of partner 1</p>
+                    </div>
+                    <div class="card-footer mt-auto border-0 p-3 pt-0 bg-transparent">
+                        <strong>Los Angeles, CA, United States</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card h-100">
+                    <div class="card-img-top position-relative">
+                        <div class="ratio ratio-16x9">
+                            <img class="img img-fluid object-fit-cover" src="/website_event/static/src/img/event_cover_2.jpg"/>
+                        </div>
+                        <div class="position-absolute top-0 end-0 me-3 mt-3 p-3 rounded-circle bg-white shadow-sm text-center text-dark" style="width: 5rem; height: 5rem;">
+                            <span class="fw-bold text-uppercase">AUG</span>
+                            <span class="fw-light lh-1">23</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <strong>8:15 PM</strong>
+                        <h5 class="mb-2 mt-0">Conference for Architects</h5>
+                        <p class="text-muted">Enhance your architectural business and improve professional skills.</p>
+                    </div>
+                    <div class="card-footer mt-auto border-0 p-3 pt-0 bg-transparent">
+                        <strong>Los Angeles, CA, United States</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+</odoo>

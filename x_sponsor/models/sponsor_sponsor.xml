@@ -1,0 +1,212 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Sponsors -->
+    <record id="model_sponsor_sponsor" model="ir.model">
+        <field name="name">Sponsors</field>
+        <field name="model">x_sponsor.sponsor</field>
+        <field name="is_mail_thread" eval="True"/>
+        <field name="is_mail_activity" eval="True"/>
+    </record>
+
+    <record id="sponsor_sponsor_field_date" model="ir.model.fields">
+        <field name="ttype">date</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Date</field>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="name">x_date</field>
+        <field name="required" eval="True"/>
+        <field name="on_delete" eval="False"/>
+    </record>
+
+    <record id="sponsor_sponsor_field_user_id" model="ir.model.fields">
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="domain">[('share', '=', False)]</field>
+        <field name="field_description">Responsable</field>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="name">x_user_id</field>
+        <field name="relation">res.users</field>
+        <field name="tracking">1</field>
+    </record>
+
+    <record id="sponsor_sponsor_field_partner_id" model="ir.model.fields">
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Contact</field>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="name">x_partner_id</field>
+        <field name="relation">res.partner</field>
+        <field name="tracking">1</field>
+    </record>
+
+    <record id="sponsor_sponsor_field_partner_email" model="ir.model.fields">
+        <field name="ttype">char</field>
+        <field name="related">x_partner_id.email</field>
+        <field name="field_description">E-mail</field>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="name">x_partner_email</field>
+        <field name="on_delete" eval="False"/>
+        <field name="readonly" eval="True"/>
+        <field name="store" eval="False"/>
+        <field name="tracking">1</field>
+    </record>
+
+    <record id="sponsor_sponsor_field_partner_phone" model="ir.model.fields">
+        <field name="ttype">char</field>
+        <field name="related">x_partner_id.phone</field>
+        <field name="field_description">Phone</field>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="name">x_partner_phone</field>
+        <field name="on_delete" eval="False"/>
+        <field name="readonly" eval="True"/>
+        <field name="store" eval="False"/>
+        <field name="tracking">2</field>
+    </record>
+
+    <record id="sponsor_sponsor_field_contract_id" model="ir.model.fields">
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Contract</field>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="name">x_sponsor_contract_id</field>
+        <field name="relation">x_sponsor.contract</field>
+        <field name="required" eval="True"/>
+        <field name="on_delete">cascade</field>
+    </record>
+
+    <record id="sponsor_sponsor_field_contract_line_id" model="ir.model.fields">
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Contact Line</field>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="name">x_sponsor_contract_line_id</field>
+        <field name="relation">x_sponsor.contract.line</field>
+    </record>
+
+    <record id="sponsor_sponsor_field_total_amount" model="ir.model.fields">
+        <field name="name">x_total_amount</field>
+        <field name="ttype">float</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Amount</field>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="required" eval="False"/>
+        <field name="readonly" eval="False"/>
+        <field name="store" eval="True"/>
+        <field name="related">x_sponsor_contract_line_id.x_product_price</field>
+    </record>
+
+    <record id="sponsor_sponsor_field_priority" model="ir.model.fields">
+        <field name="ttype">boolean</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Priority</field>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="name">x_priority</field>
+        <field name="on_delete" eval="False"/>
+    </record>
+
+    <record id="sponsor_sponsor_field_stage_id" model="ir.model.fields">
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Stage</field>
+        <field name="group_expand" eval="True"/>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="name">x_stage_id</field>
+        <field name="on_delete">restrict</field>
+        <field name="relation">x_sponsor.stage</field>
+        <field name="required" eval="True"/>
+        <field name="tracking">3</field>
+    </record>
+
+    <record id="sponsor_sponsor_field_payment_status" model="ir.model.fields">
+        <field name="name">x_payment_status</field>
+        <field name="ttype">selection</field>
+        <field name="copied" eval="False"/>
+        <field name="field_description">Payment Status</field>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="selection">[('unpaid', 'Unpaid'), ('paid', 'Paid')]</field>
+        <field name="tracking">4</field>
+        <field name="required" eval="True"/>
+    </record>
+    <record id="sponsor_contract_default_value_payment_status" model="ir.default">
+        <field name="field_id" ref="sponsor_sponsor_field_payment_status"/>
+        <field name="json_value">"unpaid"</field>
+    </record>
+
+    <record id="sponsor_sponsor_field_payment_date" model="ir.model.fields">
+        <field name="ttype">date</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Payment Date</field>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="name">x_payment_date</field>
+        <field name="required" eval="False"/>
+        <field name="on_delete" eval="False"/>
+        <field name="tracking">4</field>
+    </record>
+
+    <record id="sponsor_sponsor_field_payment_method_id" model="ir.model.fields">
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Payment Method</field>
+        <field name="group_expand" eval="True"/>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="name">x_payment_method_id</field>
+        <field name="on_delete">restrict</field>
+        <field name="relation">x_sponsor.payment_method</field>
+        <field name="required" eval="False"/>
+        <field name="tracking">4</field>
+    </record>
+
+    <record id="sponsor_sponsor_field_code" model="ir.model.fields">
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Code</field>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="name">x_code</field>
+        <field name="readonly" eval="True"/>
+        <field name="store" eval="True"/>
+        <field name="depends">x_date,x_partner_id,x_sponsor_contract_id</field>
+        <field name="compute"><![CDATA[
+for record in self:
+    code = "#"
+    if record.x_partner_id and record.x_sponsor_contract_id:
+        code = f"SP{record.x_date.year}/{record.x_sponsor_contract_id.id:04}/{record.x_partner_id.id:04}"
+    record["x_code"] = code
+]]></field>
+    </record>
+
+    <record id="sponsor_sponsor_field_name" model="ir.model.fields">
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Name</field>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="name">x_name</field>
+        <field name="readonly" eval="True"/>
+        <field name="required" eval="False"/>
+        <field name="store" eval="True"/>
+        <field name="depends">x_partner_id,x_code</field>
+        <field name="compute"><![CDATA[
+for record in self:
+    name = "#"
+    if record.x_partner_id and record.x_code:
+        name = f"{record.x_code} ({record.x_partner_id.display_name})"
+    record["x_name"] = name
+]]></field>
+    </record>
+
+</odoo>

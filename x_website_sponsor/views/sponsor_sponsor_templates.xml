@@ -1,0 +1,41 @@
+<odoo>
+
+    <template id="partner_list_index" name="Sponsors List Page">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Sponsors</t>
+            <div id="wrap">
+                <section class="container mb-4 mt-4">
+                    <h1 class="text-center">Our Sponsors</h1>
+                </section>
+                <div class="oe_structure"/>
+                <section class="container">
+                	<div class="row">
+	                	<t t-foreach="partners" t-as="partner">
+	                		<div class="col-md-4 col-xl-3 col-12 mb-4">
+			                    <div class="card h-100 text-decoration-none">
+			                        <a class="text-decoration-none" t-attf-href="/partners/#{slug(partner)}" aria-label="Go to sponsor">
+			                            <div t-field="partner.image_512"
+			                                class="card-img-top border-bottom"
+			                                t-options='{"widget": "image", "qweb_img_responsive": False, "class": "img img-fluid h-100 w-100 mw-100", "style": "max-height: 208px; min-height: 208px; object-fit: cover"}'
+			                                />
+			                            <div class="card-body">
+			                                <h2 class="card-title m-0 h5-fs" t-attf-href="/partners/#{slug(partner)}" t-field="partner.display_name"/>
+			                                <small id="o_wcrm_partners_address"/>
+			                                <small class="o_wcrm_short_description text-muted overflow-hidden">
+			                                    <span t-field="partner.website_short_description"/>
+			                                </small>
+			                                <small t-if="not partner.website_short_description" class="css_editable_mode_hidden text-muted fst-italic" groups="website.group_website_restricted_editor">
+			                                    Edit to add a short description
+			                                </small>
+			                            </div>
+			                        </a>
+			                    </div>
+			                </div>
+	                	</t>
+	                </div>
+                </section>
+                <div class="oe_structure"/>
+            </div>
+        </t>
+    </template>
+</odoo>

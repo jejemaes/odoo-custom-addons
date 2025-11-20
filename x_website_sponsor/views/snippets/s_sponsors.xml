@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<!-- Snippet -->
+<template id="s_sponsors" name="Sponsors">
+    <t t-call="website.s_dynamic_snippet_template">
+        <t t-set="snippet_name" t-value="'s_sponsors'"/>
+        <t t-set="snippet_classes" t-value="'s_sponsors_dynamic_snippet %s' % snippet_extra_classes"/>
+        <t t-set="main_page_url" t-value="'/website/action/sponsors/'"/>
+        <t t-set="custom_template_data" t-valuef='{"sponsor_extra_classes": "align-items-center"}'/><!-- hack to align in js qweb website.s_dynamic_snippet.grid template -->
+        <t t-out="0"/>
+    </t>
+</template>
+
+<!-- Multi record snippets -->
+<template id="s_sponsors_picture" name="Sponsors Picture">
+    <t t-set="snippet_extra_classes" t-value="'s_x_sponsor_sponsor_picture'"/>
+    <t t-call="x_website_sponsor.s_sponsors">
+        <t t-call="x_website_sponsor.s_sponsors_snippet_preview_data"/>
+    </t>
+</template>
+<template id="s_sponsors_card" name="Sponsors Card">
+    <t t-set="snippet_extra_classes" t-value="'s_x_sponsor_sponsor_card'"/>
+    <t t-call="x_website_sponsor.s_sponsors">
+        <t t-call="x_website_sponsor.s_sponsors_snippet_card_preview_data"/>
+    </t>
+</template>
+
+<!-- Multi record templates-->
+<!-- Picture Layout -->
+<template id="dynamic_filter_template_x_sponsor_sponsor_picture" name="Picture Layout Sponsors" priority="25">
+    <t t-if="records">
+        <div t-foreach="records.mapped('x_partner_id')" t-as="partner" data-column-classes="col">
+            <a class="text-decoration-none text-reset" t-att-href="partner.website_url" t-att-title="'Read ' + partner.name">
+                <figure class="figure">
+                    <img t-attf-src="/web/image/res.partner/#{partner.id}/avatar_256/" class="figure-img img-fluid rounded" alt="..."/>
+                </figure>
+            </a>
+        </div>
+    </t>
+</template>
+
+<!-- Card Layout -->
+<template id="dynamic_filter_template_x_sponsor_sponsor_card" name="Card Layout Sponsors" priority="10">
+    <t t-if="records">
+        <div t-foreach="records.mapped('x_partner_id')" t-as="partner" data-column-classes="col" data-extra-classes="row row-cols-auto align-items-center">
+            <a class="text-decoration-none text-reset" t-att-href="partner.website_url" t-att-title="'Read ' + partner.name">
+                <div class="card h-100">
+                  <img t-attf-src="/web/image/res.partner/#{partner.id}/avatar_256/" class="card-img-top" alt="..."/>
+                  <div class="card-body">
+                        <h5 class="card-title" t-field="partner.name"></h5>
+                        <p t-field="partner.self"
+                            t-options="{
+                                'widget': 'contact',
+                                'fields': ['city', 'phone']
+                            }"
+                            class="card-text text-muted"
+                        />
+                  </div>
+                </div>
+            </a>
+        </div>
+    </t>
+</template>
+
+<!--ASSETS-->
+
+<!-- <record id="website_sponsor.s_sponsors_000_scss" model="ir.asset">
+    <field name="name">Event 000 SCSS</field>
+    <field name="bundle">web.assets_frontend</field>
+    <field name="path">website_sponsor/static/src/snippets/s_sponsors/000.scss</field>
+</record>
+ -->
+</odoo>

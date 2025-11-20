@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="snippets" inherit_id="website.snippets" name="Snippet Sponsor">
+	<!-- Create the group -->
+	<xpath expr="//snippets[@id='snippet_groups']" position="inside">
+    	<t snippet-group="sponsors" t-snippet="website.s_snippet_group" string="Sponsors" t-thumbnail="/website/static/src/img/snippets_thumbs/s_mega_menu_thumbnails.svg"/>
+   	</xpath>
+   	<!-- Add the custom snippet to the group -->
+   	<xpath expr="//snippets[@id='snippet_structure']" position="inside">
+      	<t t-snippet="x_website_sponsor.s_sponsors_picture" string="Sponsors" group="sponsors"/>
+        <t t-snippet="x_website_sponsor.s_sponsors_card" string="Sponsors" group="sponsors"/>
+   	</xpath>
+</template>
+
+</odoo>

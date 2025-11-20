@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+<t t-inherit="website.DynamicSnippetOption" t-inherit-mode="extension">
+    <xpath expr="//BuilderSelect[@id=&quot;'model_opt'&quot;]" position="inside">
+        <BuilderSelectItem actionParam="'x_sponsor_sponsor'">Sponsorship</BuilderSelectItem>
+    </xpath>
+</t>
+
+<t t-name="website_sponsor.DynamicSnippetSponsorsOption" t-inherit="website.DynamicSnippetOption">
+    <xpath expr="//BuilderRow[*[@id=&quot;'filter_opt'&quot;]]" position="after">
+        <BuilderRow label.translate="Sponsor Contracts" t-if="!isSingleMode">
+            <BuilderSelect dataAttributeAction="'filterBySponsorContractId'" preview="false">
+                <BuilderSelectItem dataAttributeActionValue="'-1'">All Sponsor Contracts</BuilderSelectItem>
+                <t t-foreach="sponsorContractState.contracts" t-as="contract" t-key="contract.id">
+                    <BuilderSelectItem dataAttributeActionValue="`${contract.id}`" t-out="contract.x_name"/>
+                </t>
+            </BuilderSelect>
+        </BuilderRow>
+    </xpath>
+</t>
+</templates>
