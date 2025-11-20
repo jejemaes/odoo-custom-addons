@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+<record id="sponsor_sponsor_server_action_website_list" model="ir.actions.server">
+    <field name="name">Sponsors List Controller</field>
+    <field name="model_id" ref="x_sponsor.model_sponsor_sponsor"/>
+    <field name="website_published">True</field>
+    <field name="website_path">sponsors</field>
+    <field name="state">code</field>
+    <field name="code"><![CDATA[
+today = datetime.date.today()
+domain = [("x_partner_id.website_published", "=", True), ("x_payment_status", "=", "paid")]
+sponsors = model.sudo().search(domain)
+qcontext = {
+    "partners": sponsors.mapped('x_partner_id')
+}
+response = request.render("x_website_sponsor.partner_list_index", qcontext)
+    ]]></field>
+</record>
+
+</odoo>

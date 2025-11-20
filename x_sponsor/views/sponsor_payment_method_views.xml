@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Views -->
+    <record id="sponsor_payment_method_view_list" model="ir.ui.view">
+        <field name="model">x_sponsor.payment_method</field>
+        <field name="name">sponsor.payment_method.list</field>
+        <field name="type">list</field>
+        <field name="arch" type="xml">
+            <list editable="bottom" default_order="x_sequence asc,id desc">
+                <field name="x_sequence" widget="handle"/>
+                <field name="x_name"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="sponsor_payment_method_action" model="ir.actions.act_window">
+        <field name="name">Payment Method</field>
+        <field name="res_model">x_sponsor.payment_method</field>
+        <field name="view_mode">list</field>
+    </record>
+
+</odoo>

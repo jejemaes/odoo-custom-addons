@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+	<record id="ir_cron_post_scheduled_message" model="ir.cron">
+	    <field name="name">Sponsors: Auto Published Partners</field>
+	    <field name="interval_number">1</field>
+	    <field name="interval_type">weeks</field>
+	    <field name="model_id" ref="x_sponsor.model_model_sponsor_sponsor"/>
+	    <field name="code"><![CDATA[
+today = datetime.date.today()
+domain = [("x_sponsor_contract_id.x_start_date", "<=", today), ("x_sponsor_contract_id.x_stop_date", ">=", today), ("x_payment_status", "=", "paid")]
+
+sponsors = model.sudo().search(domain).mapped("x_partner_id").write({"website_published": True})
+		]]></field>
+	    <field name="state">code</field>
+	</record>
+
+</odoo>

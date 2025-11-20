@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Views -->
+    <record id="sponsor_contract_view_list" model="ir.ui.view">
+        <field name="model">x_sponsor.contract</field>
+        <field name="name">sponsor.contract.list</field>
+        <field name="type">list</field>
+        <field name="arch" type="xml">
+            <list default_order="x_start_date desc">
+                <field name="x_name"/>
+                <field name="x_start_date"/>
+                <field name="x_stop_date"/>
+                <field name="x_user_id" widget="many2one_avatar_user"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="sponsor_contract_view_form" model="ir.ui.view">
+        <field name="model">x_sponsor.contract</field>
+        <field name="name">sponsor.contract.form</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet string="Contract">
+                <widget name="web_ribbon" text="Archivé" bg_color="text-bg-danger" invisible="x_active"/>
+                <field name="x_active" invisible="1"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="x_name" required="1" placeholder="Name..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="x_start_date"/>
+                            <field name="x_stop_date"/>
+                        </group>
+                        <group>
+                            <field name="x_user_id" widget="many2one_avatar_user" can_create="True" can_write="True"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Line" name="lines">
+                            <field name="x_line_ids">
+                                <list editable="bottom" default_order="x_sequence asc,id desc">
+                                    <field name="x_sequence" widget="handle"/>
+                                    <field optional="show" name="x_product_id" required="True" on_change="1" can_create="True" can_write="True"/>
+                                    <field optional="show" name="x_product_price"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Content">
+                            <group>
+                                <field name="x_content"/>
+                            </group>
+                        </page>
+                    </notebook>
+                  </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="sponsor_contract_action" model="ir.actions.act_window">
+        <field name="name">Sponsors Contract</field>
+        <field name="res_model">x_sponsor.contract</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>
