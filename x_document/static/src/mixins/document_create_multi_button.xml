@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="x_document.DocumentCreateMultiButton">
+        <Dropdown>
+            <button type="button" class="btn btn-primary o-dropdown-caret" data-hotkey="c">
+                New
+            </button>
+            <t t-set-slot="content">
+                <!-- <DropdownItem tag="'button'" class="'btn btn-link o_documents_kanban_upload'" onSelected="() =&gt; this.uploadFileInputRef.el.click()" attrs="{'data-hotkey': 'a', disabled: !canUploadInFolder(folder)}">
+                    <i class="fa fa-upload fa-fw me-1"/>
+                    <span>Upload</span>
+                </DropdownItem> -->
+                <DropdownItem tag="'button'" class="'btn btn-link o_documents_kanban_text'" onSelected="() => this.onClickDocumentsText()" attrs="{'data-hotkey': 'r'}">
+                    <i class="fa fa-file-text-o fa-fw me-1"/>
+                    <span>Text</span>
+                </DropdownItem>
+                <DropdownItem tag="'button'" class="'btn btn-link o_documents_kanban_url'" onSelected="() => this.onClickDocumentsAddUrl()" attrs="{'data-hotkey': 'l'}">
+                    <i class="fa fa-link fa-fw me-1"/>
+                    <span>Link</span>
+                </DropdownItem>
+                <div role="separator" class="dropdown-divider"/>
+                <DropdownItem tag="'button'" class="'btn btn-link o_documents_kanban_folder'" onSelected="() => this.onClickAddFolder()" attrs="{'data-hotkey': 'w'}">
+                    <i class="fa fa-folder fa-fw me-1"/>
+                    <span>Folder</span>
+                </DropdownItem>
+            </t>
+        </Dropdown>
+    </t>
+
+</templates>

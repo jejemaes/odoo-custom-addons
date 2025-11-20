@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    <record id="document_action_download" model="ir.actions.server">
+        <field name="name">Download Document</field>
+        <field name="model_id" ref="model_document_document"/>
+        <field name="binding_model_id" ref="model_document_document"/>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="code">
+            if record.x_document_type == 'file':
+                url = f"/web/content/{record._name}/{record.id}/x_file_content/{record.x_name}?download=1&amp;mimetype={record.x_mimetype or 0}"
+                action = {
+                    'type': 'ir.actions.act_url',
+                    'url': url,
+                    'target': 'download',
+                }
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Model -->
+    <record id="model_document_folder" model="ir.model">
+        <field name="model">x_document.folder</field>
+        <field name="name">Folder</field>
+    </record>
+
+    <!-- Fields -->
+    <record id="model_document_folder_field_name" model="ir.model.fields">
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Name</field>
+        <field name="model">x_document.folder</field>
+        <field name="model_id" ref="model_document_folder"/>
+        <field name="name">x_name</field>
+        <field name="on_delete" eval="False"/>
+        <field name="required" eval="True"/>
+        <field name="translate">standard</field>
+    </record>
+
+    <record id="model_document_folder_field_sequence" model="ir.model.fields">
+        <field name="ttype">integer</field>
+        <field name="field_description">Sequence</field>
+        <field name="model">x_document.folder</field>
+        <field name="model_id" ref="model_document_folder"/>
+        <field name="name">x_sequence</field>
+    </record>
+
+</odoo>

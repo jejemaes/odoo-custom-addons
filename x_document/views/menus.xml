@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <record id="document_menu_root" model="ir.ui.menu" >
+        <field name="name">Documents</field>
+        <field name="web_icon">x_document,static/description/icon.png</field>
+    </record>
+
+    <record id="document_menu_document" model="ir.ui.menu" >
+        <field name="action" ref="document_document_action"/>
+        <field name="name">Documents</field>
+        <field name="parent_id" ref="document_menu_root"/>
+    </record>
+
+    <record id="document_menu_settings" model="ir.ui.menu" >
+        <field name="name">Settings</field>
+        <field name="parent_id" ref="document_menu_root"/>
+        <field name="sequence">11</field>
+    </record>
+        <record id="document_menu_settings_folder" model="ir.ui.menu" >
+            <field name="name">Folder</field>
+            <field name="action" ref="document_folder_action"/>
+            <field name="parent_id" ref="document_menu_settings"/>
+            <field name="sequence">5</field>
+        </record>
+        <record id="document_menu_settings_tag_category" model="ir.ui.menu" >
+            <field name="name">Tag Categories</field>
+            <field name="action" ref="document_tag_category_action"/>
+            <field name="parent_id" ref="document_menu_settings"/>
+            <field name="sequence">10</field>
+        </record>
+        <record id="document_menu_settings_tags" model="ir.ui.menu" >
+            <field name="name">Tags</field>
+            <field name="action" ref="document_tag_action"/>
+            <field name="parent_id" ref="document_menu_settings"/>
+            <field name="sequence">20</field>
+        </record>
+</odoo>

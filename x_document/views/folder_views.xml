@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Views -->
+    <record id="document_folder_view_list" model="ir.ui.view" >
+        <field name="name">document.folder.list</field>
+        <field name="model">x_document.folder</field>
+        <field name="type">list</field>
+        <field name="arch" type="xml">
+            <list default_order="x_sequence" editable="top">
+                <field name="x_sequence" widget="handle"/>
+                <field name="x_name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="document_folder_view_form" model="ir.ui.view" >
+        <field name="name">document.folder.form</field>
+        <field name="model">x_document.folder</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <header/>
+                <sheet string="Folder">
+                    <div class="oe_title">
+                        <h1>
+                            <field name="x_name" required="1" placeholder="Name..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="x_sequence"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="document_folder_view_search" model="ir.ui.view" >
+        <field name="name">document.folder.search</field>
+        <field name="model">x_document.folder</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="x_name"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Views -->
+    <record id="document_folder_action" model="ir.actions.act_window" >
+        <field name="name">Tag Categories</field>
+        <field name="res_model">x_document.folder</field>
+        <field name="view_mode">list</field>
+    </record>
+
+</odoo>
