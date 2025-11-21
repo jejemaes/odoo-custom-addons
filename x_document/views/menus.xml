@@ -3,7 +3,7 @@
 
     <record id="document_menu_root" model="ir.ui.menu" >
         <field name="name">Documents</field>
-        <field name="web_icon">x_document,static/description/icon.png</field>
+        <field name="web_icon_data" type="base64" file="x_document/static/description/icon.svg"/>
     </record>
 
     <record id="document_menu_document" model="ir.ui.menu" >

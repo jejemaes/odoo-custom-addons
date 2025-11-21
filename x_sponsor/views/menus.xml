@@ -2,7 +2,8 @@
 <odoo>
     <record id="sponsor_main_menu" model="ir.ui.menu">
         <field name="name">Sponsors</field>
-        <field name="web_icon">fa fa-user-circle-o,#FBB130,#BC4242</field>
+        <field name="web_icon_data" type="base64" file="x_sponsor/static/description/icon.svg"/>
+        <field name="sequence">130</field>
     </record>
 
     <record id="sponsor_main_sponsors" model="ir.ui.menu">

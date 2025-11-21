@@ -2,7 +2,8 @@
 <odoo>
     <record id="rental_main_menu" model="ir.ui.menu">
         <field name="name">Rental</field>
-        <field name="web_icon">fa fa-calendar,#f1c40f,#34495e</field>
+        <field name="web_icon_data" type="base64" file="x_rental/static/description/icon.svg"/>
+        <field name="sequence">32</field>
     </record>
 
     <record id="rental_main_schedule" model="ir.ui.menu">
