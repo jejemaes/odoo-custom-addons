@@ -125,4 +125,14 @@
         }</field>
     </record>
 
+    <record id="sponsor_sponsor_action_from_contract" model="ir.actions.act_window">
+        <field name="name">Sponsors</field>
+        <field name="res_model">x_sponsor.sponsor</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{
+            'default_x_date': (datetime.date.today()).strftime('%Y-%m-%d'),
+            'search_default_x_sponsor_contract_id': active_id,
+        }</field>
+    </record>
+
 </odoo>

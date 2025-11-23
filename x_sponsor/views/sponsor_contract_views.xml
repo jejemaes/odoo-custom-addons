@@ -22,7 +22,21 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button type="action"
+                        name="%(x_sponsor.action_create_sponsorship_from_contract)d"
+                        class="btn-primary"
+                        string="Generate Contracts"
+                        confirm="This will create a sponsor contract for each partner with the 'Sponsor' tag. Are you ok ?"
+                        invisible="x_sponsor_count != 0">
+                    </button>
+                </header>
                 <sheet string="Contract">
+                <div class="oe_button_box" name="button_box" invisible="x_sponsor_count == 0">
+                    <button class="oe_stat_button" name="%(sponsor_sponsor_action_from_contract)d" type="action" icon="fa-bars">
+                        <field string="Sponsorships" name="x_sponsor_count" widget="statinfo"/>
+                    </button>
+                </div>
                 <widget name="web_ribbon" text="Archivé" bg_color="text-bg-danger" invisible="x_active"/>
                 <field name="x_active" invisible="1"/>
                     <div class="oe_title">

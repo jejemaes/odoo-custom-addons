@@ -89,6 +89,24 @@
         <field name="json_value">true</field>
     </record>
 
+    <record id="sponsor_contract_field_sponsor_count" model="ir.model.fields">
+        <field name="name">x_sponsor_count</field>
+        <field name="model">x_sponsor_contract</field>
+        <field name="model_id" ref="model_sponsor_contract"/>
+        <field name="field_description">Count of Sponsorship</field>
+        <field name="ttype">integer</field>
+        <field name="on_delete" eval="False"/>
+        <field name="selectable" eval="False"/>
+        <field name="readonly" eval="True"/>
+        <field name="store" eval="False"/>
+        <field name="compute"><![CDATA[
+data = self.env['x_sponsor.sponsor']._read_group([('x_sponsor_contract_id', 'in', self.ids)], groupby=['x_sponsor_contract_id'], aggregates=['__count'])
+mapped_data = {int(contract_id): sponsor_count for contract_id, sponsor_count in data}
+for order in self:
+    order["x_sponsor_count"] = mapped_data.get(order.id, 0)
+]]></field>
+    </record>
+
     <!-- Sponsors Contract Line -->
     <record id="model_sponsor_contract_line" model="ir.model">
         <field name="name">Contract Line</field>
