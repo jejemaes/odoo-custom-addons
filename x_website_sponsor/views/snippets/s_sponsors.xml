@@ -29,7 +29,8 @@
 <!-- Picture Layout -->
 <template id="dynamic_filter_template_x_sponsor_sponsor_picture" name="Picture Layout Sponsors" priority="25">
     <t t-if="records">
-        <div t-foreach="records.mapped('x_partner_id')" t-as="partner" data-column-classes="col">
+        <div t-foreach="records" t-as="data" data-column-classes="col">
+            <t t-set="partner" t-value="data['_record'].x_partner_id"/>
             <a class="text-decoration-none text-reset" t-att-href="partner.website_url" t-att-title="'Read ' + partner.name">
                 <figure class="figure">
                     <img t-attf-src="/web/image/res.partner/#{partner.id}/avatar_256/" class="figure-img img-fluid rounded" alt="..."/>
@@ -42,7 +43,8 @@
 <!-- Card Layout -->
 <template id="dynamic_filter_template_x_sponsor_sponsor_card" name="Card Layout Sponsors" priority="10">
     <t t-if="records">
-        <div t-foreach="records.mapped('x_partner_id')" t-as="partner" data-column-classes="col" data-extra-classes="row row-cols-auto align-items-center">
+        <div t-foreach="records" t-as="data" data-column-classes="col" data-extra-classes="row row-cols-auto align-items-center">
+            <t t-set="partner" t-value="data['_record'].x_partner_id"/>
             <a class="text-decoration-none text-reset" t-att-href="partner.website_url" t-att-title="'Read ' + partner.name">
                 <div class="card h-100">
                   <img t-attf-src="/web/image/res.partner/#{partner.id}/avatar_256/" class="card-img-top" alt="..."/>
