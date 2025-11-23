@@ -23,13 +23,12 @@
     "license": "OPL-1",
     'assets': {
         'web.assets_frontend': [
-            'x_website_sponsor/static/src/snippets/**/*.js',
-        ],
-        'website.assets_editor': [
-            # 'x_website_sponsor/static/src/js/systray_items/*.js',
+            'x_website_sponsor/static/src/snippets/s_sponsors/s_sponsors.js',
         ],
         'website.website_builder_assets': [
-            'x_website_sponsor/static/src/website_builder/**/*',
+            'x_website_sponsor/static/src/website_builder/dynamic_snippet_sponsors_option.js',
+            'x_website_sponsor/static/src/website_builder/dynamic_snippet_sponsors_option.xml',
+            'x_website_sponsor/static/src/website_builder/dynamic_snippet_sponsors_option_plugin.js',
         ],
     },
 }

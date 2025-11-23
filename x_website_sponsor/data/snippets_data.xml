@@ -10,7 +10,7 @@
         <field name="state">code</field>
         <field name="code"><![CDATA[
 today = datetime.date.today()
-domain = [("x_partner_id.website_published", "=", True), ("x_sponsor_contract_id.x_start_date", ">=", today), ("x_sponsor_contract_id.x_stop_date", "<=", today), ("x_payment_status", "=", "paid")]
+domain = [("x_partner_id.website_published", "=", True), ("x_sponsor_contract_id.x_start_date", "<=", today), ("x_sponsor_contract_id.x_stop_date", ">=", today), ("x_payment_status", "=", "paid")]
 
 search_domain = env.context.get('search_domain', [])
 if search_domain:
@@ -25,8 +25,14 @@ offset = max(0, sponsorship_count - limit)
 if offset:
     offset = datetime.datetime.now().minute % offset
 
+response = []
 sponsors = model.search(domain, offset=offset, limit=limit)
-response = sponsors
+for sponsor in model.search(domain, offset=offset, limit=limit):
+    response.append({
+        "x_partner_id": sponsor.x_partner_id,
+        "_record": sponsor,
+    })
+
 ]]></field>
     </record>
 
