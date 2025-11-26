@@ -41,11 +41,11 @@
                                     <t t-if="record.x_document_type.raw_value == 'file'">
                                         <t t-set="webimage" t-value="new RegExp('image.*(gif|jpeg|jpg|png|webp)').test(record.x_mimetype.value)"/>
                                         <t t-if="webimage">
-                                            <img t-attf-src="/web/image/x_document.document/#{record.id.raw_value}/x_file_content/150x150" height="120" alt="Document" class="o_attachment_image"/>
+                                            <img t-attf-src="/web/image/x_document.document/#{record.id.raw_value}/x_file_content/150x150" height="120" alt="Document" class="img-fluid o_attachment_image"/>
                                         </t>
                                         <t t-else="">
                                             <t t-if="record.x_mimetype.raw_value">
-                                                <div class="o_image o_image_thumbnail" t-att-data-mimetype="record.x_mimetype.value"/>
+                                                <div class="o_image o_image_thumbnail" t-att-data-mimetype="record.x_mimetype.value" style="height: -webkit-fill-available; width: -webkit-fill-available;"/>
                                             </t>
                                             <t t-else="">
                                                 <field name="x_thumbnail" widget="image" options="{'size': [100, 100]}"/>
@@ -56,7 +56,7 @@
                                         <i class="fa fa-link fa-6x text-muted" title="url"/>
                                     </t>
                                     <t t-if="record.x_document_type.raw_value == 'text'">
-                                        <i class="fa fa-file-text-o fa-8x text-muted" title="text file"/>
+                                        <i class="fa fa-file-text-o fa-8x text-muted" title="Text File"/>
                                     </t>
                                 </div>
                             </div>
