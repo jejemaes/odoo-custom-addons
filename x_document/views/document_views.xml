@@ -115,6 +115,14 @@
                             <field name="x_name" placeholder="Name..."/>
                         </h1>
                     </div>
+                    <group>
+                        <group>
+                            <field widget="many2many_tags" name="x_tag_ids" options="{'no_create': true, 'color_field': 'x_color'}"/>
+                        </group>
+                        <group>
+                            <field name="x_folder_id" options="{'no_create':true}"/>
+                        </group>
+                    </group>
                     <notebook>
                         <page string="Content" name="page_content">
                             <group>
@@ -128,13 +136,9 @@
                         <page string="Details" name="document_details">
                             <group>
                                 <group>
-                                    <field name="x_folder_id" options="{'no_create':true}"/>
-                                    <field widget="many2many_tags" name="x_tag_ids" options="{'no_create': true, 'color_field': 'x_color'}"/>
-                                    <field name="x_mimetype"/>
-                                </group>
-                                <group>
                                     <field name="x_user_id" options="{'no_create':true}"/>
                                     <field name="x_date"/>
+                                    <field name="x_mimetype"/>
                                 </group>
                             </group>
                         </page>
