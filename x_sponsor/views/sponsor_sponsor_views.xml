@@ -33,9 +33,13 @@
                             <field name="x_priority" widget="boolean_favorite" nolabel="1"/>
                             <field name="display_name" class="h5"/>
                         </div>
-                        <div name="studio_auto_kanban_body"/>
+                        <div name="studio_auto_kanban_body">
+                            <field name="x_sponsor_contract_line_id" class="text-muted"/>
+                        </div>
                         <footer>
-                            <field name="x_sponsor_contract_line_id"/>
+                            <div t-if="record.x_payment_method_id.raw_value" class="badge text-bg-success float-end">
+                                <field name="x_payment_method_id"/>
+                            </div>
                             <div class="ms-auto d-flex align-items-center">
                                 <field class="ms-1" name="x_user_id" widget="kanban.many2one_avatar_user"/>
                             </div>
