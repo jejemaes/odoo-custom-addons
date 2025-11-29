@@ -7,7 +7,7 @@
     "author": "jejemaes",
     "depends": ["product"],
     "installable": True,
-    "application": True,
+    "application": False,
     "data": [
         # Models
         "models/sponsor_payment_method.xml",
