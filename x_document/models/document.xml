@@ -70,7 +70,7 @@
         <field name="model_id" ref="model_document_document"/>
         <field name="name">x_document_type</field>
         <field name="on_delete" eval="False"/>
-        <field name="selection">[('file', 'File'), ('text', 'Text'), ('url', 'Url')]</field>
+        <field name="selection">[('inbox', 'Inbox'), ('file', 'File'), ('text', 'Text'), ('url', 'Url')]</field>
         <field name="required" eval="True"/>
     </record>
     <record id="model_document_document_field_folder_id" model="ir.model.fields">

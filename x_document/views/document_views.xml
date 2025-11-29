@@ -103,6 +103,13 @@
                         data-hotkey="d"
                         title="Download"
                         invisible="x_document_type != 'file' or not id"/>
+                    <button
+                        type="action"
+                        name="%(x_document.action_document_create_from_inbox)d"
+                        string="Generate Documents"
+                        data-hotkey="d"
+                        title="Generate Documents"
+                        invisible="x_document_type != 'inbox' or not id"/>
               </header>
               <sheet string="Documents">
                     <group name="document_technical">

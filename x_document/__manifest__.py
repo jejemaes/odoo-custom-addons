@@ -6,7 +6,7 @@
     "installable": True,
     "application": False,
     "author": "jejemaes",
-    "depends": ["base", "mail"],
+    "depends": ["base_automation", "mail"],
     "data": [
         # Models
         "models/folder.xml",
@@ -24,6 +24,8 @@
         # Security
         "security/document_security.xml",
         "security/ir_model_access.xml",
+        # Data
+        "data/inbox_data.xml",
     ],
     "assets": {
         "web.assets_backend": [

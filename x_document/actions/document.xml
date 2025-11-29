@@ -1,5 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <odoo>
+
+    <!--
+        Actions
+    -->
     <record id="document_action_download" model="ir.actions.server">
         <field name="name">Download Document</field>
         <field name="model_id" ref="model_document_document"/>
@@ -16,4 +20,60 @@
                 }
         </field>
     </record>
+
+    <!--
+        Automations Rules
+    -->
+    <record id="action_document_folder_delete_prevent_inbox" model="ir.actions.server">
+        <field name="name">Document: prevent delete Inbox folder</field>
+        <field name="model_id" ref="model_document_folder"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+folder = env.ref("x_document.document_folder_inbox", raise_if_not_found=False)
+if folder:
+    if folder.id in records.ids:
+        raise UserError("Inbox Folder can not be deleted !")
+]]></field>
+    </record>
+
+    <record id="automation_rule_folder_delete_prevent_inbox" model="base.automation">
+        <field name="name">Document:prevent delete Inbox folder</field>
+        <field name="model_id" ref="x_document.model_document_folder"/>
+        <field name="trigger">on_unlink</field>
+        <field name="action_server_ids" eval="[(4, ref('x_document.action_document_folder_delete_prevent_inbox'))]"/>
+    </record>
+
+    <record id="action_document_create_from_inbox" model="ir.actions.server">
+        <field name="name">Document: Process email attachment as document</field>
+        <field name="model_id" ref="model_document_document"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+new_records = env["x_document.document"]
+for document in records.filtered(lambda d: d.x_document_type == 'inbox'):
+    if document.message_ids:
+        message = document.message_ids[0]
+        for index, attachment in enumerate(message.attachment_ids):
+            if index == 0:
+                target_document = document
+            else:
+                target_document = document.copy()
+
+            attachment.copy({
+                "res_field": "x_file_content",
+                "name": "x_file_content",
+                "res_id": target_document.id,
+            })
+            new_records |= target_document
+
+new_records.write({"x_document_type": "file"}) # change type to retrigger mimetype computation
+]]></field>
+    </record>
+
+    <record id="automation_rule_document_in_inbox" model="base.automation">
+        <field name="name">Document: Process email attachment as document</field>
+        <field name="model_id" ref="x_document.model_document_document"/>
+        <field name="trigger">on_create</field>
+        <field name="action_server_ids" eval="[(4, ref('x_document.action_document_create_from_inbox'))]"/>
+    </record>
+
 </odoo>
