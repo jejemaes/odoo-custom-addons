@@ -4,7 +4,7 @@
     "category": "Productivity/Document",
     "summary": "Document Management System",
     "installable": True,
-    "application": True,
+    "application": False,
     "author": "jejemaes",
     "depends": ["base", "mail"],
     "data": [
