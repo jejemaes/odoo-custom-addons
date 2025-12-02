@@ -204,7 +204,7 @@ for record in self:
         <field name="name">x_rental_booking_dates_chronological</field>
         <field name="message">Start date must be before the end date of the booking.</field>
         <field name="model" ref="model_rental_booking"/>
-        <field name="module" ref="base.module_rental"/>
+        <field name="module" ref="base.module_x_rental"/>
         <field name="type">u</field>
         <field name="definition">CHECK(x_date_start &gt;= x_date_stop)</field>
     </record>

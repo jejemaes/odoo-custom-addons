@@ -6,7 +6,6 @@
     "description": "Sell Rental and Manage Schedule.",
     "author": "jejemaes",
     "depends": ["sale", "resource", "base_automation"],
-    "post_init_hook": "post_init",
     "data": [
         # Models
         "models/sale_order_line.xml",
