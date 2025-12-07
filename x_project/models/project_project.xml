@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Model -->
+    <record id="model_project_project" model="ir.model">
+        <field name="name">Project</field>
+        <field name="model">x_project.project</field>
+        <field name="is_mail_thread" eval="True"/>
+        <field name="is_mail_activity" eval="True"/>
+    </record>
+
+    <!-- Fields -->
+    <record id="project_project_field_name" model="ir.model.fields">
+        <field name="name">x_name</field>
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Name</field>
+        <field name="model">x_project.project</field>
+        <field name="model_id" ref="model_project_project"/>
+        <field name="on_delete" eval="False"/>
+        <field name="required" eval="True"/>
+        <field name="translate">standard</field>
+        <field name="tracking">1</field>
+    </record>
+
+    <record id="project_project_field_user_id" model="ir.model.fields">
+        <field name="name">x_user_id</field>
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="domain">[('share', '=', False)]</field>
+        <field name="field_description">Responsable</field>
+        <field name="model">x_project.project</field>
+        <field name="model_id" ref="model_project_project"/>
+        <field name="relation">res.users</field>
+    </record>
+
+    <record id="project_project_field_is_active" model="ir.model.fields">
+        <field name="name">x_is_active</field>
+        <field name="ttype">boolean</field>
+        <field name="copied" eval="False"/>
+        <field name="field_description">Is Active</field>
+        <field name="model">x_project.project</field>
+        <field name="model_id" ref="model_project_project"/>
+    </record>
+
+    <record id="project_project_field_color" model="ir.model.fields">
+        <field name="ttype">integer</field>
+        <field name="field_description">Color</field>
+        <field name="model">x_project.project</field>
+        <field name="model_id" ref="model_project_project"/>
+        <field name="name">x_color</field>
+    </record>
+
+    <record id="project_project_field_mode" model="ir.model.fields">
+        <field name="name">x_mode</field>
+        <field name="ttype">selection</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Task Display Mode</field>
+        <field name="model">x_project.project</field>
+        <field name="model_id" ref="model_project_project"/>
+        <field name="on_delete" eval="False"/>
+        <field name="required" eval="True"/>
+        <field name="selection">[('table', 'Table'), ('kanban', 'Kanban Flow')]</field>
+        <field name="tracking">5</field>
+    </record>
+    <record id="project_project_field_mode_default_value" model="ir.default" >
+        <field name="field_id" ref="project_project_field_mode"/>
+        <field name="json_value">"table"</field>
+    </record>
+
+    <record id="project_project_field_task_count" model="ir.model.fields">
+        <field name="name">x_task_count</field>
+        <field name="model">x_project.project</field>
+        <field name="model_id" ref="model_project_project"/>
+        <field name="field_description">Task Count</field>
+        <field name="ttype">integer</field>
+        <field name="on_delete" eval="False"/>
+        <field name="selectable" eval="False"/>
+        <field name="store" eval="False"/>
+        <field name="compute"><![CDATA[
+data = self.env['x_project.task']._read_group([('x_project_id', 'in', self.ids)], groupby=['x_project_id'], aggregates=['__count'])
+mapped_data = {int(project_id): task_count for project_id, task_count in data}
+for project in self:
+    project["x_task_count"] = mapped_data.get(project.id, 0)
+]]></field>
+    </record>
+
+    <record id="project_project_field_open_task_count" model="ir.model.fields">
+        <field name="name">x_open_task_count</field>
+        <field name="model">x_project.project</field>
+        <field name="model_id" ref="model_project_project"/>
+        <field name="field_description">Open Task Count</field>
+        <field name="ttype">integer</field>
+        <field name="on_delete" eval="False"/>
+        <field name="selectable" eval="False"/>
+        <field name="store" eval="False"/>
+        <field name="compute"><![CDATA[
+data = self.env['x_project.task']._read_group([('x_project_id', 'in', self.ids), ('x_is_closed', '=', False)], groupby=['x_project_id'], aggregates=['__count'])
+mapped_data = {int(project_id): task_count for project_id, task_count in data}
+for project in self:
+    project["x_open_task_count"] = mapped_data.get(project.id, 0)
+]]></field>
+    </record>
+
+</odoo>

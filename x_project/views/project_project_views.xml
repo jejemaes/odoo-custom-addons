@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        Views
+    -->
+    <record id="project_project_view_search" model="ir.ui.view">
+        <field name="name">x_project.project.search</field>
+        <field name="model">x_project.project</field>
+        <field name="arch" type="xml">
+            <search string="Search Project">
+                <field name="x_name"/>
+                <field name="x_user_id"/>
+                <filter name="filter_x_user_id" string="My Project" domain="[('x_user_id', '=', uid)]"/>
+                <group>
+                    <filter string="User" name="group_by_user_id" domain="[]" context="{'group_by':'x_user_id'}"/>
+                </group>
+           </search>
+        </field>
+    </record>
+
+    <record id="project_project_view_form" model="ir.ui.view">
+        <field name="name">x_project.project.form</field>
+        <field name="model">x_project.project</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet string="Project">
+                    <div class="oe_title">
+                        <h1>
+                            <field name="x_name" required="1" placeholder="Name..."/>
+                        </h1>
+                    </div>
+                    <group name="project_project_detail">
+                        <group name="project_project_detail_left">
+                            <field name="x_mode" widget="radio" options="{'horizontal': true}"/>
+                            <field name="x_is_active"/>
+                        </group>
+                        <group name="project_project_detail_right">
+                            <field name="x_user_id" widget="many2one_avatar_user"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="stage_ids" string="Stages">
+                            <field name="x_stage_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="x_sequence" widget="handle"/>
+                                    <field name="x_name"/>
+                                    <field name="x_color" widget="color_picker"/>
+                                    <field name="x_is_closing"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+              </form>
+        </field>
+    </record>
+
+    <record id="project_project_view_tree" model="ir.ui.view">
+        <field name="name">x_project.project.list</field>
+        <field name="model">x_project.project</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <list string="Rental Bookings">
+                <field name="x_name"/>
+                <field name="x_user_id" options="{'no_create': True}"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="project_project_view_kanban" model="ir.ui.view">
+        <field name="name">x_project.project.kanban</field>
+        <field name="model">x_project.project</field>
+        <field name="arch" type="xml">
+            <kanban highlight_color="x_color" class="o_kanban_mobile" type="action" action="%(project_project_action_view_tasks)d">
+                <field name="x_name"/>
+                <field name="x_user_id"/>
+                <templates>
+                    <t t-name="menu">
+                        <t t-if="widget.editable"><a role="menuitem" type="open" class="dropdown-item">Edit</a></t>
+                        <t t-if="widget.deletable"><a role="menuitem" type="delete" class="dropdown-item">Delete</a></t>
+                        <field name="x_color" widget="kanban_color_picker"/>
+                    </t>
+                    <t t-name="card">
+                        <field class="fw-bold fs-2" name="x_name"/>
+                         <div class="d-flex pt-2 pb-2">
+                            <div class="col-6">
+                                <button class="btn btn-primary" type="action" name="%(project_project_action_view_tasks)d">
+                                    View Tasks
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <ul class="list-unstyled">
+                                    <li><field name="x_task_count"/> Tasks</li>
+                                    <li><field name="x_open_task_count"/> Open Tasks</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <footer class="pt-1">
+                            <div class="d-flex mt-auto align-items-center">
+                            </div>
+                            <div class="ms-auto d-flex">
+                                <field name="x_user_id" widget="many2one_avatar_user" class="ms-2"/>
+                            </div>
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!--
+        Actions
+    -->
+    <record id="project_project_action" model="ir.actions.act_window">
+        <field name="name">Projects</field>
+        <field name="res_model">x_project.project</field>
+        <field name="search_view_id" ref="project_project_view_search"/>
+    </record>
+
+    <record id="project_project_action_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="project_project_view_kanban"/>
+        <field name="act_window_id" ref="project_project_action"/>
+    </record>
+
+    <record id="project_project_action_view_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="5"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="project_project_view_tree"/>
+        <field name="act_window_id" ref="project_project_action"/>
+    </record>
+
+    <record id="project_project_action_view_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="15"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="project_project_view_form"/>
+        <field name="act_window_id" ref="project_project_action"/>
+    </record>
+
+</odoo>

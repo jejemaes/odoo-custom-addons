@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Model -->
+    <record id="model_project_task" model="ir.model">
+        <field name="name">Project Task</field>
+        <field name="model">x_project.task</field>
+        <field name="is_mail_thread" eval="True"/>
+        <field name="is_mail_activity" eval="True"/>
+    </record>
+
+    <!-- Fields -->
+    <record id="project_task_field_name" model="ir.model.fields">
+        <field name="name">x_name</field>
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Name</field>
+        <field name="model">x_project.task</field>
+        <field name="model_id" ref="model_project_task"/>
+        <field name="on_delete" eval="False"/>
+        <field name="required" eval="True"/>
+        <field name="translate">standard</field>
+        <field name="tracking">1</field>
+    </record>
+
+    <record id="project_task_field_sequence" model="ir.model.fields">
+        <field name="ttype">integer</field>
+        <field name="field_description">Sequence</field>
+        <field name="model">x_project.task</field>
+        <field name="model_id" ref="model_project_task"/>
+        <field name="name">x_sequence</field>
+    </record>
+
+    <record id="project_task_field_project_id" model="ir.model.fields">
+        <field name="name">x_project_id</field>
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Project</field>
+        <field name="model">x_project.task</field>
+        <field name="model_id" ref="model_project_task"/>
+        <field name="relation">x_project.project</field>
+        <field name="required" eval="True"/>
+        <field name="on_delete">restrict</field>
+    </record>
+
+    <record id="project_task_field_stage_id" model="ir.model.fields">
+        <field name="name">x_stage_id</field>
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="False"/>
+        <field name="field_description">Stage</field>
+        <field name="model">x_project.task</field>
+        <field name="model_id" ref="model_project_task"/>
+        <field name="relation">x_project.stage</field>
+        <field name="required" eval="False"/>
+        <field name="on_delete">restrict</field>
+        <field name="tracking">2</field>
+        <field name="group_expand" eval="False"/>
+    </record>
+
+    <record id="project_task_field_color" model="ir.model.fields">
+        <field name="ttype">integer</field>
+        <field name="field_description">Color</field>
+        <field name="model">x_project.task</field>
+        <field name="model_id" ref="model_project_task"/>
+        <field name="name">x_color</field>
+    </record>
+
+    <record id="project_task_field_user_ids" model="ir.model.fields">
+        <field name="name">x_user_ids</field>
+        <field name="ttype">many2many</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Assignees</field>
+        <field name="domain">[('share', '=', False)]</field>
+        <field name="model">x_project.task</field>
+        <field name="model_id" ref="model_project_task"/>
+        <field name="relation">res.users</field>
+        <field name="relation_table">x_project_task_users_rel</field>
+    </record>
+
+    <record id="project_task_field_notes" model="ir.model.fields">
+        <field name="name">x_notes</field>
+        <field name="ttype">html</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Notes</field>
+        <field name="model">x_project.task</field>
+        <field name="model_id" ref="model_project_task"/>
+        <field name="on_delete" eval="False"/>
+    </record>
+
+    <record id="project_task_field_priority" model="ir.model.fields">
+        <field name="name">x_priority</field>
+        <field name="ttype">selection</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Priority</field>
+        <field name="model">x_project.task</field>
+        <field name="model_id" ref="model_project_task"/>
+        <field name="on_delete" eval="False"/>
+        <field name="selection">[('low', 'Low'), ('medium', 'Medium'), ('high', 'High'), ('very_high', 'Very High')]</field>
+        <field name="tracking">3</field>
+    </record>
+
+    <record id="project_task_field_deadline" model="ir.model.fields">
+        <field name="name">x_deadline</field>
+        <field name="ttype">datetime</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Deadline</field>
+        <field name="model">x_project.task</field>
+        <field name="model_id" ref="model_project_task"/>
+        <field name="on_delete" eval="False"/>
+        <field name="required" eval="False"/>
+        <field name="tracking">5</field>
+    </record>
+
+    <record id="project_task_field_stage_color" model="ir.model.fields">
+        <field name="ttype">integer</field>
+        <field name="field_description">Stage color</field>
+        <field name="model">x_project.task</field>
+        <field name="model_id" ref="model_project_task"/>
+        <field name="name">x_stage_color</field>
+        <field name="related">x_stage_id.x_color</field>
+        <field name="readonly" eval="True"/>
+    </record>
+
+    <record id="project_task_field_is_closed" model="ir.model.fields">
+        <field name="ttype">boolean</field>
+        <field name="field_description">Is Closed</field>
+        <field name="model">x_project.task</field>
+        <field name="model_id" ref="model_project_task"/>
+        <field name="name">x_is_closed</field>
+        <field name="related">x_stage_id.x_is_closing</field>
+        <field name="store" eval="True"/>
+        <field name="readonly" eval="True"/>
+    </record>
+
+    <!-- Reverse Fields -->
+
+    <record id="project_project_field_task_ids" model="ir.model.fields">
+        <field name="ttype">one2many</field>
+        <field name="field_description">Tasks</field>
+        <field name="model">x_project.task</field>
+        <field name="model_id" ref="model_project_project"/>
+        <field name="name">x_task_ids</field>
+        <field name="on_delete" eval="False"/>
+        <field name="relation">x_project.task</field>
+        <field name="relation_field">x_project_id</field>
+    </record>
+
+</odoo>

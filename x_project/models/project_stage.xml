@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Model -->
+    <record id="model_project_stage" model="ir.model">
+        <field name="name">Project Stage</field>
+        <field name="model">x_project.stage</field>
+        <field name="is_mail_thread" eval="False"/>
+        <field name="is_mail_activity" eval="False"/>
+    </record>
+
+    <!-- Fields -->
+    <record id="project_stage_field_name" model="ir.model.fields">
+        <field name="name">x_name</field>
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Name</field>
+        <field name="model">x_project.stage</field>
+        <field name="model_id" ref="model_project_stage"/>
+        <field name="on_delete" eval="False"/>
+        <field name="required" eval="True"/>
+    </record>
+
+<!--     <record id="sponsor_sponsor_field_name" model="ir.model.fields">
+        <field name="name">x_name</field>
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Name</field>
+        <field name="model">x_project.stage</field>
+        <field name="model_id" ref="model_project_stage"/>
+        <field name="store" eval="True"/>
+        <field name="depends">x_title,</field>
+        <field name="compute"><![CDATA[
+for record in self:
+    name = "#"
+    if record.x_partner_id and record.x_code:
+        name = f"{record.x_code} ({record.x_partner_id.display_name})"
+    record["x_name"] = name
+]]></field>
+    </record> -->
+
+<!--     <record id="project_stage_field_project_id" model="ir.model.fields">
+        <field name="name">x_project_id</field>
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Project</field>
+        <field name="model">x_project.stage</field>
+        <field name="model_id" ref="model_project_stage"/>
+        <field name="relation">x_project.project</field>
+        <field name="required" eval="True"/>
+        <field name="on_delete">cascade</field>
+    </record>
+ -->
+    <record id="project_stage_field_project_ids" model="ir.model.fields">
+        <field name="name">x_project_ids</field>
+        <field name="ttype">many2many</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Projects</field>
+        <field name="model">x_project.stage</field>
+        <field name="model_id" ref="model_project_stage"/>
+        <field name="relation">x_project.project</field>
+        <field name="relation_table">x_project_stage_projects_rel</field>
+    </record>
+
+    <record id="project_stage_field_color" model="ir.model.fields">
+        <field name="ttype">integer</field>
+        <field name="field_description">Color</field>
+        <field name="model">x_project.stage</field>
+        <field name="model_id" ref="model_project_stage"/>
+        <field name="name">x_color</field>
+    </record>
+
+    <record id="project_stage_field_sequence" model="ir.model.fields">
+        <field name="ttype">integer</field>
+        <field name="field_description">Sequence</field>
+        <field name="model">x_project.stage</field>
+        <field name="model_id" ref="model_project_stage"/>
+        <field name="name">x_sequence</field>
+    </record>
+
+    <record id="project_stage_field_is_closing" model="ir.model.fields">
+        <field name="name">x_is_closing</field>
+        <field name="ttype">boolean</field>
+        <field name="copied" eval="False"/>
+        <field name="field_description">Is Closing Stage</field>
+        <field name="model">x_project.stage</field>
+        <field name="model_id" ref="model_project_stage"/>
+    </record>
+
+    <!-- Reverse Fields -->
+
+    <record id="project_project_field_stage_ids" model="ir.model.fields">
+        <field name="ttype">many2many</field>
+        <field name="field_description">Stages</field>
+        <field name="model">x_project.project</field>
+        <field name="model_id" ref="model_project_project"/>
+        <field name="name">x_stage_ids</field>
+        <field name="on_delete" eval="False"/>
+        <field name="relation">x_project.stage</field>
+        <field name="relation_table">x_project_stage_projects_rel</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!--
+        Actions
+    -->
+    <record id="project_task_action_open" model="ir.actions.server">
+        <field name="name">Open Task</field>
+        <field name="model_id" ref="model_project_task"/>
+        <field name="binding_model_id" ref="model_project_task"/>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="code">
+action = {
+    'type': 'ir.actions.act_window',
+    'view_mode': 'form',
+    'res_id': record.id,
+    'res_model': record._name,
+}
+        </field>
+    </record>
+
+    <record id="project_project_action_view_tasks" model="ir.actions.server">
+        <field name="name">Open Project Tasks</field>
+        <field name="model_id" ref="model_project_project"/>
+        <field name="binding_model_id" ref="model_project_project"/>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="code">
+context = dict(env.context)
+
+context['search_default_filter_open'] = 1
+context['default_x_project_id'] = record.id
+context['default_x_project_ids'] = [[4, record.id]] # default stage
+if record.x_stage_ids:
+    context['default_x_stage_id'] = record.x_stage_ids[0].id
+
+views = None
+if record.x_mode == 'kanban':
+    views = [[env.ref('x_project.project_task_view_kanban').id, 'kanban'], [env.ref('x_project.project_task_view_list').id, 'list'], [env.ref('x_project.project_task_view_form').id, 'form']]
+else:
+    views = [[env.ref('x_project.project_task_view_list_editable').id, 'list'], [env.ref('x_project.project_task_view_form').id, 'form']]
+
+action = env["ir.actions.actions"]._for_xml_id("x_project.project_task_action_from_project")
+action.update({
+    'context': context,
+    'display_name': env._('Tasks of %s') % (record.display_name,)
+})
+
+if views:
+    action["views"] = views
+        </field>
+    </record>
+
+</odoo>
