@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    <record id="project_main_menu" model="ir.ui.menu">
+        <field name="name">Project</field>
+        <field name="web_icon_data" type="base64" file="x_project/static/description/icon.svg"/>
+        <field name="sequence">25</field>
+    </record>
+
+        <record id="project_main_project" model="ir.ui.menu">
+            <field name="action" ref="project_project_action"/>
+            <field name="name">Projects</field>
+            <field name="parent_id" ref="project_main_menu"/>
+        </record>
+
+        <record id="project_main_my_tasks" model="ir.ui.menu">
+            <field name="action" ref="project_task_action_my_tasks"/>
+            <field name="name">My Tasks</field>
+            <field name="parent_id" ref="project_main_menu"/>
+        </record>
+
+        <record id="project_main_settings" model="ir.ui.menu" >
+            <field name="name">Settings</field>
+            <field name="parent_id" ref="project_main_menu"/>
+            <field name="sequence">25</field>
+        </record>
+            <record id="project_settings_stages" model="ir.ui.menu" >
+                <field name="name">Stages</field>
+                <field name="action" ref="project_stage_action"/>
+                <field name="parent_id" ref="project_main_settings"/>
+                <field name="sequence">5</field>
+            </record>
+
+</odoo>
