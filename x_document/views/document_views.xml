@@ -110,6 +110,13 @@
                         data-hotkey="d"
                         title="Generate Documents"
                         invisible="x_document_type != 'inbox' or not id"/>
+                    <button
+                        type="action"
+                        name="%(x_document.action_report_internal_document_text)d"
+                        string="Print"
+                        data-hotkey="p"
+                        title="Print"
+                        invisible="x_document_type != 'text' or not id"/>
               </header>
               <sheet string="Documents">
                     <group name="document_technical">
