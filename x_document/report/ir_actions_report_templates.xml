@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- internal layout -->
+<template id="report_internal_document_document_text">
+    <t t-call="web.internal_layout">
+        <t t-esc="doc.x_text_content"/>
+    </t>
+</template>
+
+
+<template id="report_internal_document_document_text_raw">
+    <t t-call="web.html_container">
+        <t t-foreach="docs.filtered(lambda d: d.x_document_type=='text')" t-as="doc">
+            <t t-call="x_document.report_internal_document_document_text"/>
+        </t>
+    </t>
+</template>
+
+<template id="report_internal_document_text">
+    <t t-call="x_document.report_internal_document_document_text_raw"/>
+</template>
+
+<!-- internal layout -->
+<template id="report_external_document_document_text">
+    <t t-call="web.external_layout">
+        <t t-esc="doc.x_text_content"/>
+    </t>
+</template>
+
+<template id="report_external_document_document_text_raw">
+    <t t-call="web.html_container">
+        <t t-foreach="docs.filtered(lambda d: d.x_document_type=='text')" t-as="doc">
+            <t t-call="x_document.report_external_document_document_text"/>
+        </t>
+    </t>
+</template>
+
+<template id="report_external_document_text">
+    <t t-call="x_document.report_external_document_document_text_raw"/>
+</template>
+
+</odoo>

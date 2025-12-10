@@ -26,6 +26,9 @@
         "security/ir_model_access.xml",
         # Data
         "data/inbox_data.xml",
+        # Report
+        "report/ir_actions_report_templates.xml",
+        "report/ir_actions_report.xml",
     ],
     "assets": {
         "web.assets_backend": [
