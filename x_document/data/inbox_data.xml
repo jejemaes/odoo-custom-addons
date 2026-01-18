@@ -6,7 +6,7 @@
     </record>
 
     <record id="mail_alias_inbox" model="mail.alias">
-        <field name="alias_name">document</field>
+        <field name="alias_name">documents</field>
         <field name="alias_model_id" ref="x_document.model_document_document"/>
         <field name="alias_defaults" eval="str({'x_folder_id': ref('x_document.document_folder_inbox'), 'x_document_type': 'inbox'})"/>
     </record>
