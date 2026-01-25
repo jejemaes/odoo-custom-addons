@@ -12,6 +12,8 @@
                 <field name="x_name"/>
                 <field name="x_user_id"/>
                 <filter name="filter_x_user_id" string="My Project" domain="[('x_user_id', '=', uid)]"/>
+                <separator/>
+                <filter name="filter_archived" string="Archived" domain="[('x_active', '=', False)]"/>
                 <group>
                     <filter string="User" name="group_by_user_id" domain="[]" context="{'group_by':'x_user_id'}"/>
                 </group>
@@ -33,7 +35,6 @@
                     <group name="project_project_detail">
                         <group name="project_project_detail_left">
                             <field name="x_mode" widget="radio" options="{'horizontal': true}"/>
-                            <field name="x_is_active"/>
                         </group>
                         <group name="project_project_detail_right">
                             <field name="x_user_id" widget="many2one_avatar_user"/>
@@ -76,10 +77,15 @@
             <kanban highlight_color="x_color" class="o_kanban_mobile" type="action" action="%(project_project_action_view_tasks)d">
                 <field name="x_name"/>
                 <field name="x_user_id"/>
+                <field name="x_active"/>
                 <templates>
                     <t t-name="menu">
                         <t t-if="widget.editable"><a role="menuitem" type="open" class="dropdown-item">Edit</a></t>
                         <t t-if="widget.deletable"><a role="menuitem" type="delete" class="dropdown-item">Delete</a></t>
+
+                        <a t-if="record.x_active.raw_value" role="menuitem" type="archive" class="dropdown-item">Archive</a>
+                        <a t-if="!record.x_active.raw_value" role="menuitem" type="unarchive" class="dropdown-item">Unarchive</a>
+
                         <field name="x_color" widget="kanban_color_picker"/>
                     </t>
                     <t t-name="card">
