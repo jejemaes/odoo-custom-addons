@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_create_project_from_template" model="ir.actions.server">
+        <field name="name">Create Project from Template</field>
+        <field name="model_id" ref="x_project.model_project_create_from_template"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+
+if not record.x_project_template_id.x_stage_ids:
+    raise UserError("Template has no stage.")
+
+project_values = {
+    "x_name": record.x_name,
+    "x_mode": record.x_project_template_id.x_mode,
+    "x_color": record.x_project_template_id.x_color,
+    "x_stage_ids": [Command.link(stage.id) for stage in record.x_project_template_id.x_stage_ids]
+}
+project = env["x_project.project"].create(project_values)
+
+
+stage = record.x_project_template_id.x_stage_ids[0]
+
+task_data = []
+for task_template in record.x_project_template_id.x_task_template_ids:
+    task_data.append({
+        "x_name": task_template.x_name,
+        "x_sequence": task_template.x_sequence,
+        "x_color": task_template.x_color,
+        "x_notes": task_template.x_notes,
+        "x_priority": task_template.x_priority,
+        "x_user_ids": [Command.link(user.id) for user in task_template.x_user_ids],
+        "x_stage_id": stage.id,
+        "x_project_id": project.id,
+    })
+env["x_project.task"].create(task_data)
+
+server_action = env.ref("x_project.project_project_action_view_tasks")
+action = server_action.with_context(active_id=project.id, active_model=project._name).run()
+
+]]></field>
+    </record>
+
+</odoo>

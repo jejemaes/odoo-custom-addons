@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="x_project.KanbanView" t-inherit="web.KanbanView" t-inherit-mode="primary">
+        <xpath expr="//button[hasclass('o-kanban-button-new')]" position="before">
+            <t t-call="x_project.ProjectFromTemplateCreateButton"/>
+        </xpath>
+    </t>
+
+</templates>
