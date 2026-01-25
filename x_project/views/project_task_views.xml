@@ -133,7 +133,7 @@
         <field name="name">x_project.task.kanban</field>
         <field name="model">x_project.task</field>
         <field name="arch" type="xml">
-            <kanban highlight_color="x_color" class="o_kanban_mobile" default_group_by="x_stage_id" default_order="x_deadline desc, id desc" js_class="project_kanban">
+            <kanban highlight_color="x_color" class="o_kanban_mobile" default_group_by="x_stage_id" default_order="x_deadline desc, id desc" js_class="project_task_kanban">
                 <field name="x_name"/>
                 <field name="x_user_ids"/>
                 <templates>
@@ -143,7 +143,7 @@
                     </t>
                     <t t-name="card">
                         <field class="fw-bold fs-2" name="x_name"/>
-                        <div class="d-flex pt-2 pb-2">
+                        <div class="pt-2 pb-2">
                             <field name="x_priority" widget="priority"/>
                             <field name="x_deadline" widget="remaining_days"/>
                         </div>

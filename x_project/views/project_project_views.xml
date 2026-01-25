@@ -74,7 +74,7 @@
         <field name="name">x_project.project.kanban</field>
         <field name="model">x_project.project</field>
         <field name="arch" type="xml">
-            <kanban highlight_color="x_color" class="o_kanban_mobile" type="action" action="%(project_project_action_view_tasks)d">
+            <kanban highlight_color="x_color" class="o_kanban_mobile" type="action" action="%(project_project_action_view_tasks)d" js_class="project_kanban">
                 <field name="x_name"/>
                 <field name="x_user_id"/>
                 <field name="x_active"/>

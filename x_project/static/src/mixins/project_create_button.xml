@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="x_project.ProjectFromTemplateCreateButton">
+        <button type="button" class="btn btn-primary" data-hotkey="t" t-on-click.prevent="onClickCreateFromTemplate">
+            From Template
+        </button>
+    </t>
+
+</templates>

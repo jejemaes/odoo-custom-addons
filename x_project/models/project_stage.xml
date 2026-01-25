@@ -62,6 +62,17 @@ for record in self:
         <field name="relation_table">x_project_stage_projects_rel</field>
     </record>
 
+    <record id="project_stage_field_project_template_ids" model="ir.model.fields">
+        <field name="name">x_project_template_ids</field>
+        <field name="ttype">many2many</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Project Templates</field>
+        <field name="model">x_project.stage</field>
+        <field name="model_id" ref="model_project_stage"/>
+        <field name="relation">x_project.project.template</field>
+        <field name="relation_table">x_project_stage_project_template_rel</field>
+    </record>
+
     <record id="project_stage_field_color" model="ir.model.fields">
         <field name="ttype">integer</field>
         <field name="field_description">Color</field>
@@ -98,6 +109,17 @@ for record in self:
         <field name="on_delete" eval="False"/>
         <field name="relation">x_project.stage</field>
         <field name="relation_table">x_project_stage_projects_rel</field>
+    </record>
+
+    <record id="project_project_template_field_stage_ids" model="ir.model.fields">
+        <field name="ttype">many2many</field>
+        <field name="field_description">Stages</field>
+        <field name="model">x_project.project.template</field>
+        <field name="model_id" ref="model_project_project_template"/>
+        <field name="name">x_stage_ids</field>
+        <field name="on_delete" eval="False"/>
+        <field name="relation">x_project.stage</field>
+        <field name="relation_table">x_project_stage_project_template_rel</field>
     </record>
 
 </odoo>

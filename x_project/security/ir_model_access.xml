@@ -58,4 +58,53 @@
         <field name="perm_write" eval="False"/>
     </record>
 
+    <!-- Template -->
+    <record id="project_project_template_rule_manager" model="ir.model.access" >
+        <field name="group_id" ref="group_project_manager"/>
+        <field name="model_id" ref="model_project_project_template"/>
+        <field name="name">Project Template group_manager</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="perm_write" eval="True"/>
+    </record>
+    <record id="project_project_rule_user" model="ir.model.access" >
+        <field name="group_id" ref="group_project_user"/>
+        <field name="model_id" ref="model_project_project_template"/>
+        <field name="name">Project Template group_user</field>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+
+    <record id="project_task_template_rule_manager" model="ir.model.access" >
+        <field name="group_id" ref="group_project_manager"/>
+        <field name="model_id" ref="model_project_task_template"/>
+        <field name="name">Project Task Template group_project_manager</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="perm_write" eval="True"/>
+    </record>
+    <record id="project_task_template_rule_user" model="ir.model.access" >
+        <field name="group_id" ref="group_project_user"/>
+        <field name="model_id" ref="model_project_task_template"/>
+        <field name="name">Project Task Template group_user</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="perm_write" eval="True"/>
+    </record>
+
+    <!-- Wizard -->
+    <record id="project_create_from_template_rule_user" model="ir.model.access" >
+        <field name="group_id" ref="group_project_user"/>
+        <field name="model_id" ref="model_project_create_from_template"/>
+        <field name="name">Project Create from Template group_user</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="perm_write" eval="True"/>
+    </record>
 </odoo>

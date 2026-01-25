@@ -50,4 +50,4 @@ export const projectKanbanView = {
     Model: ProjectKanbanModel,
 };
 
-registry.category("views").add("project_kanban", projectKanbanView);
+registry.category("views").add("project_task_kanban", projectKanbanView);
