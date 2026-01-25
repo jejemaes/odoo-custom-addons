@@ -81,11 +81,8 @@
                 <templates>
                     <t t-name="menu">
                         <t t-if="widget.editable"><a role="menuitem" type="open" class="dropdown-item">Edit</a></t>
-                        <t t-if="widget.deletable"><a role="menuitem" type="delete" class="dropdown-item">Delete</a></t>
-
                         <a t-if="record.x_active.raw_value" role="menuitem" type="archive" class="dropdown-item">Archive</a>
                         <a t-if="!record.x_active.raw_value" role="menuitem" type="unarchive" class="dropdown-item">Unarchive</a>
-
                         <field name="x_color" widget="kanban_color_picker"/>
                     </t>
                     <t t-name="card">
