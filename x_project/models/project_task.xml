@@ -137,7 +137,7 @@
     <record id="project_project_field_task_ids" model="ir.model.fields">
         <field name="ttype">one2many</field>
         <field name="field_description">Tasks</field>
-        <field name="model">x_project.task</field>
+        <field name="model">x_project.project</field>
         <field name="model_id" ref="model_project_project"/>
         <field name="name">x_task_ids</field>
         <field name="on_delete" eval="False"/>
