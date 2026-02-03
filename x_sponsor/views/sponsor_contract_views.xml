@@ -74,11 +74,62 @@
         </field>
     </record>
 
+    <record id="sponsor_contract_view_kanban" model="ir.ui.view">
+        <field name="model">x_sponsor.contract</field>
+        <field name="name">sponsor.contract.kanban</field>
+        <field name="type">kanban</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" type="action" action="%(sponsor_sponsor_action_from_contract)d">
+                <field name="x_name"/>
+                <field name="x_user_id"/>
+                <field name="x_active"/>
+                <field name="x_start_date"/>
+                <field name="x_stop_date"/>
+                <templates>
+                    <t t-name="menu">
+                        <t t-if="widget.editable"><a role="menuitem" type="open" class="dropdown-item">Edit</a></t>
+                        <a t-if="record.x_active.raw_value" role="menuitem" type="archive" class="dropdown-item">Archive</a>
+                        <a t-if="!record.x_active.raw_value" role="menuitem" type="unarchive" class="dropdown-item">Unarchive</a>
+                    </t>
+                    <t t-name="card">
+                        <field class="fw-bold fs-2" name="x_name"/>
+
+                        <div t-if="record.x_start_date.raw_value or record.x_stop_date.raw_value" class="text-muted d-flex align-items-baseline">
+                            <span class="fa fa-clock-o me-2" title="Dates"/>
+                            <field name="x_start_date" widget="daterange" options="{'end_date_field': 'x_stop_date'}"/>
+                        </div>
+
+                        <div class="d-flex pt-2 pb-2">
+                            <div class="col-6">
+                                <button class="btn btn-primary" type="action" name="%(sponsor_sponsor_action_from_contract)d">
+                                    View Sponsors
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <ul class="list-unstyled">
+                                    <li><field name="x_sponsor_count"/> Sponsors</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <footer class="pt-1">
+                            <div class="d-flex mt-auto align-items-center">
+                            </div>
+                            <div class="ms-auto d-flex">
+                                <field name="x_user_id" widget="many2one_avatar_user" class="ms-2"/>
+                            </div>
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
     <!-- Actions -->
     <record id="sponsor_contract_action" model="ir.actions.act_window">
-        <field name="name">Sponsors Contract</field>
+        <field name="name">Contracts</field>
         <field name="res_model">x_sponsor.contract</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">kanban,list,form</field>
     </record>
 
 </odoo>

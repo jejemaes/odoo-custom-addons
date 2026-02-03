@@ -6,16 +6,16 @@
         <field name="sequence">130</field>
     </record>
 
-    <record id="sponsor_main_sponsors" model="ir.ui.menu">
-        <field name="action" ref="sponsor_sponsor_action"/>
-        <field name="name">Sponsorship</field>
+    <record id="sponsor_main_contract" model="ir.ui.menu">
+        <field name="action" ref="sponsor_contract_action"/>
+        <field name="name">Contracts</field>
         <field name="parent_id" ref="sponsor_main_menu"/>
         <field name="sequence">10</field>
     </record>
 
-    <record id="sponsor_main_contract" model="ir.ui.menu">
-        <field name="action" ref="sponsor_contract_action"/>
-        <field name="name">Contracts</field>
+    <record id="sponsor_main_sponsors" model="ir.ui.menu">
+        <field name="action" ref="sponsor_sponsor_action"/>
+        <field name="name">Sponsorship</field>
         <field name="parent_id" ref="sponsor_main_menu"/>
         <field name="sequence">20</field>
     </record>
