@@ -28,23 +28,23 @@
                         <a t-if="widget.deletable" role="menuitem" type="delete" class="dropdown-item">Delete</a>
                     </t>
                     <t t-name="card" class="flex-row">
-                      <main>
-                        <div name="studio_auto_kanban_header" class="d-flex">
-                            <field name="x_priority" widget="boolean_favorite" nolabel="1"/>
-                            <field name="display_name" class="h5"/>
-                        </div>
-                        <div name="studio_auto_kanban_body">
-                            <field name="x_sponsor_contract_line_id" class="text-muted"/>
-                        </div>
-                        <footer>
-                            <div t-if="record.x_payment_method_id.raw_value" class="badge text-bg-success float-end">
-                                <field name="x_payment_method_id"/>
+                        <main>
+                            <div name="kanban_header" class="d-flex">
+                                <field name="x_priority" widget="boolean_favorite" nolabel="1"/>
+                                <field name="display_name" class="h5"/>
                             </div>
-                            <div class="ms-auto d-flex align-items-center">
-                                <field class="ms-1" name="x_user_id" widget="kanban.many2one_avatar_user"/>
+                            <div name="kanban_body">
+                                <field name="x_sponsor_contract_line_id" class="text-muted"/>
                             </div>
-                        </footer>
-                      </main>
+                            <footer>
+                                <div t-if="record.x_payment_method_id.raw_value" class="badge text-bg-success float-end">
+                                    <field name="x_payment_method_id"/>
+                                </div>
+                                <div class="ms-auto d-flex align-items-center">
+                                    <field class="ms-1" name="x_user_id" widget="kanban.many2one_avatar_user"/>
+                                </div>
+                            </footer>
+                        </main>
                     </t>
                 </templates>
             </kanban>
@@ -110,10 +110,10 @@
                <filter string="Unpaid Contracts" name="unpaid_contract" domain="[('x_payment_status','=', 'unpaid')]"/>
                <filter string="Paid Contracts" name="paid_contract" domain="[('x_payment_status','=', 'paid')]"/>
                <group>
-                    <filter string="User" name="user" context="{'group_by':'x_user_id'}"/>
-                    <filter string="Customer" name="x_partner_id" context="{'group_by':'x_partner_id'}"/>
-                    <filter string="Contract" name="x_sponsor_contract_id" context="{'group_by':'x_sponsor_contract_id'}"/>
-                    <filter string="Payment Method" name="x_payment_method_id" context="{'group_by':'x_payment_method_id'}"/>
+                    <filter string="User" name="groupby_user" context="{'group_by':'x_user_id'}"/>
+                    <filter string="Customer" name="groupby_x_partner_id" context="{'group_by':'x_partner_id'}"/>
+                    <filter string="Contract" name="groupby_x_sponsor_contract_id" context="{'group_by':'x_sponsor_contract_id'}"/>
+                    <filter string="Payment Method" name="groupby_x_payment_method_id" context="{'group_by':'x_payment_method_id'}"/>
                 </group>
            </search>
         </field>
@@ -138,5 +138,6 @@
             'search_default_x_sponsor_contract_id': active_id,
         }</field>
     </record>
+
 
 </odoo>
