@@ -38,4 +38,18 @@
             <field name="parent_id" ref="sponsor_main_configuration"/>
         </record>
 
+        <record id="sponsor_main_configuration_product" model="ir.ui.menu">
+            <field name="action" ref="product.product_template_action_all"/>
+            <field name="name">Products</field>
+            <field name="parent_id" ref="sponsor_main_configuration"/>
+            <field name="sequence">25</field>
+        </record>
+        <record id="sponsor_main_configuration_product_variant" model="ir.ui.menu">
+            <field name="action" ref="product.product_normal_action_sell"/>
+            <field name="name">Product Variants</field>
+            <field name="parent_id" ref="sponsor_main_configuration"/>
+            <field name="sequence">25</field>
+            <field name="group_ids" eval="[(4, ref('product.group_product_variant'))]"/>
+        </record>
+
 </odoo>
