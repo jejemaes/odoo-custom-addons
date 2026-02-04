@@ -20,7 +20,7 @@
         <field name="name">document.x_document.document.kanban</field>
         <field name="model">x_document.document</field>
         <field name="arch" type="xml">
-            <kanban js_class="document_kanban" class="o_document_kanban">
+            <kanban js_class="document_kanban" class="o_document_kanban" default_order="create_date desc">
                 <field name="id"/>
                 <field name="x_document_type"/>
                 <field name="x_user_id"/>
