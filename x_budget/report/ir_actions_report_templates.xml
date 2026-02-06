@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- internal layout -->
+<template id="report_internal_document_budget_budget">
+    <t t-call="web.internal_layout">
+        <div class="page o_budget_report">
+            <h1 class="text-center">
+                <t t-esc="doc.x_name"/>
+            </h1>
+            <p t-if="doc.x_use_dates and doc.x_start_date and doc.x_stop_date" class="text-center text-muted">
+                From <span t-field="doc.x_start_date">2025-04-11</span> to <span t-field="doc.x_stop_date">2025-04-19</span>
+            </p>
+
+            <t t-set="position_per_category" t-value="{item.x_category_id: item for item in doc.x_position_ids}"/>
+
+            <t t-set="aal_domain" t-value="[('account_id', '=', doc.x_analytic_account_id.id)]"/>
+            <t t-if="doc.x_use_dates and doc.x_start_date and doc.x_stop_date">
+                <t t-set="aal_domain" t-value="aal_domain + [('date', '&gt;=', doc.x_start_date), ('date', '&lt;=', doc.x_stop_date)]"/>
+            </t>
+
+            <t t-set="analytic_lines" t-value="doc.env['account.analytic.line'].search(aal_domain)"/>
+            <t t-set="income_lines_per_category" t-value="analytic_lines.filtered(lambda aal: aal.amount > 0.0).grouped('x_budget_category_id')"/>
+            <t t-set="outcome_lines_per_category" t-value="analytic_lines.filtered(lambda aal: aal.amount &lt;= 0.0).grouped('x_budget_category_id')"/>
+            <t t-set="result" t-value="sum(analytic_lines.mapped('amount'))"/>
+
+            <table class="table table-borderless mt-5">
+                <thead>
+                    <tr>
+                        <th class="w-50 text-center text-uppercase h4">Expenses</th>
+                        <th class="w-50 text-center text-uppercase h4">Incomes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="align-top">
+                            <t t-set="lines_by_category" t-value="outcome_lines_per_category"/>
+                            <t t-call="x_budget.report_internal_document_budget_budget_column"/>
+                        </td>
+                        <td class="align-top">
+                            <t t-set="lines_by_category" t-value="income_lines_per_category"/>
+                            <t t-call="x_budget.report_internal_document_budget_budget_column"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <t t-set="planned_result" t-value="sum(doc.x_position_ids.mapped('x_planned_amount'))"/>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div t-attf-class="alert #{'alert-success' if result >= 0 else 'alert-danger'} text-center fw-bolder" role="alert">
+                        <p>
+                            <t t-if="result >= 0">
+                                Effective Profit
+                            </t><t t-else="">
+                                Effective Loss
+                            </t>: <t t-esc="result"/></p>
+
+                        <i t-if="doc.x_use_planned_amount" class="text-muted">
+                            <t t-if="planned_result >= 0">
+                                Planned Profit
+                            </t><t t-else="">
+                                Planned Loss
+                            </t>: <t t-esc="planned_result"/>
+                        </i>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div t-field="doc.x_note"/>
+            </div>
+        </div>
+    </t>
+</template>
+
+<!-- one column (expenses or incomes): one mini-table per budget position, title row highlighted
+     with the category's color and carrying the column's total for that position -->
+<template id="report_internal_document_budget_budget_column">
+    <t t-set="position_categories" t-value="[c for c in lines_by_category if c in position_per_category]"/>
+    <t t-foreach="sorted(position_categories, key=lambda c: (position_per_category[c].x_sequence, c.x_name))" t-as="category">
+        <t t-set="position" t-value="position_per_category[category]"/>
+        <t t-set="use_planned" t-value="position.x_budget_id.x_use_planned_amount"/>
+        <table class="table table-sm mb-3">
+            <thead>
+                <tr t-attf-class="o_budget_report_header_color_#{str(category.x_color)}">
+                    <th t-if="use_planned" class="w-50 align-middle">
+                        <div class="d-flex justify-content-between">
+                            <b class="text-uppercase"><t t-esc="category.x_name"/></b>
+                            <b>Planned Total: <t t-esc="position.x_planned_amount"/></b>
+                        </div>
+                    </th>
+                    <th t-attf-class="align-middle #{'w-50' if use_planned else 'w-100'}">
+                        <div class="d-flex justify-content-between">
+                            <b t-if="not use_planned" class="text-uppercase"><t t-esc="category.x_name"/></b>
+                            <b class="ms-auto">Effective Total: <t t-esc="sum(lines_by_category[category].mapped('amount'))"/></b>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td t-if="use_planned" class="w-50 align-top">
+                        <div t-foreach="position.x_budget_line_ids" t-as="planned_line" class="d-flex justify-content-between">
+                            <span><t t-esc="planned_line.x_name"/></span>
+                            <span><t t-esc="planned_line.x_planned_amount"/></span>
+                        </div>
+                    </td>
+                    <td class="align-top">
+                        <div t-foreach="lines_by_category[category]" t-as="line" class="d-flex justify-content-between">
+                            <span><t t-esc="line.name"/></span>
+                            <span><span t-field="line.amount"/></span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </t>
+
+    <!-- column footer: totals aligned with the planned/effective sub-columns above -->
+    <table class="table table-sm">
+        <tbody>
+            <tr class="fw-bolder border-top">
+                <td t-if="doc.x_use_planned_amount" class="w-50">
+                    <div class="d-flex justify-content-between">
+                        <span class="text-uppercase">Total Planned</span>
+                        <span><t t-esc="sum(position_per_category[c].x_planned_amount for c in position_categories)"/></span>
+                    </div>
+                </td>
+                <td t-attf-class="#{'w-50' if doc.x_use_planned_amount else 'w-100'}">
+                    <div class="d-flex justify-content-between">
+                        <span class="text-uppercase">Total Effective</span>
+                        <span><t t-esc="sum(sum(lines_by_category[c].mapped('amount')) for c in position_categories)"/></span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</template>
+
+
+<template id="report_internal_document_budget_budget_raw">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="x_budget.report_internal_document_budget_budget"/>
+        </t>
+    </t>
+</template>
+
+<template id="report_internal_budget_budget">
+    <t t-call="x_budget.report_internal_document_budget_budget_raw"/>
+</template>
+
+<!-- external layout -->
+<!-- <template id="report_external_document_budget_budget">
+    <t t-call="web.external_layout">
+        <t t-esc="doc.x_text_content"/>
+    </t>
+</template>
+
+<template id="report_external_document_budget_budget_raw">
+    <t t-call="web.html_container">
+        <t t-foreach="docs.filtered(lambda d: d.x_budget_type=='text')" t-as="doc">
+            <t t-call="x_budget.report_external_document_budget_budget"/>
+        </t>
+    </t>
+</template>
+
+<template id="report_external_budget_budget">
+    <t t-call="x_budget.report_external_document_budget_budget_raw"/>
+</template> -->
+
+</odoo>
