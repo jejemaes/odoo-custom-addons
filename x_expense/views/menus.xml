@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <record id="expense_menu_root" model="ir.ui.menu" >
+        <field name="name">Expenses</field>
+        <field name="web_icon_data" type="base64" file="x_expense/static/description/icon.svg"/>
+        <field name="sequence">40</field>
+    </record>
+
+    <record id="expense_menu_expense" model="ir.ui.menu" >
+        <field name="action" ref="expense_expense_action_my"/>
+        <field name="name">My Expenses</field>
+        <field name="parent_id" ref="expense_menu_root"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="expense_menu_expense_to_approve" model="ir.ui.menu" >
+        <field name="action" ref="expense_expense_action_to_approve"/>
+        <field name="name">To Approve</field>
+        <field name="parent_id" ref="expense_menu_root"/>
+        <field name="sequence">20</field>
+        <field name="group_ids" eval="[(4, ref('x_expense.group_expense_manager'))]"/>
+    </record>
+
+    <record id="expense_menu_expense_to_pay" model="ir.ui.menu" >
+        <field name="action" ref="expense_expense_action_to_pay"/>
+        <field name="name">To Pay</field>
+        <field name="parent_id" ref="expense_menu_root"/>
+        <field name="sequence">30</field>
+        <field name="group_ids" eval="[(4, ref('x_expense.group_expense_manager'))]"/>
+    </record>
+
+    <record id="expense_menu_settings" model="ir.ui.menu" >
+        <field name="name">Settings</field>
+        <field name="parent_id" ref="expense_menu_root"/>
+        <field name="sequence">50</field>
+        <field name="group_ids" eval="[(4, ref('x_expense.group_expense_manager'))]"/>
+    </record>
+
+        <record id="expense_menu_settings_product" model="ir.ui.menu">
+            <field name="action" ref="product_template_action_expense"/>
+            <field name="name">Products</field>
+            <field name="parent_id" ref="expense_menu_settings"/>
+            <field name="sequence">25</field>
+        </record>
+        <record id="expense_menu_settings_product_variant" model="ir.ui.menu">
+            <field name="action" ref="product.product_normal_action_sell"/>
+            <field name="name">Product Variants</field>
+            <field name="parent_id" ref="expense_menu_settings"/>
+            <field name="sequence">25</field>
+            <field name="group_ids" eval="[(4, ref('product.group_product_variant'))]"/>
+        </record>
+
+</odoo>
