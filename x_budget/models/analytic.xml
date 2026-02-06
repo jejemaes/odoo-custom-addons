@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <record id="model_account_analytic_line_field_budget_category_id" model="ir.model.fields">
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Budget Category</field>
+        <field name="model">account.analytic.line</field>
+        <field name="model_id" ref="analytic.model_account_analytic_line"/>
+        <field name="name">x_budget_category_id</field>
+        <field name="relation">x_budget.category</field>
+        <field name="domain" eval="False"/>
+    </record>
+
+    <record id="model_account_analytic_line_field_amount_type" model="ir.model.fields">
+        <field name="ttype">char</field>
+        <field name="copied" eval="False"/>
+        <field name="field_description">Amount Type</field>
+        <field name="model">account.analytic.line</field>
+        <field name="model_id" ref="analytic.model_account_analytic_line"/>
+        <field name="name">x_amount_type</field>
+        <field name="required" eval="True"/>
+        <field name="selection">[('income', 'Income'), ('outcome', 'Outcome')]</field>
+        <field name="store" eval="True"/>
+        <field name="depends">amount</field>
+        <field name="compute"><![CDATA[
+for record in self:
+    if record.amount > 0.0:
+        record["x_amount_type"] = 'income'
+    else:
+        record["x_amount_type"] = 'outcome'
+]]></field>
+    </record>
+
+    <!--
+        line_ids field is using the 'auto_account_id' field on AAL model, which is
+        computed ! As a result, the dependency of computed amount fields on budget position
+        are not recomputed correctly when stored.
+        Since Odoo did bullshit in analytic account since a few version, it is required for
+        us to defined our own line_ids fields on AA.
+    -->
+    <record id="model_account_analytic_account_field_real_line_ids" model="ir.model.fields">
+        <field name="ttype">one2many</field>
+        <field name="field_description">Real Line Ids</field>
+        <field name="model">account.analytic.account</field>
+        <field name="model_id" ref="analytic.model_account_analytic_account"/>
+        <field name="name">x_real_line_ids</field>
+        <field name="on_delete" eval="False"/>
+        <field name="relation">account.analytic.line</field>
+        <field name="relation_field">account_id</field>
+    </record>
+
+</odoo>

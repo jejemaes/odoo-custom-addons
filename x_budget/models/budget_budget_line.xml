@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Model -->
+    <record id="model_budget_budget_line" model="ir.model">
+        <field name="name">Budget Line</field>
+        <field name="model">x_budget.budget.line</field>
+    </record>
+
+    <!-- Fields -->
+    <record id="model_budget_budget_line_field_name" model="ir.model.fields">
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Name</field>
+        <field name="model">x_budget.budget.line</field>
+        <field name="model_id" ref="model_budget_budget_line"/>
+        <field name="name">x_name</field>
+        <field name="on_delete" eval="False"/>
+        <field name="required" eval="True"/>
+        <field name="translate">standard</field>
+    </record>
+
+    <record id="model_budget_budget_line_field_position_id" model="ir.model.fields">
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="required" eval="True"/>
+        <field name="field_description">Position</field>
+        <field name="model">x_budget.budget.line</field>
+        <field name="model_id" ref="model_budget_budget_line"/>
+        <field name="name">x_position_id</field>
+        <field name="relation">x_budget.budget.position</field>
+        <field name="on_delete">cascade</field>
+        <field name="domain" eval="False"/>
+    </record>
+
+    <record id="model_budget_budget_line_field_sequence" model="ir.model.fields">
+        <field name="ttype">integer</field>
+        <field name="field_description">Sequence</field>
+        <field name="model">x_budget.budget.line</field>
+        <field name="model_id" ref="model_budget_budget_line"/>
+        <field name="name">x_sequence</field>
+    </record>
+
+    <record id="model_budget_budget_line_field_planned_amount" model="ir.model.fields">
+        <field name="name">x_planned_amount</field>
+        <field name="ttype">float</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Planned Amount</field>
+        <field name="model">x_budget.budget.line</field>
+        <field name="model_id" ref="model_budget_budget_line"/>
+        <field name="required" eval="True"/>
+    </record>
+
+    <record id="model_budget_budget_line_field_budget_id" model="ir.model.fields">
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="required" eval="False"/>
+        <field name="field_description">Budget</field>
+        <field name="model">x_budget.budget.line</field>
+        <field name="model_id" ref="model_budget_budget_line"/>
+        <field name="name">x_budget_id</field>
+        <field name="relation">x_budget.budget</field>
+        <field name="on_delete">cascade</field>
+        <field name="domain" eval="False"/>
+        <field name="related">x_position_id.x_budget_id</field>
+        <field name="readonly" eval="True"/>
+    </record>
+
+    <!--
+        Budget Budget
+    -->
+    <record id="model_budget_budget_field_line_ids" model="ir.model.fields">
+        <field name="ttype">one2many</field>
+        <field name="field_description">Lines</field>
+        <field name="model">x_budget.budget</field>
+        <field name="model_id" ref="model_budget_budget"/>
+        <field name="name">x_line_ids</field>
+        <field name="on_delete" eval="False"/>
+        <field name="relation">x_budget.budget.line</field>
+        <field name="relation_field">x_budget_id</field>
+    </record>
+
+    <!--
+        Budget Position
+    -->
+    <record id="model_budget_budget_position_field_budget_line_ids" model="ir.model.fields">
+        <field name="ttype">one2many</field>
+        <field name="field_description">Budget Lines</field>
+        <field name="model">x_budget.budget.position</field>
+        <field name="model_id" ref="model_budget_budget_position"/>
+        <field name="name">x_budget_line_ids</field>
+        <field name="on_delete">cascade</field>
+        <field name="relation">x_budget.budget.line</field>
+        <field name="relation_field">x_position_id</field>
+    </record>
+
+    <record id="model_budget_budget_position_field_planned_amount" model="ir.model.fields">
+        <field name="name">x_planned_amount</field>
+        <field name="ttype">float</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Theorical Amount</field>
+        <field name="model">x_budget.budget.position</field>
+        <field name="model_id" ref="model_budget_budget_position"/>
+        <field name="required" eval="False"/>
+        <field name="readonly" eval="True"/>
+        <field name="depends">x_budget_line_ids.x_planned_amount</field>
+        <field name="compute"><![CDATA[
+data = self.env['x_budget.budget.line']._read_group(
+    domain=[
+        ('x_position_id', 'in', self.ids),
+    ],
+    groupby=['x_position_id'],
+    aggregates=['x_planned_amount:sum'],
+)
+data = {int(x_position_id): amount_sum for x_position_id, amount_sum in data}
+
+# self.env['ir.logging'].create({"message": str(data)})
+
+for record in self:
+    record["x_planned_amount"] = data.get(record.id, 0)
+]]></field>
+        <field name="store" eval="True"/>
+    </record>
+
+    <record id="model_budget_budget_position_field_practical_amount" model="ir.model.fields">
+        <field name="name">x_practical_amount</field>
+        <field name="ttype">float</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Practical Amount</field>
+        <field name="model">x_budget.budget.position</field>
+        <field name="model_id" ref="model_budget_budget_position"/>
+        <field name="required" eval="False"/>
+        <field name="readonly" eval="True"/>
+        <field name="depends">x_budget_id.x_analytic_account_id.x_real_line_ids.amount,x_budget_id.x_analytic_account_id.x_real_line_ids.x_budget_category_id</field>
+        <field name="compute"><![CDATA[
+for budget, positions in self.grouped('x_budget_id').items():
+
+    data = self.env['account.analytic.line']._read_group(
+        domain=[
+            ('account_id', '=', budget.x_analytic_account_id.id),
+            ('x_budget_category_id', 'in', positions.mapped('x_category_id').ids),
+        ],
+        groupby=['x_budget_category_id'],
+        aggregates=['amount:sum'],
+    )
+
+    data = {int(budget_category_id): amount_sum for budget_category_id, amount_sum in data}
+
+    for record in self:
+        record["x_practical_amount"] = data.get(record.x_category_id.id, 0)
+]]></field>
+        <field name="store" eval="True"/>
+    </record>
+
+</odoo>

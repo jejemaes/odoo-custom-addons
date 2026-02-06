@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Views -->
+    <record id="x_budget_budget_line_view_list" model="ir.ui.view" >
+        <field name="name">x_budget.budget.line.list</field>
+        <field name="model">x_budget.budget.line</field>
+        <field name="type">list</field>
+        <field name="arch" type="xml">
+            <list default_order="x_sequence" editable="top" default_group_by="x_position_id">
+                <field name="x_sequence" widget="handle"/>
+                <field name="x_position_id" options="{'no_create': True}"  domain="[('x_budget_id', '=', context.get('default_x_budget_id'))]"/>
+                <field name="x_name"/>
+                <field name="x_planned_amount"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="x_budget_budget_line_view_form" model="ir.ui.view" >
+        <field name="name">x_budget.budget.line.form</field>
+        <field name="model">x_budget.budget.line</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <header/>
+                <sheet string="Budget Line">
+                    <div class="oe_title">
+                        <h1>
+                          <field name="x_name" required="1" placeholder="Name..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="x_position_id"/>
+                        <field name="x_budget_id"/>
+                        <field name="x_planned_amount"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="x_budget_budget_line_view_search" model="ir.ui.view" >
+        <field name="name">x_budget.budget.line.search</field>
+        <field name="model">x_budget.budget.line</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="x_name"/>
+                <field name="x_budget_id"/>
+                <field name="x_position_id"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Views -->
+    <record id="x_budget_budget_line_action" model="ir.actions.act_window" >
+        <field name="name">Budget Lines</field>
+        <field name="res_model">x_budget.budget.line</field>
+        <field name="view_mode">list</field>
+    </record>
+
+</odoo>

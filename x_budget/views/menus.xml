@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <record id="budget_menu_root" model="ir.ui.menu" >
+        <field name="name">Budgets</field>
+        <field name="web_icon_data" type="base64" file="x_budget/static/description/icon.svg"/>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="budget_menu_budget" model="ir.ui.menu" >
+        <field name="action" ref="budget_budget_action"/>
+        <field name="name">Budgets</field>
+        <field name="parent_id" ref="budget_menu_root"/>
+    </record>
+
+    <record id="budget_menu_analytic_account" model="ir.ui.menu" >
+        <field name="action" ref="analytic.action_account_analytic_account_form"/>
+        <field name="name">Analytic Account</field>
+        <field name="parent_id" ref="budget_menu_root"/>
+    </record>
+
+    <record id="budget_menu_budget_position_reporting" model="ir.ui.menu" >
+        <field name="action" ref="x_budget_budget_position_action_reporting"/>
+        <field name="name">Reporting</field>
+        <field name="parent_id" ref="budget_menu_root"/>
+    </record>
+
+    <record id="budget_menu_settings" model="ir.ui.menu" >
+        <field name="name">Settings</field>
+        <field name="parent_id" ref="budget_menu_root"/>
+        <field name="sequence">11</field>
+    </record>
+        <record id="budget_menu_settings_category" model="ir.ui.menu" >
+            <field name="name">Budget Category</field>
+            <field name="action" ref="budget_category_action"/>
+            <field name="parent_id" ref="budget_menu_settings"/>
+            <field name="sequence">5</field>
+        </record>
+
+        <record id="budget_menu_settings_analytic_plan" model="ir.ui.menu" >
+            <field name="name">Analytic Plans</field>
+            <field name="action" ref="analytic.account_analytic_plan_action"/>
+            <field name="parent_id" ref="budget_menu_settings"/>
+            <field name="sequence">20</field>
+        </record>
+
+         <record id="budget_configuration_menu_account_analytic" model="ir.ui.menu" >
+            <field name="name">Analytic Distribution Models</field>
+            <field name="action" ref="analytic.action_analytic_distribution_model"/>
+            <field name="parent_id" ref="budget_menu_settings"/>
+            <field name="sequence">25</field>
+        </record>
+
+        <!-- <record id="budget_menu_settings_tag_category" model="ir.ui.menu" >
+            <field name="name">Tag Categories</field>
+            <field name="action" ref="budget_tag_category_action"/>
+            <field name="parent_id" ref="budget_menu_settings"/>
+            <field name="sequence">10</field>
+        </record>
+        <record id="budget_menu_settings_tags" model="ir.ui.menu" >
+            <field name="name">Tags</field>
+            <field name="action" ref="budget_tag_action"/>
+            <field name="parent_id" ref="budget_menu_settings"/>
+            <field name="sequence">20</field>
+        </record> -->
+</odoo>

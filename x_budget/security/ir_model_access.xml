@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="budget_budget_rule_manager" model="ir.model.access">
+    <field name="group_id" ref="group_budget_manager"/>
+    <field name="model_id" ref="model_budget_budget"/>
+    <field name="name">Budgets group_budget_manager</field>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    <field name="perm_write" eval="True"/>
+  </record>
+  <record id="budget_budget_rule_user" model="ir.model.access">
+    <field name="group_id" ref="group_budget_user"/>
+    <field name="model_id" ref="model_budget_budget"/>
+    <field name="name">Budgets group_user</field>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    <field name="perm_write" eval="True"/>
+  </record>
+
+  <record id="budget_category_rule_manager" model="ir.model.access">
+    <field name="group_id" ref="group_budget_manager"/>
+    <field name="model_id" ref="model_budget_category"/>
+    <field name="name">Category group_manager</field>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    <field name="perm_write" eval="True"/>
+  </record>
+  <record id="budget_category_rule_user" model="ir.model.access">
+    <field name="group_id" ref="group_budget_user"/>
+    <field name="model_id" ref="model_budget_category"/>
+    <field name="name">Category group_user</field>
+    <field name="perm_create" eval="False"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="False"/>
+    <field name="perm_write" eval="False"/>
+  </record>
+
+  <record id="budget_budget_line_rule_manager" model="ir.model.access">
+    <field name="group_id" ref="group_budget_manager"/>
+    <field name="model_id" ref="model_budget_budget_line"/>
+    <field name="name">Budget Line group_manager</field>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    <field name="perm_write" eval="True"/>
+  </record>
+  <record id="budget_budget_line_rule_user" model="ir.model.access">
+    <field name="group_id" ref="group_budget_user"/>
+    <field name="model_id" ref="model_budget_budget_line"/>
+    <field name="name">Budget Line group_user</field>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    <field name="perm_write" eval="True"/>
+  </record>
+
+  <record id="budget_budget_position_rule_manager" model="ir.model.access">
+    <field name="group_id" ref="group_budget_manager"/>
+    <field name="model_id" ref="model_budget_budget_position"/>
+    <field name="name">Budget Position group_manager</field>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    <field name="perm_write" eval="True"/>
+  </record>
+  <record id="budget_budget_position_rule_user" model="ir.model.access">
+    <field name="group_id" ref="group_budget_user"/>
+    <field name="model_id" ref="model_budget_budget_position"/>
+    <field name="name">Budget Position group_user</field>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    <field name="perm_write" eval="True"/>
+  </record>
+
+  <record id="account_analytic_account_rule_user" model="ir.model.access">
+    <field name="group_id" ref="group_budget_user"/>
+    <field name="model_id" ref="analytic.model_account_analytic_account"/>
+    <field name="name">Analytic Account group_user</field>
+    <field name="perm_create" eval="False"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="False"/>
+    <field name="perm_write" eval="False"/>
+  </record>
+
+</odoo>
