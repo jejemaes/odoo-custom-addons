@@ -1,0 +1,2 @@
+ALTER TABLE x_budget_budget_position DROP CONSTRAINT IF EXISTS x_budget_budget_position_uniq_category;
+ALTER TABLE x_budget_budget_position ADD CONSTRAINT x_budget_budget_position_uniq_category UNIQUE(x_budget_id, x_category_id);
