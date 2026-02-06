@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <record id="expense_expense_rule_manager" model="ir.model.access" >
+    <field name="group_id" ref="group_expense_manager"/>
+    <field name="model_id" ref="model_expense_expense"/>
+    <field name="name">Documents group_expense_manager</field>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    <field name="perm_write" eval="True"/>
+  </record>
+  <record id="expense_expense_rule_user" model="ir.model.access" >
+    <field name="group_id" ref="group_expense_user"/>
+    <field name="model_id" ref="model_expense_expense"/>
+    <field name="name">Documents group_user</field>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    <field name="perm_write" eval="True"/>
+  </record>
+  <!--
+  <record id="document_tag_category_rule_manager" model="ir.model.access" >
+    <field name="group_id" ref="group_expense_manager"/>
+    <field name="model_id" ref="model_document_tag_category"/>
+    <field name="name">Tag Categories group_manager</field>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    <field name="perm_write" eval="True"/>
+  </record>
+  <record id="document_tag_category_rule_user" model="ir.model.access" >
+    <field name="group_id" ref="group_expense_user"/>
+    <field name="model_id" ref="model_document_tag_category"/>
+    <field name="name">Tag Categories group_user</field>
+    <field name="perm_create" eval="False"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="False"/>
+    <field name="perm_write" eval="False"/>
+  </record>
+  <record id="document_tag_rule_manager" model="ir.model.access" >
+    <field name="group_id" ref="group_expense_manager"/>
+    <field name="model_id" ref="model_document_tag"/>
+    <field name="name">Tags group_manager</field>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    <field name="perm_write" eval="True"/>
+  </record>
+  <record id="document_tag_rule_user" model="ir.model.access" >
+    <field name="group_id" ref="group_expense_user"/>
+    <field name="model_id" ref="model_document_tag"/>
+    <field name="name">Tags group_user</field>
+    <field name="perm_create" eval="False"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="False"/>
+    <field name="perm_write" eval="False"/>
+  </record>
+  <record id="document_folder_rule_manager" model="ir.model.access" >
+    <field name="group_id" ref="group_expense_manager"/>
+    <field name="model_id" ref="model_document_folder"/>
+    <field name="name">Folders group_manager</field>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    <field name="perm_write" eval="True"/>
+  </record>
+  <record id="document_folder_rule_user" model="ir.model.access" >
+    <field name="group_id" ref="group_expense_user"/>
+    <field name="model_id" ref="model_document_folder"/>
+    <field name="name">Folders group_user</field>
+    <field name="perm_create" eval="False"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_unlink" eval="False"/>
+    <field name="perm_write" eval="False"/>
+  </record> -->
+</odoo>

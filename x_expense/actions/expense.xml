@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!--
+        Actions
+    -->
+
+    <record id="expense_expense_action_submit_expense" model="ir.actions.server">
+        <field name="name">Submit Expenses</field>
+        <field name="model_id" ref="model_expense_expense"/>
+        <field name="binding_model_id" ref="model_expense_expense"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+if records.filtered(lambda exp: exp.x_state != 'draft'):
+    raise UserError("Only draft expenses can be submitted.")
+
+for record in records:
+    if not record.x_price:
+        raise UserError("Price must be set to submit expense.")
+    if not record.x_product_id:
+        raise UserError("Product must be set to submit expense.")
+    if not record.x_partner_id:
+        raise UserError("Partner to reimbourse must be set to submit expense.")
+
+records.write({"x_state": "submit"})
+        </field>
+    </record>
+
+    <record id="expense_expense_action_approve_expense" model="ir.actions.server">
+        <field name="name">Approve Expenses</field>
+        <field name="model_id" ref="model_expense_expense"/>
+        <field name="binding_model_id" ref="model_expense_expense"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+if not env.user.has_group('x_expense.group_expense_manager'):
+    raise UserError("You don't have the rights to approve expenses.")
+
+if records.filtered(lambda exp: exp.x_state != 'submit'):
+    raise UserError("Only submitted expenses can be approved.")
+
+records.write({"x_state": "approved"})
+
+analytic_line_data = []
+for exp in records.filtered(lambda exp: exp.x_analytic_account_id):
+    analytic_line_data.append({
+        "account_id": exp.x_analytic_account_id.id,
+        "name": f"Expense: {exp.x_name}",
+        "date": exp.x_date,
+        "product_id": exp.x_product_id.id,
+        "partner_id": exp.x_partner_id.id,
+        "amount": exp.x_price,
+        "unit_amount": 1,
+        "ref": f"EXP-{exp.id}",
+        "x_expense_id": exp.id,
+    })
+env["account.analytic.line"].sudo().create(analytic_line_data)
+
+        </field>
+    </record>
+
+    <record id="expense_expense_action_pay_expense" model="ir.actions.server">
+        <field name="name">Pay Expenses</field>
+        <field name="model_id" ref="model_expense_expense"/>
+        <field name="binding_model_id" ref="model_expense_expense"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+if not env.user.has_group('x_expense.group_expense_manager'):
+    raise UserError("You don't have the rights to pay expenses.")
+
+if records.filtered(lambda exp: exp.x_state != 'approved'):
+    raise UserError("Only approved expenses can be marked as paid.")
+
+records.write({
+    "x_state": "done",
+    "x_payment_date": datetime.datetime.now(),
+})
+        </field>
+    </record>
+
+    <record id="expense_expense_action_cancel_expense" model="ir.actions.server">
+        <field name="name">Cancel Expenses</field>
+        <field name="model_id" ref="model_expense_expense"/>
+        <field name="binding_model_id" ref="model_expense_expense"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+if records.filtered(lambda exp: exp.x_state not in ['draft', 'submit', 'approved', 'done']):
+    raise UserError("Only draft, submitted, approved or done expenses can be cancelled.")
+
+records.write({"x_state": "cancel"})
+
+env["account.analytic.line"].search([('x_expense_id', 'in', records.ids)]).unlink()
+        </field>
+    </record>
+
+    <record id="expense_expense_action_reset_expense" model="ir.actions.server">
+        <field name="name">Reset Expenses</field>
+        <field name="model_id" ref="model_expense_expense"/>
+        <field name="binding_model_id" ref="model_expense_expense"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+if records.filtered(lambda exp: exp.x_state not in ['cancel']):
+    raise UserError("Only cancelled expenses can be reset to draft.")
+
+records.write({"x_state": "draft"})
+        </field>
+    </record>
+
+
+</odoo>

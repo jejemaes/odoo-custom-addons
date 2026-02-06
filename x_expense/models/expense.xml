@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Model -->
+    <record id="model_expense_expense" model="ir.model">
+        <field name="name">Expense</field>
+        <field name="model">x_expense.expense</field>
+        <field name="is_mail_thread" eval="True"/>
+        <field name="is_mail_activity" eval="True"/>
+    </record>
+
+    <!-- Fields -->
+    <record id="model_expense_expense_field_name" model="ir.model.fields">
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Name</field>
+        <field name="model">x_expense.expense</field>
+        <field name="model_id" ref="model_expense_expense"/>
+        <field name="name">x_name</field>
+        <field name="on_delete" eval="False"/>
+        <field name="required" eval="True"/>
+        <field name="tracking">1</field>
+        <field name="translate">standard</field>
+    </record>
+    <record id="model_expense_expense_field_user_id" model="ir.model.fields">
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="domain">[('share', '=', False)]</field>
+        <field name="field_description">User</field>
+        <field name="model">x_expense.expense</field>
+        <field name="model_id" ref="model_expense_expense"/>
+        <field name="name">x_user_id</field>
+        <field name="relation">res.users</field>
+        <field name="tracking">1</field>
+        <field name="required" eval="False"/>
+    </record>
+    <record id="model_expense_expense_field_partner_id" model="ir.model.fields">
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Person To Reimbourse</field>
+        <field name="model">x_expense.expense</field>
+        <field name="model_id" ref="model_expense_expense"/>
+        <field name="name">x_partner_id</field>
+        <field name="relation">res.partner</field>
+        <field name="tracking">3</field>
+        <field name="required" eval="False"/>
+    </record>
+    <record id="model_expense_expense_field_partnerer_email" model="ir.model.fields">
+        <field name="name">x_partner_email</field>
+        <field name="ttype">char</field>
+        <field name="related" eval="False"/>
+        <field name="field_description">E-mail</field>
+        <field name="model">x_expense.expense</field>
+        <field name="model_id" ref="model_expense_expense"/>
+        <field name="readonly" eval="False"/>
+        <field name="store" eval="True"/>
+        <field name="depends">x_partner_id</field>
+        <field name="compute"><![CDATA[
+for record in self:
+    if record.x_partner_id:
+        record["x_partner_email"] = record.x_partner_id.email
+]]></field>
+    </record>
+    <record id="model_expense_expense_field_date" model="ir.model.fields">
+        <field name="ttype">date</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Date</field>
+        <field name="model">x_expense.expense</field>
+        <field name="model_id" ref="model_expense_expense"/>
+        <field name="name">x_date</field>
+        <field name="on_delete" eval="False"/>
+    </record>
+
+    <record id="model_expense_expense_field_file_content" model="ir.model.fields">
+        <field name="ttype">binary</field>
+        <field name="copied" eval="False"/>
+        <field name="field_description">File Content</field>
+        <field name="model">x_expense.expense</field>
+        <field name="model_id" ref="model_expense_expense"/>
+        <field name="name">x_file_content</field>
+    </record>
+
+    <record id="model_expense_expense_field_mimetype" model="ir.model.fields">
+        <field name="ttype">char</field>
+        <field name="copied" eval="False"/>
+        <field name="field_description">Mimetype</field>
+        <field name="model">x_expense.expense</field>
+        <field name="model_id" ref="model_expense_expense"/>
+        <field name="name">x_mimetype</field>
+        <field name="required" eval="False"/>
+        <field name="readonly" eval="True"/>
+        <field name="store" eval="True"/>
+        <field name="depends">x_file_content</field>
+        <field name="compute"><![CDATA[
+attachment_data = self.env['ir.attachment'].search_read([('res_id', 'in', self.ids), ('res_model', '=', self._name), ('res_field', '=', 'x_file_content')], ["res_id", "mimetype"])
+mimetype_map = {item["res_id"]: item["mimetype"] for item in attachment_data}
+
+for document in self:
+    document['x_mimetype'] = mimetype_map.get(document.id, "unknonw")
+        ]]>
+        </field>
+    </record>
+
+    <record id="model_expense_expense_field_analytic_account_id" model="ir.model.fields">
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Analytic Account</field>
+        <field name="model">x_expense.expense</field>
+        <field name="model_id" ref="model_expense_expense"/>
+        <field name="name">x_analytic_account_id</field>
+        <field name="relation">account.analytic.account</field>
+        <field name="tracking">4</field>
+    </record>
+
+    <record id="model_expense_expense_field_product_id" model="ir.model.fields">
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Product</field>
+        <field name="model">x_expense.expense</field>
+        <field name="model_id" ref="model_expense_expense"/>
+        <field name="name">x_product_id</field>
+        <field name="relation">product.product</field>
+        <field name="domain">[('x_can_be_expensed', '=', True)]</field>
+    </record>
+
+    <record id="model_expense_expense_field_note" model="ir.model.fields">
+        <field name="ttype">html</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Notes</field>
+        <field name="model">x_expense.expense</field>
+        <field name="model_id" ref="model_expense_expense"/>
+        <field name="name">x_note</field>
+    </record>
+
+    <record id="model_expense_expense_field_state" model="ir.model.fields">
+        <field name="ttype">selection</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Status</field>
+        <field name="model">x_expense.expense</field>
+        <field name="model_id" ref="model_expense_expense"/>
+        <field name="name">x_state</field>
+        <field name="on_delete" eval="False"/>
+        <field name="selection">[('inbox', 'Inbox'), ('draft', 'Draft'), ('submit', 'Submitted'), ('approved', 'Approved'), ('done', 'Done'), ('cancel', 'Cancelled')]</field>
+        <field name="required" eval="True"/>
+        <field name="tracking">2</field>
+    </record>
+
+    <record id="model_expense_expense_field_price" model="ir.model.fields">
+        <field name="name">x_price</field>
+        <field name="ttype">float</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Price</field>
+        <field name="model">x_expense.expense</field>
+        <field name="model_id" ref="model_expense_expense"/>
+        <field name="required" eval="True"/>
+    </record>
+
+    <record id="expense_expense_field_date_start" model="ir.model.fields">
+        <field name="name">x_payment_date</field>
+        <field name="ttype">datetime</field>
+        <field name="copied" eval="False"/>
+        <field name="field_description">Payment Date</field>
+        <field name="model">x_expense.expense</field>
+        <field name="model_id" ref="model_expense_expense"/>
+        <field name="on_delete" eval="False"/>
+        <field name="readonly" eval="True"/>
+        <field name="required" eval="False"/>
+        <field name="tracking">6</field>
+    </record>
+
+    <!-- Default Value -->
+    <record id="model_expense_expense_field_state_default_value" model="ir.default" >
+        <field name="field_id" ref="model_expense_expense_field_state"/>
+        <field name="json_value">"draft"</field>
+    </record>
+
+</odoo>
