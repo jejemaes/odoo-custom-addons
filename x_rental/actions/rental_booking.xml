@@ -44,6 +44,9 @@ if record.x_partner_email:
     record.write({"x_partner_id": partner.id})
 
 record.message_subscribe(partner_ids=list(partner_to_subscribe))
+
+mail_template = env.ref("x_rental.email_template_rental_request_received")
+record.message_post_with_source(mail_template, subtype_id=env.ref("mail.mt_comment").id)
 ]]></field>
     </record>
 
