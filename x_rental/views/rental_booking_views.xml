@@ -54,24 +54,28 @@
                             <field name="x_name" required="1" placeholder="Name..."/>
                         </h1>
                     </div>
-                    <group name="rental_booking_detail">
-                        <group name="rental_booking_detail_left">
+                    <group>
+                        <group name="rental_details">
                             <field name="x_date_start" string="Dates" widget="daterange" options="{'end_date_field': 'x_date_stop'}"/>
                             <field name="x_date_stop" invisible="1"/>
                             <field name="x_resource_id" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group name="rental_contact" string="Contact Details">
                             <field name="x_partner_id"/>
                             <field name="x_partner_email" widget="email"/>
                             <field name="x_partner_phone" widget="phone" options="{'enable_sms': True}"/>
                             <field name="x_partner_shipping_id" context="{'search_default_customer':1, 'show_address': 1}" options='{"always_reload": True}' domain="[('commercial_partner_id', '=', x_partner_id)]"/>
                         </group>
-                        <group name="rental_booking_detail_right">
+                        <group name="rental_internal" string="Internal Informations">
                             <field name="x_user_id" widget="many2one_avatar_user"/>
                             <field name="x_sale_order_line_id" readonly="1"/>
                             <field name="x_sale_order_id" readonly="1"/>
                             <field name="x_company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                         </group>
                     </group>
-                    <group>
+                    <group string="Internal Notes">
                         <field name="x_notes" placeholder="Write notes here ..." nolabel="1" colspan="2"/>
                     </group>
                 </sheet>
@@ -207,10 +211,7 @@
         <field name="name">Rental Bookings</field>
         <field name="res_model">x_rental.booking</field>
         <field name="search_view_id" ref="rental_booking_view_search"/>
-        <field name="context">{
-            "search_default_filter_draft_booking": 1,
-            "search_default_filter_confirm_booking": 1,
-        }</field>
+        <field name="context">{}</field>
     </record>
 
     <record id="rental_booking_action_view_calendar" model="ir.actions.act_window.view">
