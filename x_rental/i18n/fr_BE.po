@@ -1,0 +1,568 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* x_rental
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0-20250930\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-17 15:03+0000\n"
+"PO-Revision-Date: 2026-02-17 15:03+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: x_rental
+#: model:mail.template,body_html:x_rental.email_template_rental_request_received
+msgid ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"        Hello,\n"
+"        <br/><br/>\n"
+"        Your rental booking request <span style=\"font-weight: bold;\" t-out=\"object.x_name or ''\">My Super Event</span>\n"
+"        for <span style=\"font-weight: bold;\" t-out=\"object.x_resource_id.name\">our material</span>.\n"
+"        has been received.\n"
+"        <br/>\n"
+"        The requested period is from <t t-out=\"object.x_date_start\" t-options=\"{&quot;widget&quot;: &quot;datetime&quot;, &quot;date_only&quot;: True, &quot;format&quot;: &quot;long&quot;}\">05/05/2026</t> to <t t-out=\"object.x_date_stop\" t-options=\"{&quot;widget&quot;: &quot;datetime&quot;, &quot;date_only&quot;: True, &quot;format&quot;: &quot;long&quot;}\">06/05/2026</t>.\n"
+"        <br/>\n"
+"        We'll get back to you to confirm if the booking is possible.\n"
+"        <br/>\n"
+"        Do not hesitate to contact us by replyin to this email if you have any questions.\n"
+"        <t t-if=\"not is_html_empty(object.x_user_id.signature)\" data-o-mail-quote-container=\"1\">\n"
+"            <div data-o-mail-quote=\"1\">--<br data-o-mail-quote=\"1\"/><t t-out=\"object.x_user_id.signature or ''\" data-o-mail-quote=\"1\">Mitchell Admin</t></div>\n"
+"        </t>\n"
+"    </p>\n"
+"</div>\n"
+"            "
+msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"        Bonjour,\n"
+"        <br/><br/>\n"
+"        Votre demande de location <span style=\"font-weight: bold;\" t-out=\"object.x_name or ''\">My Super Event</span>\n"
+"        pour <span style=\"font-weight: bold;\" t-out=\"object.x_resource_id.name\">our material</span>.\n"
+"        a bien été recue.\n"
+"        <br/>\n"
+"        La période demandée est du <t t-out=\"object.x_date_start\" t-options=\"{&quot;widget&quot;: &quot;datetime&quot;, &quot;date_only&quot;: True, &quot;format&quot;: &quot;long&quot;}\">05/05/2026</t> au <t t-out=\"object.x_date_stop\" t-options=\"{&quot;widget&quot;: &quot;datetime&quot;, &quot;date_only&quot;: True, &quot;format&quot;: &quot;long&quot;}\">06/05/2026</t>.\n"
+"        <br/>\n"
+"        Nous revenons vers vous pour vous confirmer que la location est bien possible.\n"
+"        <br/>\n"
+"        N'hésitez pas à nous contacter en repondant à cet email, si vous avez des questions.\n"
+"        <t t-if=\"not is_html_empty(object.x_user_id.signature)\" data-o-mail-quote-container=\"1\">\n"
+"            <div data-o-mail-quote=\"1\">--<br data-o-mail-quote=\"1\"/><t t-out=\"object.x_user_id.signature or ''\" data-o-mail-quote=\"1\">Mitchell Admin</t></div>\n"
+"        </t>\n"
+"    </p>\n"
+"</div>\n"
+"            "
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.sale_order_view_form_rental
+msgid "Add a rental"
+msgstr "Ajouter une location"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.resource_resource_view_form
+#: model_terms:ir.ui.view,arch_db:x_rental.resource_resource_view_search
+msgid "Archived"
+msgstr "Archivé"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.rental_link_sale_order_field_booking_id
+msgid "Booking"
+msgstr "Location"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_create_sale_order_view_form
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_search
+msgid "Cancelled Bookings"
+msgstr "Locations Annulées"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.rental_booking_field_company_id
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_search
+#: model_terms:ir.ui.view,arch_db:x_rental.resource_resource_view_search
+msgid "Company"
+msgstr "Société"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_search
+msgid "Confirmed Bookings"
+msgstr "Locations Confirmées"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.rental_booking_field_partner_id
+#: model:ir.model.fields,field_description:x_rental.rental_link_sale_order_field_partner_id
+msgid "Contact"
+msgstr ""
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_form
+msgid "Contact Details"
+msgstr "Détails du Contact"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.sale_order_field_rental_booking_count
+msgid "Count of Rental Booking"
+msgstr "Nombre de Locations"
+
+#. module: x_rental
+#: model:ir.model,name:x_rental.model_rental_link_sale_order
+msgid "Create Sale Order"
+msgstr ""
+
+#. module: x_rental
+#: model:ir.actions.act_window,name:x_rental.rental_create_sale_order_action_multi
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_form_extension
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_create_sale_order_view_form
+msgid "Create Sales Order"
+msgstr "Créer un Bon de Commande"
+
+#. module: x_rental
+#: model:ir.actions.server,name:x_rental.action_create_sale_order_from_rental_booking
+msgid "Create Sales Order from Rental Booking"
+msgstr "Créer un Bon de Commande depuis une location"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_search
+msgid "Date"
+msgstr "Date"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.rental_booking_field_date_stop
+#: model:ir.model.fields,field_description:x_rental.rental_link_sale_order_field_date_stop
+msgid "Date Stop"
+msgstr "Date de Fin"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_form
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_form_quick_create
+msgid "Dates"
+msgstr "Dates"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.product_rental_day_field_dayofweek
+msgid "Day Of Week"
+msgstr "Jour de la semaine"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.product_rental_price_field_rental_day_ids
+msgid "Days"
+msgstr "Jours"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.rental_booking_field_partner_shipping_id
+#: model:ir.model.fields,field_description:x_rental.rental_link_sale_order_field_partner_shipping_id
+msgid "Delivery Adress"
+msgstr "Adresse de Livraison"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_search
+msgid "Draft Bookings"
+msgstr "Locations en Brouillon"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.rental_booking_field_partner_email
+msgid "E-mail"
+msgstr ""
+
+#. module: x_rental
+#: model:x_rental.product_rental_day,x_name:x_rental.resource_day_friday
+msgid "Friday"
+msgstr "Vendredi"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_kanban
+msgid "From"
+msgstr "Du"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_search
+msgid "Future Activities"
+msgstr "Activités Futures"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_form
+msgid "Internal Informations"
+msgstr "Informations Internes"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_form
+msgid "Internal Notes"
+msgstr "Notes Internes"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.sale_order_line_field_is_rental
+msgid "Is Rental Line"
+msgstr "Est une ligne de location"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_search
+msgid "Late Activities"
+msgstr "Activités en retard"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_create_sale_order_view_form
+msgid "Link to Sales Order"
+msgstr ""
+
+#. module: x_rental
+#: model:res.groups,name:x_rental.group_rental_manager
+msgid "Manager"
+msgstr "Manager"
+
+#. module: x_rental
+#: model:x_rental.product_rental_day,x_name:x_rental.resource_day_monday
+msgid "Monday"
+msgstr "Lundi"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.product_rental_day_field_name
+#: model:ir.model.fields,field_description:x_rental.rental_booking_field_name
+msgid "Name"
+msgstr "Nom"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_form
+msgid "Name..."
+msgstr "Nom..."
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.rental_booking_field_notes
+msgid "Notes"
+msgstr ""
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.sale_order_line_field_resource_overlap_message
+msgid "Overlap Message"
+msgstr ""
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.rental_booking_field_partner_name
+msgid "Partner Name"
+msgstr ""
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_search
+msgid "Past Bookings"
+msgstr "Locations Passées"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_search
+msgid "Period"
+msgstr "Periode"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.rental_booking_field_partner_phone
+msgid "Phone"
+msgstr "Téléphone"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.product_rental_price_field_price
+msgid "Price"
+msgstr "Prix"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.rental_link_sale_order_field_product_id
+#: model_terms:ir.ui.view,arch_db:x_rental.resource_resource_view_search
+msgid "Product"
+msgstr "Produit"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.rental_link_sale_order_field_product_template_id
+#: model:ir.model.fields,field_description:x_rental.resource_resource_field_product_template_id
+msgid "Product Template"
+msgstr "Modèle de Produit"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.product_template_field_rent_ok
+#: model:ir.ui.menu,name:x_rental.rental_main_menu
+#: model:res.groups.privilege,name:x_rental.res_groups_privilege_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.product_template_view_search_rental
+msgid "Rental"
+msgstr "Location"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_form
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_form_quick_create
+msgid "Rental Booking"
+msgstr "Location"
+
+#. module: x_rental
+#: model:base.automation,name:x_rental.automation_rule_create_rental_booking_request
+#: model:ir.actions.server,name:x_rental.action_create_rental_booking_request
+msgid "Rental Booking: Create Request"
+msgstr "Location: créer une demande"
+
+#. module: x_rental
+#: model:ir.actions.act_window,name:x_rental.rental_booking_action
+#: model:ir.actions.act_window,name:x_rental.rental_booking_action_from_sale_order
+#: model:ir.model,name:x_rental.model_rental_booking
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_tree
+#: model_terms:ir.ui.view,arch_db:x_rental.sale_order_view_form_line_subview_rental
+msgid "Rental Bookings"
+msgstr "Locations"
+
+#. module: x_rental
+#: model:res.partner.category,name:x_rental.res_partner_category_rental_customer
+msgid "Rental Customer"
+msgstr "Client Loueur"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_create_sale_order_view_form
+#: model_terms:ir.ui.view,arch_db:x_rental.sale_order_line_view_form_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.sale_order_view_form_line_subview_rental
+msgid "Rental Dates"
+msgstr "Dates de Location"
+
+#. module: x_rental
+#: model:ir.model,name:x_rental.model_product_rental_day
+msgid "Rental Day"
+msgstr ""
+
+#. module: x_rental
+#: model:ir.model,name:x_rental.model_product_rental_price
+msgid "Rental Price"
+msgstr "Prix de Location"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.product_template_field_product_rental_price_ids
+#: model_terms:ir.ui.view,arch_db:x_rental.product_product_view_form_rental
+msgid "Rental Prices"
+msgstr "Prix de Location"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.resource_resource_field_product_id
+#: model_terms:ir.ui.view,arch_db:x_rental.sale_order_view_form_line_subview_rental
+msgid "Rental Product"
+msgstr "Produit de Location"
+
+#. module: x_rental
+#: model:mail.template,subject:x_rental.email_template_rental_request_received
+msgid "Rental Request: {{ object.x_name }} for {{ object.x_date_start }}"
+msgstr "Demande de Location: {{ object.x_name }} pour {{ object.x_date_start }}"
+
+#. module: x_rental
+#: model:base.automation,name:x_rental.automation_rule_sale_order_line_onchange_resource_quantity
+#: model:ir.actions.server,name:x_rental.action_sale_order_line_onchange_resource_quantity
+msgid "Rental Sale Order Line: Onchange quantity (resource_ids)"
+msgstr ""
+
+#. module: x_rental
+#: model:base.automation,name:x_rental.automation_rule_sale_order_line_rental_unit_price
+#: model:ir.actions.server,name:x_rental.action_sale_order_line_onchange_rental_unit_price
+msgid "Rental Sale Order Line: Onchange unit price (rental dates)"
+msgstr ""
+
+#. module: x_rental
+#: model:ir.actions.server,name:x_rental.action_sale_order_change_state
+msgid "Rental Sale Order: Change Sale ORder State"
+msgstr ""
+
+#. module: x_rental
+#: model:base.automation,name:x_rental.automation_rule_sale_order_change_state
+msgid "Rental Sale Order: change state"
+msgstr ""
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.sale_order_line_field_rental_date_start
+msgid "Rental Start Date"
+msgstr "Date de début de Location"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.sale_order_line_field_rental_date_stop
+msgid "Rental Stop Date"
+msgstr "Date de fin de Location"
+
+#. module: x_rental
+#: model:mail.template,name:x_rental.email_template_rental_request_received
+msgid "Rental: Send Request Acknowledgment"
+msgstr "Location: envoyer un accusé de reception"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_search
+msgid "Request"
+msgstr "Demandes"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.rental_booking_field_resource_id
+#: model:ir.model.fields,field_description:x_rental.rental_link_sale_order_field_resource_id
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_calendar
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_search
+#: model_terms:ir.ui.view,arch_db:x_rental.resource_resource_view_form
+msgid "Resource"
+msgstr "Matériel"
+
+#. module: x_rental
+#: model:ir.actions.act_window,name:x_rental.resource_resource_action
+#: model:ir.model.fields,field_description:x_rental.sale_order_line_field_resource_ids
+#: model:ir.ui.menu,name:x_rental.rental_main_resource
+#: model_terms:ir.ui.view,arch_db:x_rental.resource_resource_view_tree
+msgid "Resources"
+msgstr "Matériels"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.rental_booking_field_user_id
+msgid "Responsable"
+msgstr ""
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.rental_booking_field_sale_order_id
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_search
+msgid "Sale Order"
+msgstr "Bon de Commande"
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.rental_booking_field_sale_order_line_id
+msgid "Sale Order Line"
+msgstr "Ligne de Bon de Commande"
+
+#. module: x_rental
+#: model:x_rental.product_rental_day,x_name:x_rental.resource_day_saturday
+msgid "Saturday"
+msgstr "Samedi"
+
+#. module: x_rental
+#: model:ir.ui.menu,name:x_rental.rental_main_schedule
+msgid "Schedule"
+msgstr "Planning"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_search
+msgid "Search Rental Booking"
+msgstr ""
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.resource_resource_view_search
+msgid "Search Resource"
+msgstr ""
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_search
+msgid "Show all opportunities for which the next action date is before today"
+msgstr ""
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.rental_booking_field_date_start
+#: model:ir.model.fields,field_description:x_rental.rental_link_sale_order_field_date_start
+msgid "Start Date"
+msgstr "Date de début"
+
+#. module: x_rental
+#: model:ir.model.constraint,message:x_rental.rental_booking_constraint_dates
+msgid "Start date must be before the end date of the booking."
+msgstr ""
+
+#. module: x_rental
+#: model:ir.model.fields,field_description:x_rental.rental_booking_field_status
+msgid "Status"
+msgstr ""
+
+#. module: x_rental
+#: model:x_rental.product_rental_day,x_name:x_rental.resource_day_sunday
+msgid "Sunday"
+msgstr "Dimanche"
+
+#. module: x_rental
+#: model:res.partner.category,name:x_rental.res_partner_category_rental_team
+msgid "Team Rental"
+msgstr ""
+
+#. module: x_rental
+#: model:res.groups,comment:x_rental.group_rental_user_all
+msgid ""
+"The user will have access to all records of everyone in the rental "
+"application."
+msgstr ""
+
+#. module: x_rental
+#: model:res.groups,comment:x_rental.group_rental_manager
+msgid ""
+"The user will have an access to the rental configuration, reports and all "
+"the rental orders."
+msgstr ""
+
+#. module: x_rental
+#: model:x_rental.product_rental_day,x_name:x_rental.resource_day_thursday
+msgid "Thursday"
+msgstr "Jeudi"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_kanban
+msgid "To"
+msgstr "au"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_search
+msgid "Today Activities"
+msgstr "Activités du jour"
+
+#. module: x_rental
+#: model:x_rental.product_rental_day,x_name:x_rental.resource_day_tuesday
+msgid "Tuesday"
+msgstr "Mardi"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.resource_resource_view_search
+msgid "Type"
+msgstr ""
+
+#. module: x_rental
+#: model:mail.template,description:x_rental.email_template_rental_request_received
+msgid ""
+"Used when someone is filling the website form and the booking is created as "
+"a request. This template is sent to every internal partner with the tag "
+"'rental team'."
+msgstr ""
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.resource_resource_view_search
+msgid "User"
+msgstr ""
+
+#. module: x_rental
+#: model:res.groups,name:x_rental.group_rental_user_all
+msgid "User: All Bookings"
+msgstr ""
+
+#. module: x_rental
+#: model:res.groups,name:x_rental.group_rental_user
+msgid "User: Own Bookings only"
+msgstr ""
+
+#. module: x_rental
+#: model:x_rental.product_rental_day,x_name:x_rental.resource_day_wednesday
+msgid "Wednesday"
+msgstr "Mercredi"
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_form
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_form_quick_create
+msgid "Write notes here ..."
+msgstr ""
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_kanban
+msgid "bg-info"
+msgstr ""
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_kanban
+msgid "bg-light"
+msgstr ""
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_kanban
+msgid "bg-success"
+msgstr ""
+
+#. module: x_rental
+#: model_terms:ir.ui.view,arch_db:x_rental.rental_booking_view_kanban
+msgid "bg-warning"
+msgstr ""
