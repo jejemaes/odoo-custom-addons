@@ -30,7 +30,7 @@ if record.x_rental_date_start and record.x_rental_date_stop and record.product_t
     period_dow = [item.weekday()+1 for item in dateutil.rrule.rrule(freq=dateutil.rrule.DAILY, dtstart=start, until=stop)]
 
     result = []
-    rental_prices = record.product_template_id.x_product_rental_price_ids
+    rental_prices = record.product_template_id.x_product_rental_price_ids.sorted(lambda p: len(p.x_rental_day_ids), reverse=True)
     dow_to_process = period_dow[:] # copy
     while dow_to_process:
         found = False
