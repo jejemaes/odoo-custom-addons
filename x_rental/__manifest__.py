@@ -34,6 +34,7 @@
         # Data
         "data/product_rental_day_data.xml",
         "data/res_partner_category_data.xml",
+        "data/mail_template_data.xml",
         # Constraint SQL
         "models/constraints.sql",
     ],
