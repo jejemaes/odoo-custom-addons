@@ -123,7 +123,7 @@
                             <field name="x_product_id" readonly="x_state != 'draft'"/>
                             <field name="x_price" readonly="x_state != 'draft'"/>
                             <field name="x_analytic_account_id" readonly="x_state in ['approved', 'done', 'cancel']"/>
-                            <field name="x_payment_date"/>
+                            <field name="x_payment_date" readonly="x_state in ['draft', 'submit', 'approved', 'cancel']"/>
                         </group>
                     </group>
                     <notebook>

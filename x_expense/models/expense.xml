@@ -163,7 +163,7 @@ for document in self:
         <field name="model">x_expense.expense</field>
         <field name="model_id" ref="model_expense_expense"/>
         <field name="on_delete" eval="False"/>
-        <field name="readonly" eval="True"/>
+        <field name="readonly" eval="False"/>
         <field name="required" eval="False"/>
         <field name="tracking">6</field>
     </record>

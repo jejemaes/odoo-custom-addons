@@ -92,7 +92,7 @@ if records.filtered(lambda exp: exp.x_state not in ['draft', 'submit', 'approved
 
 records.write({"x_state": "cancel"})
 
-env["account.analytic.line"].search([('x_expense_id', 'in', records.ids)]).unlink()
+env["account.analytic.line"].sudo().search([('x_expense_id', 'in', records.ids)]).unlink()
         </field>
     </record>
 
