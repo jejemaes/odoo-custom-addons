@@ -82,7 +82,7 @@ if record.x_rental_date_start and record.x_rental_date_stop and record.product_t
 
 if not env.context.get("no_rental_booking_creation"):
     booking_map = {}
-    bookings = env["x_rental_booking"].search([("x_sale_order_id", "=", record.id), ("x_status", "!=", "done")])
+    bookings = env["x_rental.booking"].search([("x_sale_order_id", "=", record.id), ("x_status", "!=", "done")])
     for booking in bookings:
         booking_map[(booking.x_sale_order_line_id.id, booking.x_resource_id.id)] = booking
 
@@ -112,8 +112,8 @@ if not env.context.get("no_rental_booking_creation"):
             else:
                 bookings_to_update.append(booking_map[(line.id, resource.id)].id)
 
-        env["x_rental_booking"].create(bookings_to_create)
-        env["x_rental_booking"].search([("id", "in", bookings_to_update)]).write({"x_status": status})
+        env["x_rental.booking"].create(bookings_to_create)
+        env["x_rental.booking"].search([("id", "in", bookings_to_update)]).write({"x_status": status})
 ]]></field>
     </record>
 
