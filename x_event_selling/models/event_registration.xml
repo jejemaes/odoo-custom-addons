@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <record id="event_registration_field_sale_status" model="ir.model.fields">
+        <field name="name">x_sale_status</field>
+        <field name="ttype">selection</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Sale Status</field>
+        <field name="model">event.registration</field>
+        <field name="model_id" ref="event.model_event_registration"/>
+        <field name="selection">[('to_pay', 'Not Sold'), ('sold', 'Sold'), ('free', 'Free')]</field>
+        <field name="required" eval="False"/>
+        <field name="readonly" eval="True"/>
+        <field name="store" eval="True"/>
+        <field name="depends">event_ticket_id</field>
+        <field name="compute"><![CDATA[
+for registration in self:
+    if registration.event_ticket_id.x_price:
+        registration['x_sale_status'] = 'to_pay'
+    else:
+        registration['x_sale_status'] = 'free'
+]]></field>
+    <field name="tracking">5</field>
+    </record>
+
+    <record id="event_registration_field_sale_price" model="ir.model.fields">
+        <field name="name">x_sale_price</field>
+        <field name="ttype">float</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Sale Price</field>
+        <field name="model">event.registration</field>
+        <field name="model_id" ref="event.model_event_registration"/>
+        <field name="required" eval="False"/>
+        <field name="readonly" eval="True"/>
+        <field name="store" eval="True"/>
+        <field name="depends">event_ticket_id</field>
+        <field name="compute"><![CDATA[
+for registration in self:
+    if registration.event_ticket_id:
+        registration['x_sale_price'] = registration.event_ticket_id.x_price 
+    else:
+        registration['x_sale_price'] = 0.0
+]]></field>
+    </record>
+
+    <record id="event_registration_field_currency_id" model="ir.model.fields">
+        <field name="ttype">many2one</field>
+        <field name="field_description">Currency</field>
+        <field name="model">event.registration</field>
+        <field name="model_id" ref="event.model_event_registration"/>
+        <field name="name">x_currency_id</field>
+        <field name="relation">res.currency</field>
+        <field name="related">event_id.x_currency_id</field>
+        <field name="readonly" eval="True"/>
+    </record>
+
+</odoo>
