@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="event_event_ticket_view_tree" model="ir.ui.view">
+        <field name="name">event.event.ticket.view.list.inherit.x_event_selling</field>
+        <field name="model">event.event.ticket</field>
+        <field name="inherit_id" ref="event.event_event_ticket_view_tree_from_event"/>
+        <field name="arch" type="xml">
+            <field name="description" position="after">
+                <field name="x_currency_id" column_invisible="True"/> <!-- Used to get the currency symbol on the ticket price. -->
+                <field name="x_price" widget="monetary" options="{'currency_field': 'x_currency_id'}"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="event_event_ticket_view_form" model="ir.ui.view">
+        <field name="name">event.event.ticket.view.form.inherit.x_event_selling</field>
+        <field name="model">event.event.ticket</field>
+        <field name="inherit_id" ref="event.event_event_ticket_view_form_from_event"/>
+        <field name="arch" type="xml">
+            <field name="description" position="after">
+                <field name="x_price"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
