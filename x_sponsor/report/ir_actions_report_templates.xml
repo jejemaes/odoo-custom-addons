@@ -24,7 +24,7 @@
                 <div class="col-12">
                     <h3>Introduction</h3>
                     <div t-esc="contract.x_content"/>
-                    
+                    <br/>
                     This contract runs from <span t-field="contract.x_start_date"/> to  <span t-field="contract.x_stop_date"/> and is between 
                     
                     <div class="row justify-content-center">
@@ -127,6 +127,7 @@
                                 <img t-if="sponsor.x_signature_sponsee" t-att-src="image_data_uri(sponsor.x_signature_sponsee)" style="max-height: 4cm; max-width: 8cm;"/>
                             </t>
                             <t t-else="">
+                                <br/>
                                 .......................................................
                             </t>
                             <br/>

@@ -706,7 +706,7 @@ msgstr "et est établi entre"
 #. module: x_sponsor
 #: model_terms:ir.ui.view,arch_db:x_sponsor.report_sponsor_contract_document
 msgid "called <b>the Sponsee</b>."
-msgstr "dénommé <b>the bénéficiare</b>."
+msgstr "dénommé <b>le Bénéficiare</b>."
 
 #. module: x_sponsor
 #: model_terms:ir.ui.view,arch_db:x_sponsor.report_sponsor_contract_document
