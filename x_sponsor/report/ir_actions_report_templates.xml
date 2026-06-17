@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- external layout -->
+<template id="report_sponsor_contract_document">
+    <t t-call="web.external_layout">
+        <div class="page">
+            
+            <div class="row">
+                <h1 class="text-center mb32">
+                    <t t-esc="contract.x_name"/>
+                </h1>
+                <h2 class="text-center text-muted">
+                    <t t-if="sponsor">
+                        <t t-esc="sponsor.x_code"/>
+                    </t>
+                    <t t-else="">
+                        <t t-esc="contract.x_prefix_code"/>/......
+                    </t>
+                </h2>
+            </div>
+
+            <div class="row mb32">
+                <div class="col-12">
+                    <h3>Introduction</h3>
+                    <div t-esc="contract.x_content"/>
+                    
+                    This contract runs from <span t-field="contract.x_start_date"/> to  <span t-field="contract.x_stop_date"/> and is between 
+                    
+                    <div class="row justify-content-center">
+                        <div class="col-3">
+                            <address t-field="contract.x_company_id.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
+                            called <b>the Sponsee</b>.
+                        </div>
+                        <div class="col-3">
+                            <t t-if="sponsor">
+                                <address t-field="sponsor.x_partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
+                            </t>
+                            <t t-else="">  
+..........................................................................................<br/>
+..........................................................................................<br/>
+..........................................................................................<br/>
+..........................................................................................<br/>
+..........................................................................................<br/>
+                            </t>
+                            called <b>the Sponsor</b>.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row mb32">
+                <div class="col-12">
+                    <h3>Available Options</h3>
+                    The sponsor can choose one of the following option to support the sponsee:
+                    <ul class="list-unstyled">
+                        <li t-foreach="contract.x_line_ids" t-as="line">
+                            <t t-set="is_checked" t-value="False"/>
+                            <t t-if="sponsor">
+                                <t t-if="sponsor.x_sponsor_contract_line_id == line">
+                                    <t t-set="is_checked" t-value="True"/>
+                                </t>
+                            </t>
+                           
+                            <i t-attf-class="fa #{'fa-check' if is_checked  else 'fa-square-o'}"/>
+                            <t t-esc="line.x_name"/> (<span t-field="line.x_product_price" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: line.x_currency_id}">50.00€</span>) 
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row mb32">
+                <div class="col-12">
+                    <h3>Payment and terms</h3>
+                    <p>The amount to pay is 
+                        <t t-if="sponsor">
+                            <span t-field="sponsor.x_total_amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: sponsor.x_currency_id}"> ............. </span>
+                        </t>
+                        <t t-else="">
+                            ..........
+                        </t>
+                    </p>
+
+                    This amount will be paid using 
+                    <ul class="list-unstyled">
+                        <li t-foreach="contract.env['x_sponsor.payment_method'].search([('x_internal', '=', False)])" t-as="payment_method">
+                            <t t-set="is_checked" t-value="False"/>
+                            <t t-if="sponsor">
+                                <t t-if="sponsor.x_payment_method_id == payment_method">
+                                    <t t-set="is_checked" t-value="True"/>
+                                </t>
+                            </t>
+                           
+                            <i t-attf-class="fa #{'fa-check' if is_checked  else 'fa-square-o'}"/>
+                            <t t-esc="payment_method.x_name"/> 
+                        </li>
+                    </ul>
+
+                    <div t-esc="contract.x_terms"/>
+                </div>
+            </div>
+            
+            <div class="row mb32">
+                <div class="col-12">
+                    <h3>Signatures</h3>
+                    
+                    <div class="row justify-content-md-center">
+                        <div class="col-4">
+                            Date and signature for the Sponsor <br/>
+                            <t t-if="sponsor">
+                                <t t-if="sponsor.x_signed_by">
+                                    <t t-esc="sponsor.x_signed_by"/> <br/>
+                                </t>
+                                Signed on <span t-field="sponsor.x_signature_date">..................</span> <br/>
+                                <img t-if="sponsor.x_signature" t-att-src="image_data_uri(sponsor.x_signature)" style="max-height: 4cm; max-width: 8cm;"/>
+                            </t>
+                            <t t-else="">
+                                .......................................................
+                            </t>
+                            <br/>
+                        </div>
+                        <div class="col-4">
+                            Signature for the Sponsee <br/>
+                            <t t-if="sponsor">
+                                <span t-field="sponsor.x_user_id.name">..................</span> <br/>
+                                <img t-if="sponsor.x_signature_sponsee" t-att-src="image_data_uri(sponsor.x_signature_sponsee)" style="max-height: 4cm; max-width: 8cm;"/>
+                            </t>
+                            <t t-else="">
+                                .......................................................
+                            </t>
+                            <br/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </t>
+</template>
+
+<!-- 
+    Contract
+-->
+<template id="report_sponsor_contract_raw">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="x_sponsor.report_sponsor_contract_document">
+                <t t-set="contract" t-value="doc"/>
+                <t t-set="sponsor" t-value="None"/>
+            </t>
+        </t>
+    </t>
+</template>
+
+<template id="report_sponsor_contract">
+    <t t-call="x_sponsor.report_sponsor_contract_raw"/>
+</template>
+
+
+<!-- 
+    Sponsor
+-->
+<template id="report_sponsor_sponsor_raw">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="x_sponsor.report_sponsor_contract_document">
+                <t t-set="contract" t-value="doc.x_sponsor_contract_id"/>
+                <t t-set="sponsor" t-value="doc"/>
+            </t>
+        </t>
+    </t>
+</template>
+
+<template id="report_sponsor_sponsor">
+    <t t-call="x_sponsor.report_sponsor_sponsor_raw"/>
+</template>
+
+
+</odoo>

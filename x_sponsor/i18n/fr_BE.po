@@ -1,0 +1,719 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* x_sponsor
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0-20260421\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-16 20:55+0000\n"
+"PO-Revision-Date: 2026-06-16 20:55+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: x_sponsor
+#: model:ir.actions.report,print_report_name:x_sponsor.action_report_external_sponsor_contract
+#: model:ir.actions.report,print_report_name:x_sponsor.action_report_external_sponsor_sponsor
+msgid ""
+"'%s - %s' % (object.x_sponsor_contract_id.x_name, "
+"object.x_code.replace('/','-'))"
+msgstr ""
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.report_sponsor_contract_document
+msgid ""
+"..........................................................................................<br/>\n"
+"..........................................................................................<br/>\n"
+"..........................................................................................<br/>\n"
+"..........................................................................................<br/>\n"
+"..........................................................................................<br/>"
+msgstr ""
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.report_sponsor_contract_document
+msgid ""
+"<br/>\n"
+"                                Signed on"
+msgstr ""
+"<br/>\n"
+"                                Signé le"
+
+#. module: x_sponsor
+#: model:mail.template,body_html:x_sponsor.mail_template_data_sponsor_sponsor_signed_contract
+msgid ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"        Dear <t t-out=\"object.x_partner_id.name or ''\">Azure Interior</t><br/><br/>\n"
+"        \n"
+"        Please find attached the contract, which has been completed and signed in accordance with our agreement.\n"
+"        <br/>\n"
+"        If you have any questions or comments, please do not hesitate to contact us again.\n"
+"        <br/>\n"
+"        The contract will come into effect upon receipt of payment.\n"
+"        <br/><br/>\n"
+"        Thank you once again for your support.\n"
+"        <br/><br/>\n"
+"        Best regards,\n"
+"        <t t-if=\"not is_html_empty(user.signature)\" data-o-mail-quote-container=\"1\">\n"
+"            <br/><br/>\n"
+"            <div data-o-mail-quote=\"1\">--<br data-o-mail-quote=\"1\"/><t t-out=\"user.signature or ''\" data-o-mail-quote=\"1\">Mitchell Admin</t></div>\n"
+"        </t>\n"
+"    </p>\n"
+"</div>\n"
+"        "
+msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"        Bonjour <t t-out=\"object.x_partner_id.name or ''\">Azure Interior</t><br/><br/>\n"
+"        \n"
+"        Vous trouverez ci-joint le contract rempli et signé, conformément à ce que nous avons discuté.\n"
+"        <br/><br/>\n"
+"        Si vous avez des questions ou des remarques, n'hésitez pas à revenir vers nous !\n"
+"        <br/>\n"
+"        Le contrat prendra effet à la reception du paiement.\n"
+"        <br/><br/>\n"
+"        Encore un grand merci de votre soutien.\n"
+"        <br/><br/>\n"
+"        Bien à vous,\n"
+"        <t t-if=\"not is_html_empty(user.signature)\" data-o-mail-quote-container=\"1\">\n"
+"            <br/><br/>\n"
+"            <div data-o-mail-quote=\"1\">--<br data-o-mail-quote=\"1\"/><t t-out=\"user.signature or ''\" data-o-mail-quote=\"1\">Mitchell Admin</t></div>\n"
+"        </t>\n"
+"    </p>\n"
+"</div>\n"
+"        "
+
+#. module: x_sponsor
+#: model:mail.template,body_html:x_sponsor.mail_template_data_sponsor_sponsor_request
+msgid ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"        Dear <t t-out=\"object.x_partner_id.name or ''\">Azure Interior</t><br/><br/>\n"
+"        We have heard that you can be interessed in sponsoring our association.\n"
+"\n"
+"        Here is proposal for <span style=\"font-weight:bold;\" t-out=\"object.x_sponsor_contract_id.x_name\">Contract Name</span> with different options to support us:\n"
+"        </p><ul>\n"
+"            <li t-foreach=\"object.x_sponsor_contract_id.x_line_ids\" t-as=\"line\">\n"
+"                <t t-esc=\"line.x_name\"/> (<t t-esc=\"line.x_product_price\"/>)\n"
+"            </li>\n"
+"        </ul>\n"
+"        \n"
+"        You can reply this email to give us your choice.\n"
+"        Do not hesitate to contact us if you have any questions.\n"
+"        <br/><br/>\n"
+"        Best regards,\n"
+"        <t t-if=\"not is_html_empty(user.signature)\" data-o-mail-quote-container=\"1\">\n"
+"            <br/><br/>\n"
+"            <div data-o-mail-quote=\"1\">--<br data-o-mail-quote=\"1\"/><t t-out=\"user.signature or ''\" data-o-mail-quote=\"1\">Mitchell Admin</t></div>\n"
+"        </t>\n"
+"    \n"
+"</div>\n"
+"        "
+msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"        Bonjour <t t-out=\"object.x_partner_id.name or ''\">Azure Interior</t><br/><br/>\n"
+"        Nous avons entendu que vous seriez interessé par soutenir notre association.\n"
+"\n"
+"        Voici notre proposition pour <span style=\"font-weight:bold;\" t-out=\"object.x_sponsor_contract_id.x_name\">Contract Name</span> avec différentes options pour nous soutenir:\n"
+"        </p><ul>\n"
+"            <li t-foreach=\"object.x_sponsor_contract_id.x_line_ids\" t-as=\"line\">\n"
+"                <t t-esc=\"line.x_name\"/> (<t t-esc=\"line.x_product_price\"/>)\n"
+"            </li>\n"
+"        </ul>\n"
+"        \n"
+"        Vous pouvez nous donner votre choix en répondant à cet email.\n"
+"        N'hésitez pas à nous contacter pour tous renseignements supplémentaire.\n"
+"        <br/><br/>\n"
+"        Bien à vous,\n"
+"        <t t-if=\"not is_html_empty(user.signature)\" data-o-mail-quote-container=\"1\">\n"
+"            <br/><br/>\n"
+"            <div data-o-mail-quote=\"1\">--<br data-o-mail-quote=\"1\"/><t t-out=\"user.signature or ''\" data-o-mail-quote=\"1\">Mitchell Admin</t></div>\n"
+"        </t>\n"
+"    \n"
+"</div>\n"
+"        "
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_contract_view_kanban
+msgid "<span class=\"fa fa-clock-o me-2\" title=\"Dates\"/>"
+msgstr ""
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_contract_field_active
+msgid "Active"
+msgstr "Actif"
+
+#. module: x_sponsor
+#: model:res.groups,name:x_sponsor.group_sponsor_manager
+msgid "Administrator"
+msgstr "Administrateur"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_total_amount
+msgid "Amount"
+msgstr "Montant"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_contract_view_kanban
+msgid "Archive"
+msgstr ""
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.report_sponsor_contract_document
+msgid "Available Options"
+msgstr "Options disponibles"
+
+#. module: x_sponsor
+#: model:x_sponsor.stage,x_name:x_sponsor.sponsor_stage_cancel
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_contract_line_id
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form_search
+msgid "Chosen Option"
+msgstr "Option choisie"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form_search
+msgid "Closed"
+msgstr "Cloturé"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_code
+msgid "Code"
+msgstr ""
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_contract_field_prefix_code
+msgid "Code Prefix"
+msgstr "Préfix du Code"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_contract_field_company_id
+msgid "Company"
+msgstr "Société"
+
+#. module: x_sponsor
+#: model:ir.ui.menu,name:x_sponsor.sponsor_main_configuration
+msgid "Configuration"
+msgstr "Configuration"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_partner_id
+msgid "Contact"
+msgstr "Contrat"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_contract_field_content
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_contract_view_form
+msgid "Content"
+msgstr "Contenu"
+
+#. module: x_sponsor
+#: model:ir.actions.report,name:x_sponsor.action_report_external_sponsor_contract
+#: model:ir.actions.report,name:x_sponsor.action_report_external_sponsor_sponsor
+#: model:ir.model,name:x_sponsor.model_sponsor_contract
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_contract_id
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_contract_view_form
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form_search
+msgid "Contract"
+msgstr "Contrat"
+
+#. module: x_sponsor
+#: model:ir.model,name:x_sponsor.model_sponsor_contract_line
+msgid "Contract Line"
+msgstr "Ligne de Contract"
+
+#. module: x_sponsor
+#: model:ir.actions.act_window,name:x_sponsor.sponsor_contract_action
+#: model:ir.ui.menu,name:x_sponsor.sponsor_main_contract
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_pivot
+msgid "Contracts"
+msgstr "Contrats"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_contract_field_sponsor_count
+msgid "Count of Sponsorship"
+msgstr "Nombre de Sponsor"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_contract_line_field_currency_id
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_currency_id
+msgid "Currency"
+msgstr "Devise"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form_search
+msgid "Customer"
+msgstr "Client"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_date
+msgid "Date"
+msgstr "Date"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.report_sponsor_contract_document
+msgid "Date and signature for the Sponsor <br/>"
+msgstr "Date et Signature du Sponsor <br/>"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_kanban
+msgid "Delete"
+msgstr "Supprimer"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_contract_line_field_description
+msgid "Description"
+msgstr "Description"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form
+msgid "Details"
+msgstr "Détails"
+
+#. module: x_sponsor
+#: model:x_sponsor.stage,x_name:x_sponsor.sponsor_stage_done
+msgid "Done"
+msgstr "Fait"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_partner_email
+msgid "E-mail"
+msgstr ""
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_contract_view_kanban
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_kanban
+msgid "Edit"
+msgstr "Editer"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_contract_view_form
+msgid "Generate Contracts"
+msgstr ""
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form
+msgid "I take it"
+msgstr "Me l'assigner"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form
+msgid "Internal Data"
+msgstr "Données Internes"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.report_sponsor_contract_document
+msgid "Introduction"
+msgstr "Introduction"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_payment_method_field_internal
+msgid "Is Internal"
+msgstr "Est Interne"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_contract_view_form
+msgid "Line"
+msgstr "Ligne"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form_search
+msgid "My Contracts"
+msgstr "Mes Contrats"
+
+#. module: x_sponsor
+#: model:ir.ui.menu,name:x_sponsor.sponsor_main_sponsors
+msgid "My Sponsorships"
+msgstr "Mes Sponsors"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_contract_field_name
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_contract_line_field_name
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_payment_method_field_name
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_name
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_stage_field_name
+msgid "Name"
+msgstr "Nom"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_contract_view_form
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form
+msgid "Name..."
+msgstr "Nom..."
+
+#. module: x_sponsor
+#: model:x_sponsor.stage,x_name:x_sponsor.sponsor_stage_new
+msgid "New"
+msgstr "Nouveau"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_contract_field_note
+msgid "Notes"
+msgstr "Notes"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form_search
+msgid "Open"
+msgstr "Ouvert"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form_search
+msgid "Paid Contracts"
+msgstr "Contrats Payés"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form
+msgid "Payment"
+msgstr "Paiement"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_payment_date
+msgid "Payment Date"
+msgstr "Date de Paiement"
+
+#. module: x_sponsor
+#: model:ir.actions.act_window,name:x_sponsor.sponsor_payment_method_action
+#: model:ir.model,name:x_sponsor.model_sponsor_payment_method
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_payment_method_id
+#: model:ir.ui.menu,name:x_sponsor.sponsor_main_configuration_payment_method
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form_search
+msgid "Payment Method"
+msgstr "Méthode de Paiement"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_payment_status
+msgid "Payment Status"
+msgstr "Status de Paiement"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.report_sponsor_contract_document
+msgid "Payment and terms"
+msgstr "Termes et Paiement"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_partner_phone
+msgid "Phone"
+msgstr "Télépone"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_contract_line_field_product_price
+msgid "Price"
+msgstr "Prix"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_contract_view_kanban
+msgid "Print"
+msgstr "Imprimer"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_priority
+msgid "Priority"
+msgstr "Priorité"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_contract_line_field_product_id
+msgid "Product"
+msgstr ""
+
+#. module: x_sponsor
+#: model:ir.ui.menu,name:x_sponsor.sponsor_main_configuration_product_variant
+msgid "Product Variants"
+msgstr ""
+
+#. module: x_sponsor
+#: model:ir.ui.menu,name:x_sponsor.sponsor_main_configuration_product
+msgid "Products"
+msgstr ""
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_contract_field_user_id
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_user_id
+msgid "Responsable"
+msgstr "Responsable"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form_search
+msgid "Search Resource"
+msgstr ""
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form
+msgid "Send"
+msgstr "Envoyer"
+
+#. module: x_sponsor
+#: model:x_sponsor.stage,x_name:x_sponsor.sponsor_stage_sent
+msgid "Sent"
+msgstr "Envoyé"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_contract_line_field_sequence
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_payment_method_field_sequence
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_stage_field_sequence
+msgid "Sequence"
+msgstr ""
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form
+msgid "Signature"
+msgstr ""
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_signature_date
+msgid "Signature Date"
+msgstr "Date de Signature"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.report_sponsor_contract_document
+msgid "Signature for the Sponsee <br/>"
+msgstr "Signature pour le bénéficiare"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.report_sponsor_contract_document
+msgid "Signatures"
+msgstr ""
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_signed_by
+msgid "Signed By"
+msgstr "Signé par"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_signature_sponsee
+msgid "Sponsee Signature"
+msgstr "Signature du bénéficiare"
+
+#. module: x_sponsor
+#: model:res.partner.category,name:x_sponsor.res_partner_category_sponsor
+msgid "Sponsor"
+msgstr "Sponsor"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form
+msgid "Sponsor Contact"
+msgstr "Contrat de Sponsoring"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_contract_line_field_line_ids
+msgid "Sponsor Contract Line"
+msgstr "Option Choisie"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_signature
+msgid "Sponsor Signature"
+msgstr "Signature du Sponsor"
+
+#. module: x_sponsor
+#: model:ir.model,name:x_sponsor.model_sponsor_stage
+msgid "Sponsor Stage"
+msgstr ""
+
+#. module: x_sponsor
+#: model:ir.actions.server,name:x_sponsor.action_create_sponsorship_from_contract
+msgid "Sponsor: Create Sponsorships from Contract"
+msgstr ""
+
+#. module: x_sponsor
+#: model:ir.actions.server,name:x_sponsor.action_take_it
+msgid "Sponsor: I Take It"
+msgstr ""
+
+#. module: x_sponsor
+#: model:ir.actions.server,name:x_sponsor.action_sponsor_migration_stage_to_status
+msgid "Sponsor: Migrate stage to status"
+msgstr ""
+
+#. module: x_sponsor
+#: model:ir.actions.server,name:x_sponsor.action_sponsor_send_contract
+msgid "Sponsor: Send Contract"
+msgstr ""
+
+#. module: x_sponsor
+#: model:ir.actions.server,name:x_sponsor.action_sponsor_send_request
+msgid "Sponsor: Send Request"
+msgstr ""
+
+#. module: x_sponsor
+#: model:base.automation,name:x_sponsor.automation_rule_action_sponsor_sponsor_set_draft_as_sent
+msgid "Sponsor: Set Draft as Sent"
+msgstr ""
+
+#. module: x_sponsor
+#: model:ir.actions.server,name:x_sponsor.action_sponsor_contract_set_sponsor_to_cancelled
+msgid "Sponsor: Set Sponsorship to Cancelled"
+msgstr ""
+
+#. module: x_sponsor
+#: model:base.automation,name:x_sponsor.automation_rule_action_sponsor_sponsor_set_as_follower
+#: model:ir.actions.server,name:x_sponsor.action_sponsor_sponsor_set_as_follower
+msgid "Sponsor: Set as Follower"
+msgstr ""
+
+#. module: x_sponsor
+#: model:ir.actions.server,name:x_sponsor.action_sponsor_sponsor_set_draft_as_sent
+msgid "Sponsor: Set draft as sent when sending email"
+msgstr ""
+
+#. module: x_sponsor
+#: model:mail.template,name:x_sponsor.mail_template_data_sponsor_sponsor_request
+msgid "Sponsor: Sponsorship Request"
+msgstr "Sponsor: Demande de Sponsoring"
+
+#. module: x_sponsor
+#: model:mail.template,name:x_sponsor.mail_template_data_sponsor_sponsor_signed_contract
+msgid "Sponsor: Sponsorship Signed Contract"
+msgstr "Sponsor: Contrat Signé"
+
+#. module: x_sponsor
+#: model:ir.actions.act_window,name:x_sponsor.sponsor_sponsor_action
+#: model:ir.actions.act_window,name:x_sponsor.sponsor_sponsor_action_from_contract
+#: model:ir.model,name:x_sponsor.model_sponsor_sponsor
+#: model:ir.ui.menu,name:x_sponsor.sponsor_main_menu
+#: model:res.groups.privilege,name:x_sponsor.res_groups_privilege_sponsors
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_contract_view_kanban
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form
+msgid "Sponsors"
+msgstr ""
+
+#. module: x_sponsor
+#: model:ir.ui.menu,name:x_sponsor.sponsor_main_configuration_stage
+msgid "Sponsors Stages"
+msgstr ""
+
+#. module: x_sponsor
+#: model:mail.template,subject:x_sponsor.mail_template_data_sponsor_sponsor_request
+msgid ""
+"Sponsorship Request from {{ object.x_sponsor_contract_id.x_company_id.name }}"
+msgstr "Demande de Sponsoring de {{ object.x_sponsor_contract_id.x_company_id.name }}"
+
+#. module: x_sponsor
+#: model:mail.template,subject:x_sponsor.mail_template_data_sponsor_sponsor_signed_contract
+msgid "Sponsorship from {{ object.x_sponsor_contract_id.x_company_id.name }}"
+msgstr "Sponsoring de {{ object.x_sponsor_contract_id.x_company_id.name }}"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_contract_view_form
+msgid "Sponsorships"
+msgstr "Sponsoring"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_stage_id
+msgid "Stage"
+msgstr ""
+
+#. module: x_sponsor
+#: model:ir.actions.act_window,name:x_sponsor.sponsor_stage_action
+msgid "Stages"
+msgstr ""
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_contract_field_start_date
+msgid "Start Date"
+msgstr "Date de Début"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_status
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form_search
+msgid "Status"
+msgstr "Status"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_contract_field_stop_date
+msgid "Stop Date"
+msgstr "Date de Fin"
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_sponsor_field_suffix_code
+msgid "Suffix Code"
+msgstr ""
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_contract_field_terms
+msgid "Terms"
+msgstr "Termes"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.report_sponsor_contract_document
+msgid "The amount to pay is"
+msgstr "Le montant a payer est"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.report_sponsor_contract_document
+msgid ""
+"The sponsor can choose one of the following option to support the sponsee:"
+msgstr "Le sponsor peut choisir une des options suivantes pour soutenir le bénéficiare:"
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.report_sponsor_contract_document
+msgid "This amount will be paid using"
+msgstr "Le montant sera payé via"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.report_sponsor_contract_document
+msgid "This contract runs from"
+msgstr "Ce contrat prendra place du"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_contract_view_form
+msgid ""
+"This will create a sponsor contract for each partner with the 'Sponsor' tag."
+" Are you ok ?"
+msgstr ""
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_contract_view_kanban
+msgid "Unarchive"
+msgstr "Désarchiver"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form_search
+msgid "Unassigned"
+msgstr "Non Assigné"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form_search
+msgid "Unpaid Contracts"
+msgstr "Contrats Non Payés"
+
+#. module: x_sponsor
+#: model:res.groups,name:x_sponsor.group_sponsor_user
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_sponsor_view_form_search
+msgid "User"
+msgstr "Utilisateur"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.sponsor_contract_view_kanban
+msgid "View Sponsors"
+msgstr ""
+
+#. module: x_sponsor
+#: model:ir.model.fields,field_description:x_sponsor.sponsor_contract_line_field_contract_id
+msgid "X Sponsor Contract"
+msgstr ""
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.report_sponsor_contract_document
+msgid "and is between"
+msgstr "et est établi entre"
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.report_sponsor_contract_document
+msgid "called <b>the Sponsee</b>."
+msgstr "dénommé <b>the bénéficiare</b>."
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.report_sponsor_contract_document
+msgid "called <b>the Sponsor</b>."
+msgstr "dénommé <b>le Sponsor</b>."
+
+#. module: x_sponsor
+#: model_terms:ir.ui.view,arch_db:x_sponsor.report_sponsor_contract_document
+msgid "to"
+msgstr "jusqu'au"
