@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <record id="sponsor_payment_method_bank" model="x_sponsor.payment_method">
+        <field name="x_name">Virement Banquaire</field>
+        <field name="x_sequence">1</field>
+    </record>
+
+    <record id="sponsor_payment_method_cash" model="x_sponsor.payment_method">
+        <field name="x_name">Cash</field>
+        <field name="x_sequence">2</field>
+    </record>
+
+</odoo>
+

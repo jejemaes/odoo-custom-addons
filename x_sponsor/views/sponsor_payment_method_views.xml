@@ -10,6 +10,7 @@
             <list editable="bottom" default_order="x_sequence asc,id desc">
                 <field name="x_sequence" widget="handle"/>
                 <field name="x_name"/>
+                <field name="x_internal"/>
             </list>
         </field>
     </record>

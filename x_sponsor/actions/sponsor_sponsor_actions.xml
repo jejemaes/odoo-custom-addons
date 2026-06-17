@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    <!-- Action I Take It -->
+    <record id="action_take_it" model="ir.actions.server">
+        <field name="name">Sponsor: I Take It</field>
+        <field name="model_id" ref="x_sponsor.model_sponsor_sponsor"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+records.write({"x_user_id": env.user.id})
+]]></field>
+    </record>
+
+    <!-- Action Send Request -->
+    <record id="action_sponsor_send_request" model="ir.actions.server">
+        <field name="name">Sponsor: Send Request</field>
+        <field name="model_id" ref="x_sponsor.model_sponsor_sponsor"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+ctx = {
+    'default_model': 'x_sponsor.sponsor',
+    'default_res_ids': records.ids,
+    'default_composition_mode': 'comment',
+    'default_email_layout_xmlid': 'mail.mail_notification_layout_with_responsible_signature',
+    'email_notification_allow_footer': True,
+    'hide_mail_template_management_options': True,
+}
+
+if len(records) > 1:
+    ctx['default_composition_mode'] = 'mass_mail'
+else:
+    ctx.update({
+        'force_email': True,
+        'default_partner_ids': [record.x_partner_id.id]
+    })
+    if not env.context.get('hide_default_template'):
+        mail_template = env.ref('x_sponsor.mail_template_data_sponsor_sponsor_request', raise_if_not_found=False)
+        if mail_template:
+            ctx.update({
+                'default_template_id': mail_template.id,
+            })
+
+action = {
+    'name': env._('Send'),
+    'type': 'ir.actions.act_window',
+    'view_mode': 'form',
+    'res_model': 'mail.compose.message',
+    'views': [(False, 'form')],
+    'view_id': False,
+    'target': 'new',
+    'context': ctx,
+}
+
+]]></field>
+    </record>
+
+    <!-- Action Send Contract -->
+    <record id="action_sponsor_send_contract" model="ir.actions.server">
+        <field name="name">Sponsor: Send Contract</field>
+        <field name="model_id" ref="x_sponsor.model_sponsor_sponsor"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+ctx = {
+    'default_model': 'x_sponsor.sponsor',
+    'default_res_ids': records.ids,
+    'default_composition_mode': 'comment',
+    'default_email_layout_xmlid': 'mail.mail_notification_layout_with_responsible_signature',
+    'email_notification_allow_footer': True,
+    'hide_mail_template_management_options': True,
+}
+
+if len(records) > 1:
+    ctx['default_composition_mode'] = 'mass_mail'
+else:
+    ctx.update({
+        'force_email': True,
+        'default_partner_ids': [record.x_partner_id.id]
+    })
+    if not env.context.get('hide_default_template'):
+        mail_template = env.ref('x_sponsor.mail_template_data_sponsor_sponsor_signed_contract', raise_if_not_found=False)
+        if mail_template:
+            ctx.update({
+                'default_template_id': mail_template.id,
+            })
+
+action = {
+    'name': env._('Send'),
+    'type': 'ir.actions.act_window',
+    'view_mode': 'form',
+    'res_model': 'mail.compose.message',
+    'views': [(False, 'form')],
+    'view_id': False,
+    'target': 'new',
+    'context': ctx,
+}
+
+]]></field>
+    </record>
+
+    <!-- Auto set Partner as Follower when replying to email -->
+    <record id="action_sponsor_sponsor_set_as_follower" model="ir.actions.server">
+        <field name="name">Sponsor: Set as Follower</field>
+        <field name="model_id" ref="x_sponsor.model_sponsor_sponsor"/>
+        <field name="evaluation_type">value</field>
+        <field name="followers_type">generic</field>
+        <field name="state">followers</field>
+        <field name="followers_partner_field_name">x_partner_id</field>
+    </record>
+
+    <record id="automation_rule_action_sponsor_sponsor_set_as_follower" model="base.automation">
+        <field name="name">Sponsor: Set as Follower</field>
+        <field name="model_id" ref="x_sponsor.model_sponsor_sponsor"/>
+        <field name="trigger">on_message_received</field>
+        <field name="action_server_ids" eval="[(4, ref('x_sponsor.action_sponsor_sponsor_set_as_follower'))]"/>
+    </record>
+
+    <!-- Auto set status=sent when sending email (only for draft sponsors) -->
+    <record id="action_sponsor_sponsor_set_draft_as_sent" model="ir.actions.server">
+        <field name="name">Sponsor: Set draft as sent when sending email</field>
+        <field name="model_id" ref="x_sponsor.model_sponsor_sponsor"/>
+        <field name="evaluation_type">value</field>
+        <field name="state">object_write</field>
+        <field name="value">sent</field>
+        <field name="update_path">x_status</field>
+        <field name="update_field_id" ref="x_sponsor.sponsor_sponsor_field_status"/>
+    </record>
+
+    <record id="automation_rule_action_sponsor_sponsor_set_draft_as_sent" model="base.automation">
+        <field name="name">Sponsor: Set Draft as Sent</field>
+        <field name="model_id" ref="x_sponsor.model_sponsor_sponsor"/>
+        <field name="trigger">on_message_sent</field>
+        <field name="filter_pre_domain">[('x_status', '=', 'draft')]</field>
+        <field name="action_server_ids" eval="[(4, ref('x_sponsor.action_sponsor_sponsor_set_draft_as_sent'))]"/>
+    </record>
+
+</odoo>
+
