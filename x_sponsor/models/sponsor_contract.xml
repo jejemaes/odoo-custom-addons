@@ -74,6 +74,25 @@
         <field name="on_delete" eval="False"/>
     </record>
 
+    <record id="sponsor_contract_field_prefix_code" model="ir.model.fields">
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Code Prefix</field>
+        <field name="model">x_sponsor_contract</field>
+        <field name="model_id" ref="model_sponsor_contract"/>
+        <field name="name">x_prefix_code</field>
+        <field name="readonly" eval="True"/>
+        <field name="store" eval="True"/>
+        <field name="depends">x_start_date</field>
+        <field name="compute"><![CDATA[
+for record in self:
+    code = "#"
+    if record.id and record.x_start_date:
+        code = f"SP{record.id:04}"
+    record["x_prefix_code"] = code
+]]></field>
+    </record>
+
     <record id="sponsor_contract_field_content" model="ir.model.fields">
         <field name="ttype">html</field>
         <field name="copied" eval="True"/>
@@ -81,6 +100,16 @@
         <field name="model">x_sponsor_contract</field>
         <field name="model_id" ref="model_sponsor_contract"/>
         <field name="name">x_content</field>
+        <field name="on_delete" eval="False"/>
+    </record>
+
+    <record id="sponsor_contract_field_terms" model="ir.model.fields">
+        <field name="ttype">html</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Terms</field>
+        <field name="model">x_sponsor_contract</field>
+        <field name="model_id" ref="model_sponsor_contract"/>
+        <field name="name">x_terms</field>
         <field name="on_delete" eval="False"/>
     </record>
 
@@ -106,6 +135,22 @@ for order in self:
     order["x_sponsor_count"] = mapped_data.get(order.id, 0)
 ]]></field>
     </record>
+
+    <record id="sponsor_contract_field_company_id" model="ir.model.fields">
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Company</field>
+        <field name="model">x_sponsor_contract</field>
+        <field name="model_id" ref="model_sponsor_contract"/>
+        <field name="name">x_company_id</field>
+        <field name="relation">res.company</field>
+    </record>
+
+    <record id="sponsor_contract_default_value_company_id" model="ir.default">
+        <field name="field_id" ref="sponsor_contract_field_company_id"/>
+        <field name="json_value" eval="ref('base.main_company')"/>
+    </record>
+
 
     <!-- Sponsors Contract Line -->
     <record id="model_sponsor_contract_line" model="ir.model">
@@ -135,6 +180,17 @@ for order in self:
         <field name="relation_field">x_sponsor_contract_id</field>
     </record>
 
+    <record id="sponsor_contract_line_field_currency_id" model="ir.model.fields">
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Currency</field>
+        <field name="model">x_sponsor_contract_line</field>
+        <field name="model_id" ref="model_sponsor_contract_line"/>
+        <field name="name">x_currency_id</field>
+        <field name="relation">res.currency</field>
+        <field name="related">x_sponsor_contract_id.x_company_id.currency_id</field>
+    </record>
+
     <record id="sponsor_contract_line_field_sequence" model="ir.model.fields">
         <field name="ttype">integer</field>
         <field name="copied" eval="True"/>
@@ -153,6 +209,16 @@ for order in self:
         <field name="model_id" ref="model_sponsor_contract_line"/>
         <field name="name">x_product_id</field>
         <field name="relation">product.product</field>
+        <field name="required" eval="False"/>
+    </record>
+
+    <record id="sponsor_contract_line_field_description" model="ir.model.fields">
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Description</field>
+        <field name="model">x_sponsor_contract_line</field>
+        <field name="model_id" ref="model_sponsor_contract_line"/>
+        <field name="name">x_description</field>
     </record>
 
     <record id="sponsor_contract_line_field_name" model="ir.model.fields">
@@ -165,25 +231,35 @@ for order in self:
         <field name="on_delete" eval="False"/>
         <field name="readonly" eval="True"/>
         <field name="store" eval="True"/>
-        <field name="depends">x_product_id</field>
+        <field name="depends">x_product_id,x_description</field>
         <field name="compute"><![CDATA[
 for record in self:
-    if record.x_product_id:
+    if record.x_description:
+        record["x_name"] = record.x_description
+    else:
         record["x_name"] = record.x_product_id.display_name
 ]]></field>
     </record>
 
     <record id="sponsor_contract_line_field_product_price" model="ir.model.fields">
         <field name="ttype">float</field>
-        <field name="related">x_product_id.lst_price</field>
+        <field name="related" eval="False"/>
         <field name="field_description">Price</field>
         <field name="model">x_sponsor_contract_line</field>
         <field name="model_id" ref="model_sponsor_contract_line"/>
         <field name="name">x_product_price</field>
         <field name="on_delete" eval="False"/>
-        <field name="readonly" eval="True"/>
-        <field name="selectable" eval="False"/>
-        <field name="store" eval="False"/>
+        <field name="readonly" eval="False"/>
+        <field name="selectable" eval="True"/>
+        <field name="store" eval="True"/>
+        <field name="depends">x_product_id</field>
+        <field name="compute"><![CDATA[
+for record in self:
+    if record.x_product_id:
+        record["x_product_price"] = record.x_product_id.lst_price
+    else:
+        record["x_product_price"] = 0.0
+]]></field>
     </record>
 
 </odoo>

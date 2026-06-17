@@ -53,7 +53,6 @@
         <field name="on_delete" eval="False"/>
         <field name="readonly" eval="True"/>
         <field name="store" eval="False"/>
-        <field name="tracking">1</field>
     </record>
 
     <record id="sponsor_sponsor_field_partner_phone" model="ir.model.fields">
@@ -66,7 +65,6 @@
         <field name="on_delete" eval="False"/>
         <field name="readonly" eval="True"/>
         <field name="store" eval="False"/>
-        <field name="tracking">2</field>
     </record>
 
     <record id="sponsor_sponsor_field_contract_id" model="ir.model.fields">
@@ -84,11 +82,12 @@
     <record id="sponsor_sponsor_field_contract_line_id" model="ir.model.fields">
         <field name="ttype">many2one</field>
         <field name="copied" eval="True"/>
-        <field name="field_description">Contact Line</field>
+        <field name="field_description">Chosen Option</field>
         <field name="model">x_sponsor_sponsor</field>
         <field name="model_id" ref="model_sponsor_sponsor"/>
         <field name="name">x_sponsor_contract_line_id</field>
         <field name="relation">x_sponsor.contract.line</field>
+        <field name="tracking">4</field>
     </record>
 
     <record id="sponsor_sponsor_field_total_amount" model="ir.model.fields">
@@ -99,9 +98,28 @@
         <field name="model">x_sponsor_sponsor</field>
         <field name="model_id" ref="model_sponsor_sponsor"/>
         <field name="required" eval="False"/>
+        <field name="related" eval="False"/>
         <field name="readonly" eval="False"/>
         <field name="store" eval="True"/>
-        <field name="related">x_sponsor_contract_line_id.x_product_price</field>
+        <field name="depends">x_sponsor_contract_line_id</field>
+        <field name="compute"><![CDATA[
+for record in self:
+    if record.x_sponsor_contract_line_id:
+        record["x_total_amount"] = record.x_sponsor_contract_line_id.x_product_price
+    else:
+        record["x_total_amount"] = False
+]]></field>
+    </record>
+
+    <record id="sponsor_sponsor_field_currency_id" model="ir.model.fields">
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Currency</field>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="name">x_currency_id</field>
+        <field name="relation">res.currency</field>
+        <field name="related">x_sponsor_contract_id.x_company_id.currency_id</field>
     </record>
 
     <record id="sponsor_sponsor_field_priority" model="ir.model.fields">
@@ -114,6 +132,7 @@
         <field name="on_delete" eval="False"/>
     </record>
 
+    <!-- DEPRECATE ME -->
     <record id="sponsor_sponsor_field_stage_id" model="ir.model.fields">
         <field name="ttype">many2one</field>
         <field name="copied" eval="True"/>
@@ -126,6 +145,25 @@
         <field name="relation">x_sponsor.stage</field>
         <field name="required" eval="True"/>
         <field name="tracking">3</field>
+    </record>
+
+    <record id="sponsor_sponsor_field_status" model="ir.model.fields">
+        <field name="name">x_status</field>
+        <field name="ttype">selection</field>
+        <field name="copied" eval="False"/>
+        <field name="field_description">Status</field>
+        <field name="group_expand" eval="True"/>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="on_delete" eval="False"/>
+        <field name="selection">[('draft', 'Draft'), ('sent', 'Sent'), ('waiting', 'Waiting'), ('done', 'Done'), ('cancelled', 'Cancelled')]</field>
+        <field name="tracking">3</field>
+    </record>
+
+    <!-- Default Values -->
+    <record id="sponsor_sponsor_default_value_status" model="ir.default">
+        <field name="field_id" ref="sponsor_sponsor_field_status"/>
+        <field name="json_value">"draft"</field>
     </record>
 
     <record id="sponsor_sponsor_field_payment_status" model="ir.model.fields">
@@ -170,6 +208,25 @@
         <field name="tracking">4</field>
     </record>
 
+    <record id="sponsor_sponsor_field_suffix_code" model="ir.model.fields">
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Suffix Code</field>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="name">x_suffix_code</field>
+        <field name="readonly" eval="False"/>
+        <field name="store" eval="True"/>
+        <field name="size" eval="4"/>
+        <field name="required" eval="True"/>
+        <field name="depends">x_partner_id</field>
+        <field name="compute"><![CDATA[
+for record in self:
+    if not record.x_suffix_code and record.x_partner_id:
+        record["x_suffix_code"] = f"{record.x_partner_id.id:04}"
+]]></field>
+    </record>
+
     <record id="sponsor_sponsor_field_code" model="ir.model.fields">
         <field name="ttype">char</field>
         <field name="copied" eval="True"/>
@@ -179,13 +236,13 @@
         <field name="name">x_code</field>
         <field name="readonly" eval="True"/>
         <field name="store" eval="True"/>
-        <field name="depends">x_date,x_partner_id,x_sponsor_contract_id</field>
+        <field name="depends">x_suffix_code,x_sponsor_contract_id.x_prefix_code</field>
         <field name="compute"><![CDATA[
 for record in self:
-    code = "#"
-    if record.x_partner_id and record.x_sponsor_contract_id:
-        code = f"SP{record.x_date.year}/{record.x_sponsor_contract_id.id:04}/{record.x_partner_id.id:04}"
-    record["x_code"] = code
+    if record.x_suffix_code:
+        record["x_code"] = f"{record.x_sponsor_contract_id.x_prefix_code}/{record.x_suffix_code}"
+    else:
+        record["x_code"] = f"{record.x_sponsor_contract_id.x_prefix_code}/#"
 ]]></field>
     </record>
 
@@ -208,5 +265,50 @@ for record in self:
     record["x_name"] = name
 ]]></field>
     </record>
+
+    <!-- Signature -->
+    <record id="sponsor_sponsor_field_signature" model="ir.model.fields">
+        <field name="ttype">binary</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Sponsor Signature</field>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="name">x_signature</field>
+        <field name="required" eval="False"/>
+        <field name="on_delete" eval="False"/>
+    </record>
+
+    <record id="sponsor_sponsor_field_signature_date" model="ir.model.fields">
+        <field name="ttype">date</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Signature Date</field>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="name">x_signature_date</field>
+        <field name="required" eval="False"/>
+        <field name="on_delete" eval="False"/>
+    </record>
+
+    <record id="sponsor_sponsor_field_signed_by" model="ir.model.fields">
+        <field name="ttype">char</field>
+        <field name="field_description">Signed By</field>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="name">x_signed_by</field>
+        <field name="on_delete" eval="False"/>
+        <field name="readonly" eval="False"/>
+    </record>
+
+    <record id="sponsor_sponsor_field_signature_sponsee" model="ir.model.fields">
+        <field name="ttype">binary</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Sponsee Signature</field>
+        <field name="model">x_sponsor_sponsor</field>
+        <field name="model_id" ref="model_sponsor_sponsor"/>
+        <field name="name">x_signature_sponsee</field>
+        <field name="required" eval="False"/>
+        <field name="on_delete" eval="False"/>
+    </record>
+
 
 </odoo>

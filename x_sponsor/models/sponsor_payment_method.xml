@@ -28,4 +28,14 @@
         <field name="on_delete" eval="False"/>
     </record>
 
+    <record id="sponsor_payment_method_field_internal" model="ir.model.fields">
+        <field name="ttype">boolean</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Is Internal</field>
+        <field name="model">x_sponsor.payment_method</field>
+        <field name="model_id" ref="model_sponsor_payment_method"/>
+        <field name="name">x_internal</field>
+        <field name="on_delete" eval="False"/>
+    </record>
+
 </odoo>
