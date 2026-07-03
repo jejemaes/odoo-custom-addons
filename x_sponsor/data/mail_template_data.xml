@@ -18,8 +18,7 @@
         Here is proposal for <span style="font-weight:bold;" t-out="object.x_sponsor_contract_id.x_name">Contract Name</span> with different options to support us:
         <ul>
             <li t-foreach="object.x_sponsor_contract_id.x_line_ids" t-as="line">
-                <t t-esc="line.x_name"/> 
-                (<t t-out="line.x_product_price" t-options="{'widget': 'monetary', 'display_currency': object.x_currency_id}"/> )
+                <t t-esc="line.x_name"/> (<t t-out="line.x_product_price" t-options="{'widget': 'monetary', 'display_currency': object.x_currency_id}"/>)
             </li>
         </ul>
         
