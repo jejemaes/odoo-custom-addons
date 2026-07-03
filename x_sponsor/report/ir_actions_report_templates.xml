@@ -10,7 +10,7 @@
                 <h1 class="text-center mb32">
                     <t t-esc="contract.x_name"/>
                 </h1>
-                <h2 class="text-center text-muted">
+                <h2 class="text-center">
                     <t t-if="sponsor">
                         <t t-esc="sponsor.x_code"/>
                     </t>
@@ -74,11 +74,11 @@
                 <div class="col-12">
                     <h3>Payment and terms</h3>
                     <p>The amount to pay is 
-                        <t t-if="sponsor">
+                        <t t-if="sponsor and sponsor.x_sponsor_contract_line_id">
                             <span t-field="sponsor.x_total_amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: sponsor.x_currency_id}"> ............. </span>
                         </t>
                         <t t-else="">
-                            ..........
+                            .......... <t t-esc="contract.x_company_id.currency_id.symbol"/>
                         </t>
                     </p>
 
