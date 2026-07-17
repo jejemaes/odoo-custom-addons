@@ -95,8 +95,8 @@ for record in self:
 attachment_data = self.env['ir.attachment'].search_read([('res_id', 'in', self.ids), ('res_model', '=', self._name), ('res_field', '=', 'x_file_content')], ["res_id", "mimetype"])
 mimetype_map = {item["res_id"]: item["mimetype"] for item in attachment_data}
 
-for document in self:
-    document['x_mimetype'] = mimetype_map.get(document.id, "unknonw")
+for expense in self:
+    expense['x_mimetype'] = mimetype_map.get(expense.id, "unknown")
         ]]>
         </field>
     </record>
@@ -110,17 +110,6 @@ for document in self:
         <field name="name">x_analytic_account_id</field>
         <field name="relation">account.analytic.account</field>
         <field name="tracking">4</field>
-    </record>
-
-    <record id="model_expense_expense_field_product_id" model="ir.model.fields">
-        <field name="ttype">many2one</field>
-        <field name="copied" eval="True"/>
-        <field name="field_description">Product</field>
-        <field name="model">x_expense.expense</field>
-        <field name="model_id" ref="model_expense_expense"/>
-        <field name="name">x_product_id</field>
-        <field name="relation">product.product</field>
-        <field name="domain">[('x_can_be_expensed', '=', True)]</field>
     </record>
 
     <record id="model_expense_expense_field_note" model="ir.model.fields">
@@ -140,7 +129,7 @@ for document in self:
         <field name="model_id" ref="model_expense_expense"/>
         <field name="name">x_state</field>
         <field name="on_delete" eval="False"/>
-        <field name="selection">[('inbox', 'Inbox'), ('draft', 'Draft'), ('submit', 'Submitted'), ('approved', 'Approved'), ('done', 'Done'), ('cancel', 'Cancelled')]</field>
+        <field name="selection">[('inbox', 'Inbox'), ('draft', 'Draft'), ('submit', 'Submitted'), ('approved', 'Approved'), ('done', 'Done'), ('refused', 'Refused')]</field>
         <field name="required" eval="True"/>
         <field name="tracking">2</field>
     </record>

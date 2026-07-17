@@ -9,10 +9,9 @@
         <field name="arch" type="xml">
             <list default_order="create_date desc">
                 <field name="x_name"/>
-                <field name="x_state" decoration-success="x_state == 'approved'" decoration-info="x_state == 'submit'" decoration-primary="x_state == 'done'" decoration-muted="x_state == 'cancel'" widget="badge"/>
+                <field name="x_state" decoration-success="x_state == 'approved'" decoration-info="x_state == 'submit'" decoration-primary="x_state == 'done'" decoration-muted="x_state == 'refused'" widget="badge"/>
                 <field name="x_price" sum="Total"/>
                 <field name="x_analytic_account_id" optional="hide"/>
-                <field name="x_product_id" optional="hide"/>
                 <field name="x_payment_date" optional="show"/>
             </list>
         </field>
@@ -26,10 +25,9 @@
             <list create="0" delete="0" default_order="create_date desc">
                 <field name="x_name"/>
                 <field name="x_partner_id"/>
-                <field name="x_state" decoration-success="x_state == 'approved'" decoration-info="x_state == 'submit'" decoration-primary="x_state == 'done'" decoration-muted="x_state == 'cancel'" widget="badge"/>
+                <field name="x_state" decoration-success="x_state == 'approved'" decoration-info="x_state == 'submit'" decoration-primary="x_state == 'done'" decoration-muted="x_state == 'refused'" widget="badge"/>
                 <field name="x_analytic_account_id"/>
                 <field name="x_price" sum="Total"/>
-                <field name="x_product_id" optional="hide"/>
             </list>
         </field>
     </record>
@@ -42,11 +40,10 @@
             <list create="0" delete="0" default_order="create_date desc">
                 <field name="x_name"/>
                 <field name="x_partner_id"/>
-                <field name="x_state" decoration-success="x_state == 'approved'" decoration-info="x_state == 'submit'" decoration-primary="x_state == 'done'" decoration-muted="x_state == 'cancel'" widget="badge"/>
+                <field name="x_state" decoration-success="x_state == 'approved'" decoration-info="x_state == 'submit'" decoration-primary="x_state == 'done'" decoration-muted="x_state == 'refused'" widget="badge"/>
                 <field name="x_payment_date" optional="show"/>
                 <field name="x_price" sum="Total"/>
                 <field name="x_analytic_account_id" optional="hide"/>
-                <field name="x_product_id" optional="hide"/>
             </list>
         </field>
     </record>
@@ -86,10 +83,10 @@
                         groups="x_expense.group_expense_manager"/>
                     <button
                         type="action"
-                        name="%(x_expense.expense_expense_action_cancel_expense)d"
+                        name="%(x_expense.expense_expense_action_refused_expense)d"
                         string="Cancel"
                         data-hotkey="c"
-                        title="Cancel"
+                        title="Refuse"
                         class="btn-secondary"
                         invisible="x_state not in ['draft', 'submit', 'approved', 'done']"/>
                     <button
@@ -99,8 +96,8 @@
                         data-hotkey="c"
                         title="Reset"
                         class="btn-primary"
-                        invisible="x_state not in ['cancel']"/>
-                    <field name="x_state" widget="statusbar" statusbar_visible="draft,submit,approved,done,cancel" readonly="1"/>
+                        invisible="x_state not in ['refused']"/>
+                    <field name="x_state" widget="statusbar" statusbar_visible="draft,submit,approved,done,refused" readonly="1"/>
                 </header>
                 <sheet string="Expenses">
                     <group name="expense_technical">
@@ -109,20 +106,19 @@
                     </group>
                     <div class="oe_title">
                         <h1>
-                            <field name="x_name" placeholder="Expense for ...." readonly="x_state in ['approved', 'done', 'cancel']"/>
+                            <field name="x_name" placeholder="Expense for ...." readonly="x_state in ['approved', 'done', 'refused']"/>
                         </h1>
                     </div>
                     <group>
                         <group>
-                            <field name="x_user_id" readonly="x_state in ['approved', 'done', 'cancel']"/>
-                            <field name="x_partner_id" readonly="x_state in ['approved', 'done', 'cancel']"/>
-                            <field name="x_partner_email" readonly="x_state in ['approved', 'done', 'cancel']"/>
+                            <field name="x_user_id" readonly="x_state in ['approved', 'done', 'refused']"/>
+                            <field name="x_partner_id" readonly="x_state in ['approved', 'done', 'refused']"/>
+                            <field name="x_partner_email" readonly="x_state in ['approved', 'done', 'refused']"/>
                             <field name="x_date" required="1" readonly="x_state != 'draft'"/>
                         </group>
                         <group>
-                            <field name="x_product_id" readonly="x_state != 'draft'"/>
                             <field name="x_price" readonly="x_state != 'draft'"/>
-                            <field name="x_analytic_account_id" readonly="x_state in ['approved', 'done', 'cancel']"/>
+                            <field name="x_analytic_account_id" readonly="x_state in ['approved', 'done', 'refused']"/>
                             <field name="x_payment_date"/>
                         </group>
                     </group>
@@ -152,20 +148,18 @@
                 <field name="x_name"/>
                 <field name="x_partner_id"/>
                 <field name="x_analytic_account_id"/>
-                <field name="x_product_id"/>
                 <filter string="My Expenses" name="my_expense" domain="[['x_user_id', '=', uid]]"/>
                 <separator/>
                 <filter string="To Submit" name="filter_state_draft" domain="[['x_state', '=', 'draft']]"/>
                 <filter string="To Approve" name="filter_state_submit" domain="[['x_state', '=', 'submit']]"/>
                 <filter string="To Pay" name="filter_state_approve" domain="[['x_state', '=', 'approved']]"/>
-                <filter string="Cancel" name="filter_state_cancel" domain="[['x_state', '=', 'cancel']]"/>
+                <filter string="Cancel" name="filter_state_refused" domain="[['x_state', '=', 'refused']]"/>
                 <filter string="Done" name="filter_state_done" domain="[('x_state', '=', 'done')]"/>
                 <separator/>
                 <group>
                     <filter name="groupby_x_partner" string="Partner" context="{'group_by': 'x_partner_id'}" domain="[]"/>
                     <filter name="groupby_x_user" string="User" context="{'group_by': 'x_user_id'}" domain="[]"/>
                     <filter name="groupby_x_analytic_account_id" string="Analytic Account" context="{'group_by': 'x_analytic_account_id'}" domain="[]"/>
-                    <filter name="groupby_x_product_id" string="Product" context="{'group_by': 'x_product_id'}" domain="[]"/>
                     <filter name="groupby_x_state" string="State" context="{'group_by': 'x_state'}" domain="[]"/>
                 </group>
             </search>
@@ -226,7 +220,7 @@
         <field name="name">Expenses to Pay</field>
         <field name="res_model">x_expense.expense</field>
         <field name="view_mode">list,form</field>
-        <field name="domain">[('x_state', 'in', ['approved', 'done', 'cancel'])]</field>
+        <field name="domain">[('x_state', 'in', ['approved', 'done', 'refused'])]</field>
         <field name="context">{
             'default_x_user_id': uid,
             'default_x_date': (datetime.date.today()).strftime('%Y-%m-%d'),

@@ -18,8 +18,6 @@ if records.filtered(lambda exp: exp.x_state != 'draft'):
 for record in records:
     if not record.x_price:
         raise UserError("Price must be set to submit expense.")
-    if not record.x_product_id:
-        raise UserError("Product must be set to submit expense.")
     if not record.x_partner_id:
         raise UserError("Partner to reimbourse must be set to submit expense.")
 
@@ -48,11 +46,9 @@ for exp in records.filtered(lambda exp: exp.x_analytic_account_id):
         "account_id": exp.x_analytic_account_id.id,
         "name": f"Expense: {exp.x_name}",
         "date": exp.x_date,
-        "product_id": exp.x_product_id.id,
         "partner_id": exp.x_partner_id.id,
-        "amount": exp.x_price,
+        "amount": abs(exp.x_price) * -1,
         "unit_amount": 1,
-        "ref": f"EXP-{exp.id}",
         "x_expense_id": exp.id,
     })
 env["account.analytic.line"].sudo().create(analytic_line_data)
@@ -80,19 +76,19 @@ records.write({
         </field>
     </record>
 
-    <record id="expense_expense_action_cancel_expense" model="ir.actions.server">
-        <field name="name">Cancel Expenses</field>
+    <record id="expense_expense_action_refused_expense" model="ir.actions.server">
+        <field name="name">Refuse Expenses</field>
         <field name="model_id" ref="model_expense_expense"/>
         <field name="binding_model_id" ref="model_expense_expense"/>
         <field name="binding_view_types">list</field>
         <field name="state">code</field>
         <field name="code">
 if records.filtered(lambda exp: exp.x_state not in ['draft', 'submit', 'approved', 'done']):
-    raise UserError("Only draft, submitted, approved or done expenses can be cancelled.")
+    raise UserError("Only draft, submitted, approved or done expenses can be refused.")
 
-records.write({"x_state": "cancel"})
+records.write({"x_state": "refused"})
 
-env["account.analytic.line"].search([('x_expense_id', 'in', records.ids)]).unlink()
+env["account.analytic.line"].sudo().search([('x_expense_id', 'in', records.ids)]).unlink()
         </field>
     </record>
 
@@ -103,8 +99,8 @@ env["account.analytic.line"].search([('x_expense_id', 'in', records.ids)]).unlin
         <field name="binding_view_types">list</field>
         <field name="state">code</field>
         <field name="code">
-if records.filtered(lambda exp: exp.x_state not in ['cancel']):
-    raise UserError("Only cancelled expenses can be reset to draft.")
+if records.filtered(lambda exp: exp.x_state not in ['refused']):
+    raise UserError("Only refused expenses can be reset to draft.")
 
 records.write({"x_state": "draft"})
         </field>
