@@ -30,25 +30,4 @@
         <field name="group_ids" eval="[(4, ref('x_expense.group_expense_manager'))]"/>
     </record>
 
-    <record id="expense_menu_settings" model="ir.ui.menu" >
-        <field name="name">Settings</field>
-        <field name="parent_id" ref="expense_menu_root"/>
-        <field name="sequence">50</field>
-        <field name="group_ids" eval="[(4, ref('x_expense.group_expense_manager'))]"/>
-    </record>
-
-        <record id="expense_menu_settings_product" model="ir.ui.menu">
-            <field name="action" ref="product_template_action_expense"/>
-            <field name="name">Products</field>
-            <field name="parent_id" ref="expense_menu_settings"/>
-            <field name="sequence">25</field>
-        </record>
-        <record id="expense_menu_settings_product_variant" model="ir.ui.menu">
-            <field name="action" ref="product.product_normal_action_sell"/>
-            <field name="name">Product Variants</field>
-            <field name="parent_id" ref="expense_menu_settings"/>
-            <field name="sequence">25</field>
-            <field name="group_ids" eval="[(4, ref('product.group_product_variant'))]"/>
-        </record>
-
 </odoo>

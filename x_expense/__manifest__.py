@@ -6,10 +6,9 @@
     "installable": True,
     "application": False,
     "author": "jejemaes",
-    "depends": ["product", "analytic"],
+    "depends": ["analytic"],
     "data": [
         # Models
-        "models/product_template.xml",
         "models/expense.xml",
         "models/account_analytic_line.xml",
         # Actions
@@ -18,7 +17,6 @@
         "security/expense_security.xml",
         "security/ir_model_access.xml",
         # Views
-        "views/product_template_views.xml",
         "views/expense_views.xml",
         "views/menus.xml",
     ],
