@@ -51,7 +51,7 @@
         <field name="model_id" ref="model_sponsor_sponsor"/>
         <field name="name">x_partner_email</field>
         <field name="on_delete" eval="False"/>
-        <field name="readonly" eval="True"/>
+        <field name="readonly" eval="False"/>
         <field name="store" eval="False"/>
     </record>
 
@@ -63,7 +63,7 @@
         <field name="model_id" ref="model_sponsor_sponsor"/>
         <field name="name">x_partner_phone</field>
         <field name="on_delete" eval="False"/>
-        <field name="readonly" eval="True"/>
+        <field name="readonly" eval="False"/>
         <field name="store" eval="False"/>
     </record>
 
