@@ -120,6 +120,7 @@ for record in self:
         <field name="name">x_currency_id</field>
         <field name="relation">res.currency</field>
         <field name="related">x_sponsor_contract_id.x_company_id.currency_id</field>
+        <field name="readonly" eval="True"/>
     </record>
 
     <record id="sponsor_sponsor_field_priority" model="ir.model.fields">
