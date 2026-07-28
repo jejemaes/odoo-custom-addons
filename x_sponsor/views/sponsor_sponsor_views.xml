@@ -11,7 +11,7 @@
                 <field name="x_name"/>
                 <field name="x_partner_id"/>
                 <field name="x_user_id" widget="many2one_avatar_user"/>
-                <field name="x_status" decoration-success="x_status == 'done'" decoration-warning="x_payment_status == 'waiting'" decoration-info="x_status == 'sent'" widget="badge"/>
+                <field name="x_status" decoration-success="x_status == 'done'" decoration-warning="x_payment_status == 'signed'" decoration-info="x_status == 'sent'" widget="badge"/>
                 <field name="x_sponsor_contract_line_id" optional="show"/>
                 <field name="x_payment_status" optional="show"/>
                 <field name="x_payment_method_id" optional="show" decoration-success="x_payment_status == 'paid'" decoration-warning="x_payment_status == 'unpaid' and x_payment_method_id" widget="badge"/>
@@ -76,7 +76,7 @@
                         name="%(x_sponsor.action_sponsor_send_contract)d"
                         class="btn-secondary"
                         string="Send"
-                        invisible="x_status not in ['waiting', 'done']"/>
+                        invisible="x_status not in ['signed', 'done']"/>
                     <field name="x_status" widget="statusbar" options="{'clickable': '1'}"/>
                 </header>
                 <sheet string="Sponsors">
@@ -152,7 +152,7 @@
                <filter string="My Contracts" name="my_contract" domain="[('x_user_id','=', uid)]"/>
                <filter string="Unassigned" name="unassigned" domain="[('x_user_id','=', False)]"/>
                <separator/>
-               <filter string="Open" name="open" domain="[('x_status', 'in', ['draft', 'sent', 'waiting'])]"/>
+               <filter string="Open" name="open" domain="[('x_status', 'in', ['draft', 'sent', 'signed'])]"/>
                <filter string="Closed" name="closed" domain="[('x_status', 'in', ['done', 'cancelled'])]"/>
                <separator/>
                <filter string="Unpaid Contracts" name="unpaid_contract" domain="[('x_payment_status','=', 'unpaid')]"/>
