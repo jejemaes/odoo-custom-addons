@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_generate_shifts_from_sheet" model="ir.actions.server">
+        <field name="name">Generate Shifts from Sheet</field>
+        <field name="model_id" ref="model_planning_shift_generate"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+
+sheet = record.x_sheet_id
+
+if not record.x_line_ids:
+    raise UserError("Add at least one line to generate shifts.")
+
+if record.x_date < sheet.x_date_start or record.x_date > sheet.x_date_end:
+    raise UserError("The day %s is outside the sheet period (%s - %s)." % (record.x_date, sheet.x_date_start, sheet.x_date_end))
+
+# Times are typed by the user in his own timezone, while shifts are stored in UTC.
+# The offset is read back from a conversion *into* the target timezone: doing
+# replace(tzinfo=user_tz) instead would silently apply a historical offset (pytz gives the
+# LMT of the zone, e.g. +00:09 for Europe/Paris, instead of the current +02:00).
+utc = timezone('UTC')
+user_tz = timezone(env.context.get('tz') or env.user.tz or 'UTC')
+
+def to_utc(local_dt):
+    offset = local_dt.replace(tzinfo=utc).astimezone(user_tz).utcoffset()
+    return local_dt - offset
+
+day_start = datetime.datetime.combine(record.x_date, datetime.time.min)
+
+shift_values = []
+for line in record.x_line_ids:
+    if line.x_count <= 0:
+        raise UserError("The number of shifts to generate must be positive.")
+    if not 0 <= line.x_start_time < 24 or not 0 <= line.x_end_time < 24:
+        raise UserError("Start and end times must be between 00:00 and 24:00.")
+
+    start_dt = day_start + datetime.timedelta(hours=line.x_start_time)
+    end_dt = day_start + datetime.timedelta(hours=line.x_end_time)
+    if end_dt <= start_dt:
+        # Night shift: it ends the day after
+        end_dt += datetime.timedelta(days=1)
+
+    for index in range(line.x_count):
+        shift_values.append({
+            "x_role_id": line.x_role_id.id,
+            "x_start_datetime": to_utc(start_dt),
+            "x_end_datetime": to_utc(end_dt),
+        })
+
+env["x_planning.shift"].create(shift_values)
+
+server_action = env.ref("x_planning.planning_sheet_action_view_shifts")
+action = server_action.with_context(active_id=sheet.id, active_model=sheet._name).run()
+
+]]></field>
+    </record>
+
+</odoo>

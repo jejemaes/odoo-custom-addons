@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!--
+        Actions
+    -->
+    <record id="planning_sheet_action_view_shifts" model="ir.actions.server">
+        <field name="name">Open Sheet Shifts</field>
+        <field name="model_id" ref="model_planning_sheet"/>
+        <field name="group_ids" eval="[Command.link(ref('x_planning.group_planning_user'))]"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+
+if record:
+    date_start = datetime.datetime.combine(record.x_date_start, datetime.time.min)
+    date_end = datetime.datetime.combine(record.x_date_end, datetime.time.max)
+
+    domain = [
+        ('x_start_datetime', '>=', date_start.strftime('%Y-%m-%d %H:%M:%S')),
+        ('x_start_datetime', '<=', date_end.strftime('%Y-%m-%d %H:%M:%S')),
+    ]
+    context = {
+        'default_x_start_datetime': date_start.strftime('%Y-%m-%d %H:%M:%S'),
+        'initial_date': date_start.strftime('%Y-%m-%d %H:%M:%S'),
+        'search_default_group_by_day': 1,
+    }
+    display_name = env._('Shifts of %s') % (record.display_name,)
+
+    mode = env.context.get('shift_view_mode')
+    if mode == 'unassigned':
+        context['search_default_filter_unassigned'] = 1
+        display_name = env._('Unassigned Shifts of %s') % (record.display_name,)
+    elif mode == 'conflict':
+        env["x_planning.shift"].flush_model(["x_partner_id", "x_start_datetime", "x_end_datetime"])
+        env.cr.execute(
+            """
+            SELECT DISTINCT s1.id
+              FROM x_planning_shift s1
+              JOIN x_planning_shift s2
+                ON s1.x_partner_id = s2.x_partner_id
+               AND s1.id != s2.id
+               AND s1.x_start_datetime < s2.x_end_datetime
+               AND s2.x_start_datetime < s1.x_end_datetime
+             WHERE s1.x_partner_id IS NOT NULL
+               AND s1.x_start_datetime >= %s
+               AND s1.x_start_datetime <= %s
+            """,
+            (date_start, date_end),
+        )
+        domain = [('id', 'in', [row[0] for row in env.cr.fetchall()])]
+        display_name = env._('Conflicting Shifts of %s') % (record.display_name,)
+
+    action = env["ir.actions.actions"].sudo()._for_xml_id("x_planning.planning_shift_action")
+    action.update({
+        'domain': domain,
+        'context': context,
+        'display_name': display_name,
+    })
+
+]]></field>
+    </record>
+
+</odoo>

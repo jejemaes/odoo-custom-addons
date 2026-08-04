@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="report_planning_sheet_document">
+    <t t-call="web.external_layout">
+        <div class="page">
+
+            <h1 t-esc="sheet.x_name"/>
+            <div class="text-muted mb-3">
+                From <span t-field="sheet.x_date_start"/> to <span t-field="sheet.x_date_end"/>
+                <t t-if="sheet.x_user_id"> — Responsible: <t t-esc="sheet.x_user_id.name"/></t>
+            </div>
+
+            <t t-set="shifts" t-value="sheet.env['x_planning.shift'].search([('x_start_datetime', '&gt;=', datetime.datetime.combine(sheet.x_date_start, datetime.time.min)), ('x_start_datetime', '&lt;=', datetime.datetime.combine(sheet.x_date_end, datetime.time.max))], order='x_start_datetime')"/>
+            <t t-set="days" t-value="sorted(set([s.x_start_datetime.date() for s in shifts]))"/>
+            <!-- Render times in the planning owner timezone, so the PDF and the public page always match -->
+            <t t-set="tz" t-value="sheet.x_user_id.tz or sheet.env.company.partner_id.tz or 'UTC'"/>
+
+            <p t-if="not shifts">No shift planned for this period.</p>
+
+            <t t-foreach="days" t-as="day">
+                <t t-set="day_shifts" t-value="shifts.filtered(lambda s: s.x_start_datetime.date() == day)"/>
+                <h3 class="mt-4" t-esc="day.strftime('%A %d %B %Y')"/>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%">Role</th>
+                            <th style="width: 15%">Start</th>
+                            <th style="width: 15%">End</th>
+                            <th>Assignee</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="norole_shifts" t-value="day_shifts.filtered(lambda s: not s.x_role_id)"/>
+                        <t t-foreach="day_shifts.mapped('x_role_id')" t-as="role">
+                            <t t-set="role_shifts" t-value="day_shifts.filtered(lambda s: s.x_role_id == role)"/>
+                            <tr class="table-active">
+                                <td colspan="4" class="fw-bold"><t t-esc="role.x_name"/> (<t t-esc="len(role_shifts)"/>)</td>
+                            </tr>
+                            <tr t-foreach="role_shifts.sorted('x_partner_id')" t-as="shift">
+                                <td/>
+                                <td><span t-field="shift.x_start_datetime" t-options="{'format': 'HH:mm', 'tz_name': tz}"/></td>
+                                <td><span t-field="shift.x_end_datetime" t-options="{'format': 'HH:mm', 'tz_name': tz}"/></td>
+                                <td>
+                                    <t t-if="shift.x_partner_id" t-esc="shift.x_partner_id.name"/>
+                                    <span t-else="" class="text-danger">Unassigned</span>
+                                </td>
+                            </tr>
+                        </t>
+                        <t t-if="norole_shifts">
+                            <tr class="table-active">
+                                <td colspan="4" class="fw-bold">No role (<t t-esc="len(norole_shifts)"/>)</td>
+                            </tr>
+                            <tr t-foreach="norole_shifts" t-as="shift">
+                                <td/>
+                                <td><span t-field="shift.x_start_datetime" t-options="{'format': 'HH:mm', 'tz_name': tz}"/></td>
+                                <td><span t-field="shift.x_end_datetime" t-options="{'format': 'HH:mm', 'tz_name': tz}"/></td>
+                                <td>
+                                    <t t-if="shift.x_partner_id" t-esc="shift.x_partner_id.name"/>
+                                    <span t-else="" class="text-danger">Unassigned</span>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </t>
+
+            <div t-if="sheet.x_note" class="mt-4">
+                <h3>Note</h3>
+                <div t-field="sheet.x_note"/>
+            </div>
+
+        </div>
+    </t>
+</template>
+
+<template id="report_planning_sheet">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="x_planning.report_planning_sheet_document">
+                <t t-set="sheet" t-value="doc"/>
+            </t>
+        </t>
+    </t>
+</template>
+
+</odoo>
