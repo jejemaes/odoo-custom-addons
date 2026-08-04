@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Fields -->
+    <record id="planning_sheet_field_is_public" model="ir.model.fields">
+        <field name="name">x_is_public</field>
+        <field name="ttype">boolean</field>
+        <field name="copied" eval="False"/>
+        <field name="field_description">Is Public</field>
+        <field name="model">x_planning.sheet</field>
+        <field name="model_id" ref="x_planning.model_planning_sheet"/>
+        <field name="on_delete" eval="False"/>
+    </record>
+
+    <record id="planning_sheet_field_self_assign" model="ir.model.fields">
+        <field name="name">x_self_assign</field>
+        <field name="ttype">boolean</field>
+        <field name="copied" eval="False"/>
+        <field name="field_description">Allow Self Assignment</field>
+        <field name="model">x_planning.sheet</field>
+        <field name="model_id" ref="x_planning.model_planning_sheet"/>
+        <field name="on_delete" eval="False"/>
+    </record>
+
+    <record id="planning_sheet_field_public_token" model="ir.model.fields">
+        <field name="name">x_public_token</field>
+        <field name="ttype">char</field>
+        <field name="copied" eval="False"/>
+        <field name="field_description">Public Token</field>
+        <field name="model">x_planning.sheet</field>
+        <field name="model_id" ref="x_planning.model_planning_sheet"/>
+        <field name="on_delete" eval="False"/>
+        <field name="readonly" eval="True"/>
+    </record>
+
+    <record id="planning_sheet_field_public_url" model="ir.model.fields">
+        <field name="name">x_public_url</field>
+        <field name="ttype">char</field>
+        <field name="copied" eval="False"/>
+        <field name="field_description">Public URL</field>
+        <field name="model">x_planning.sheet</field>
+        <field name="model_id" ref="x_planning.model_planning_sheet"/>
+        <field name="on_delete" eval="False"/>
+        <field name="readonly" eval="True"/>
+        <field name="store" eval="False"/>
+        <field name="depends">x_is_public,x_public_token</field>
+        <field name="compute"><![CDATA[
+base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+for record in self:
+    url = False
+    if record.x_is_public and record.x_public_token:
+        url = "%s/website/action/planning/%s" % (base_url, record.x_public_token)
+    record["x_public_url"] = url
+]]></field>
+    </record>
+
+</odoo>

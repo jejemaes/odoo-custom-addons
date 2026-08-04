@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<!--
+		View Search
+	-->
+    <record id="planning_role_view_search" model="ir.ui.view">
+        <field name="name">x_planning.role.search</field>
+        <field name="model">x_planning.role</field>
+        <field name="arch" type="xml">
+            <search string="Search Role">
+                <field name="x_name"/>
+           </search>
+        </field>
+    </record>
+
+    <!--
+        View List
+    -->
+    <record id="planning_role_view_list" model="ir.ui.view">
+        <field name="name">x_planning.role.list</field>
+        <field name="model">x_planning.role</field>
+        <field name="arch" type="xml">
+            <list string="Roles" editable="top">
+                <field name="x_sequence" widget="handle"/>
+                <field name="x_name"/>
+                <field name="x_color" widget="color_picker"/>
+            </list>
+        </field>
+    </record>
+
+	<!--
+		Action
+	-->
+    <record id="planning_role_action" model="ir.actions.act_window">
+        <field name="name">Roles</field>
+        <field name="res_model">x_planning.role</field>
+        <field name="search_view_id" ref="planning_role_view_search"/>
+    </record>
+
+</odoo>

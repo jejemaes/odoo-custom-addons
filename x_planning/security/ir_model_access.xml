@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <record id="planning_shift_rule_manager" model="ir.model.access" >
+        <field name="group_id" ref="group_planning_manager"/>
+        <field name="model_id" ref="model_planning_shift"/>
+        <field name="name">Planning group_manager</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="perm_write" eval="True"/>
+    </record>
+    <record id="planning_shift_rule_user" model="ir.model.access" >
+        <field name="group_id" ref="group_planning_user"/>
+        <field name="model_id" ref="model_planning_shift"/>
+        <field name="name">Planning group_user</field>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="True"/>
+    </record>
+
+    <record id="planning_sheet_rule_manager" model="ir.model.access" >
+        <field name="group_id" ref="group_planning_manager"/>
+        <field name="model_id" ref="model_planning_sheet"/>
+        <field name="name">Planning Sheet group_manager</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="perm_write" eval="True"/>
+    </record>
+    <record id="planning_sheet_rule_user" model="ir.model.access" >
+        <field name="group_id" ref="group_planning_user"/>
+        <field name="model_id" ref="model_planning_sheet"/>
+        <field name="name">Planning Sheet group_user</field>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+
+    <record id="planning_shift_generate_rule_manager" model="ir.model.access" >
+        <field name="group_id" ref="group_planning_manager"/>
+        <field name="model_id" ref="model_planning_shift_generate"/>
+        <field name="name">Planning Shift Generate group_manager</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="perm_write" eval="True"/>
+    </record>
+    <record id="planning_shift_generate_line_rule_manager" model="ir.model.access" >
+        <field name="group_id" ref="group_planning_manager"/>
+        <field name="model_id" ref="model_planning_shift_generate_line"/>
+        <field name="name">Planning Shift Generate Line group_manager</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="perm_write" eval="True"/>
+    </record>
+
+    <record id="planning_role_rule_manager" model="ir.model.access" >
+        <field name="group_id" ref="group_planning_manager"/>
+        <field name="model_id" ref="model_planning_role"/>
+        <field name="name">Planning Role group_manager</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="perm_write" eval="True"/>
+    </record>
+    <record id="planning_role_rule_user" model="ir.model.access" >
+        <field name="group_id" ref="group_planning_user"/>
+        <field name="model_id" ref="model_planning_role"/>
+        <field name="name">Planning Role group_user</field>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+    
+</odoo>

@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Model -->
+    <record id="model_planning_shift" model="ir.model">
+        <field name="name">Planning shift</field>
+        <field name="model">x_planning.shift</field>
+        <field name="is_mail_thread" eval="False"/>
+        <field name="is_mail_activity" eval="False"/>
+    </record>
+
+    <!-- Fields -->
+    <record id="planning_shift_field_partner_id" model="ir.model.fields">
+        <field name="name">x_partner_id</field>
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Assignee</field>
+        <field name="model">x_planning.shift</field>
+        <field name="model_id" ref="model_planning_shift"/>
+        <field name="relation">res.partner</field>
+        <field name="required" eval="False"/>
+        <field name="domain">[('type', '=', 'contact')]</field>
+    </record>
+
+    <record id="planning_shift_field_role_id" model="ir.model.fields">
+        <field name="name">x_role_id</field>
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Role</field>
+        <field name="model">x_planning.shift</field>
+        <field name="model_id" ref="model_planning_shift"/>
+        <field name="relation">x_planning.role</field>
+        <field name="required" eval="True"/>
+        <field name="on_delete">cascade</field>
+    </record>
+
+    <record id="planning_shift_field_start_datetime" model="ir.model.fields">
+        <field name="ttype">datetime</field>
+        <field name="field_description">Start Time</field>
+        <field name="model">x_planning.shift</field>
+        <field name="model_id" ref="model_planning_shift"/>
+        <field name="name">x_start_datetime</field>
+        <field name="required" eval="True"/>
+    </record>
+
+    <record id="planning_shift_field_end_datetime" model="ir.model.fields">
+        <field name="ttype">datetime</field>
+        <field name="field_description">End Time</field>
+        <field name="model">x_planning.shift</field>
+        <field name="model_id" ref="model_planning_shift"/>
+        <field name="name">x_end_datetime</field>
+        <field name="required" eval="True"/>
+    </record>
+
+    <record id="planning_shift_field_note" model="ir.model.fields">
+        <field name="ttype">html</field>
+        <field name="field_description">Note</field>
+        <field name="model">x_planning.shift</field>
+        <field name="model_id" ref="model_planning_shift"/>
+        <field name="name">x_note</field>
+    </record>
+
+    <record id="planning_shift_field_name" model="ir.model.fields">
+        <field name="name">x_name</field>
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Name</field>
+        <field name="model">x_planning.shift</field>
+        <field name="model_id" ref="model_planning_shift"/>
+        <field name="on_delete" eval="False"/>
+        <field name="readonly" eval="True"/>
+        <field name="store" eval="False"/>
+        <field name="depends">x_role_id</field>
+        <field name="compute"><![CDATA[
+for record in self:
+    name = "No name"
+    if record.x_role_id:
+        name = record.x_role_id.x_name 
+    record["x_name"] = name 
+]]></field>
+    </record>
+
+</odoo>

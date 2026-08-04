@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <record id="planning_sheet_server_action_website_page" model="ir.actions.server">
+        <field name="name">Planning Sheet Public Page Controller</field>
+        <field name="model_id" ref="x_planning.model_planning_sheet"/>
+        <field name="website_published">True</field>
+        <field name="website_path">planning</field>
+        <field name="group_ids" eval="[Command.link(ref('base.group_public'))]"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+
+# The route is /website/action/planning/<token>
+path_parts = [part for part in request.httprequest.path.split('/') if part]
+token = path_parts[-1] if path_parts and path_parts[-1] != 'planning' else request.httprequest.args.get('token')
+
+sheet = model.sudo().search([('x_public_token', '=', token), ('x_is_public', '=', True)], limit=1) if token else model.browse()
+if not sheet:
+    raise request.not_found()
+
+Shift = env['x_planning.shift'].sudo()
+sheet_domain = [
+    ('x_start_datetime', '>=', datetime.datetime.combine(sheet.x_date_start, datetime.time.min)),
+    ('x_start_datetime', '<=', datetime.datetime.combine(sheet.x_date_end, datetime.time.max)),
+]
+
+error = False
+redirect_url = False
+selected_ids = []
+values = {'firstname': '', 'lastname': '', 'email': '', 'phone': ''}
+
+# Slots are labelled in the planning owner timezone, like the page and the PDF
+display_tz = timezone(sheet.x_user_id.tz or env.company.partner_id.tz or 'UTC')
+
+def format_slot(shift):
+    start = shift.x_start_datetime.replace(tzinfo=timezone('UTC')).astimezone(display_tz)
+    end = shift.x_end_datetime.replace(tzinfo=timezone('UTC')).astimezone(display_tz)
+    return "%s %s-%s" % (start.strftime('%d/%m'), start.strftime('%H:%M'), end.strftime('%H:%M'))
+
+# Self assignment: an anonymous visitor picks free shifts and identifies himself by email
+if request.httprequest.method == 'POST' and sheet.x_self_assign:
+    form = request.httprequest.form
+    for key in values:
+        values[key] = (form.get(key) or '').strip()
+    for raw_id in form.getlist('shift_ids'):
+        if raw_id.isdigit():
+            selected_ids.append(int(raw_id))
+
+    email_domain = values['email'].rsplit('@', 1)[-1]
+    if not selected_ids:
+        error = "Please select at least one shift."
+    elif not values['firstname'] or not values['lastname']:
+        error = "Please fill in your first name and your last name."
+    elif values['email'].count('@') != 1 or '.' not in email_domain or email_domain.startswith('.') or email_domain.endswith('.'):
+        error = "Please enter a valid email address."
+    elif not values['phone']:
+        error = "Please enter your mobile number."
+
+    shifts_to_take = Shift.browse()
+    partner = env['res.partner'].sudo().browse()
+
+    if not error:
+        # Lock the rows first: two visitors submitting at the same time must not take the same shift
+        env.cr.execute(
+            "SELECT id FROM x_planning_shift WHERE id IN %s AND x_partner_id IS NULL FOR UPDATE",
+            (tuple(selected_ids),),
+        )
+        free_ids = [row[0] for row in env.cr.fetchall()]
+        shifts_to_take = Shift.search([('id', 'in', free_ids)] + sheet_domain, order='x_start_datetime')
+        if not shifts_to_take:
+            error = "The shifts you selected have just been taken by somebody else. Please pick another one."
+
+    if not error:
+        # The email is the unique key used to find back an existing contact
+        partner = env['res.partner'].sudo().search([('email', '=ilike', values['email'])], limit=1)
+
+    # No overlap between the picked shifts themselves
+    if not error:
+        picked = list(shifts_to_take)
+        for index in range(len(picked)):
+            for other_index in range(index + 1, len(picked)):
+                one = picked[index]
+                other = picked[other_index]
+                if one.x_start_datetime < other.x_end_datetime and other.x_start_datetime < one.x_end_datetime:
+                    error = "You cannot take two shifts at the same time: %s overlaps %s." % (format_slot(one), format_slot(other))
+                    break
+            if error:
+                break
+
+    # No overlap with the shifts this contact already holds (including other sheets)
+    if not error and partner:
+        env.cr.execute(
+            """
+            SELECT picked.id
+              FROM x_planning_shift picked, x_planning_shift existing
+             WHERE picked.id IN %s
+               AND existing.x_partner_id = %s
+               AND existing.id != picked.id
+               AND existing.x_start_datetime < picked.x_end_datetime
+               AND picked.x_start_datetime < existing.x_end_datetime
+             LIMIT 1
+            """,
+            (tuple(shifts_to_take.ids), partner.id),
+        )
+        clash = env.cr.fetchone()
+        if clash:
+            error = "You are already assigned to a shift overlapping %s. Please pick another one." % (format_slot(Shift.browse(clash[0])),)
+
+    if not error:
+        partner_values = {
+            'name': "%s %s" % (values['firstname'], values['lastname']),
+            'email': values['email'],
+            'phone': values['phone'],
+        }
+        if partner:
+            # Only fill in what is missing, never overwrite data of an existing contact
+            missing_values = {}
+            for key in partner_values:
+                if not partner[key]:
+                    missing_values[key] = partner_values[key]
+            if missing_values:
+                partner.write(missing_values)
+        else:
+            partner_values['type'] = 'contact'
+            partner = env['res.partner'].sudo().create(partner_values)
+
+        shifts_to_take.write({'x_partner_id': partner.id})
+        # Redirect after a successful post, so a refresh does not submit again
+        redirect_url = '%s?taken=%s' % (request.httprequest.path, len(shifts_to_take))
+
+if redirect_url:
+    response = request.redirect(redirect_url)
+else:
+    taken = request.httprequest.args.get('taken') or ''
+    shifts = Shift.search(sheet_domain, order='x_start_datetime')
+    response = request.render("x_website_planning.planning_sheet_public_page", {
+        'sheet': sheet,
+        'shifts': shifts,
+        'error': error,
+        'values': values,
+        'selected_ids': selected_ids,
+        'taken': int(taken) if taken.isdigit() else 0,
+    })
+
+]]></field>
+    </record>
+
+</odoo>

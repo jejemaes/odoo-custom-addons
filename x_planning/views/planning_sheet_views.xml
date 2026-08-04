@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        View Search
+    -->
+    <record id="planning_sheet_view_search" model="ir.ui.view">
+        <field name="name">x_planning.sheet.search</field>
+        <field name="model">x_planning.sheet</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="x_name"/>
+                <field name="x_user_id"/>
+                <filter name="filter_upcoming" string="Upcoming / Ongoing" domain="[('x_date_end', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_past" string="Past" domain="[('x_date_end', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter name="filter_archived" string="Archived" domain="[('x_active', '=', False)]"/>
+           </search>
+        </field>
+    </record>
+
+    <!--
+        View Form
+    -->
+    <record id="planning_sheet_view_form" model="ir.ui.view">
+        <field name="name">x_planning.sheet.form</field>
+        <field name="model">x_planning.sheet</field>
+        <field name="arch" type="xml">
+            <form string="Planning Sheet">
+                <header>
+                    <button type="action" name="%(planning_shift_generate_action)d" class="btn btn-primary" groups="x_planning.group_planning_manager">Generate Shifts</button>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" text="Archived" bg_color="text-bg-danger" invisible="x_active"/>
+                    <field name="x_active" invisible="1"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="x_name" placeholder="e.g. Week 32"/>
+                        </h1>
+                    </div>
+                    <group name="sheet_details">
+                        <group name="sheet_detail_left">
+                            <field name="x_user_id" widget="many2one_avatar_user"/>
+                            <label for="x_date_start"/>
+                            <div class="d-flex">
+                                <field name="x_date_start" string="Date" widget="daterange" options="{'end_date_field': 'x_date_end'}"/>
+                                <field name="x_date_end" invisible="1"/>
+                            </div>
+                        </group>
+                        <group name="sheet_detail_right">
+                            <field name="x_shift_count"/>
+                            <field name="x_shift_unassigned_count"/>
+                            <field name="x_shift_conflict_count"/>
+                        </group>
+                    </group>
+                    <group name="sheet_note">
+                        <field name="x_note" nolabel="1" colspan="2" placeholder="Add a note..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--
+        View List
+    -->
+    <record id="planning_sheet_view_list" model="ir.ui.view">
+        <field name="name">x_planning.sheet.list</field>
+        <field name="model">x_planning.sheet</field>
+        <field name="arch" type="xml">
+            <list string="Planning Sheets">
+                <field name="x_name"/>
+                <field name="x_user_id" widget="many2one_avatar_user"/>
+                <field name="x_date_start"/>
+                <field name="x_date_end"/>
+                <field name="x_shift_count"/>
+                <field name="x_shift_unassigned_count"/>
+                <field name="x_shift_conflict_count"/>
+            </list>
+        </field>
+    </record>
+
+    <!--
+        View Kanban
+    -->
+    <record id="planning_sheet_view_kanban" model="ir.ui.view">
+        <field name="name">x_planning.sheet.kanban</field>
+        <field name="model">x_planning.sheet</field>
+        <field name="arch" type="xml">
+            <kanban type="action" action="%(planning_sheet_action_view_shifts)d">
+                <field name="x_active"/>
+                <field name="x_date_start"/>
+                <field name="x_date_end"/>
+                <templates>
+                    <t t-name="menu">
+                        <t t-if="widget.editable"><a role="menuitem" type="open" class="dropdown-item">Edit</a></t>
+                        <a role="menuitem" type="action" name="%(planning_shift_generate_action)d" class="dropdown-item" groups="x_planning.group_planning_manager">Generate Shifts</a>
+                        <a role="menuitem" type="action" name="%(action_report_planning_sheet)d" class="dropdown-item">Print</a>
+                        <a t-if="record.x_active.raw_value" role="menuitem" type="archive" class="dropdown-item">Archive</a>
+                        <a t-if="!record.x_active.raw_value" role="menuitem" type="unarchive" class="dropdown-item">Unarchive</a>
+                    </t>
+                    <t t-name="card">
+                        <div class="d-flex flex-column">
+                            <div>
+                                <field name="x_name" class="fw-bold fs-3"/>
+                            </div>
+                            <div class="text-muted">
+                                From <t t-esc="record.x_date_start.value"/> To <t t-esc="record.x_date_end.value"/>
+                            </div>
+                            <footer class="d-flex px-2 justify-content-between">
+                                <div class="d-flex gap-2 p-2">
+                                    <a type="action" name="%(planning_sheet_action_view_shifts)d" class="badge rounded-pill text-bg-light"><field name="x_shift_count"/> shifts</a>
+                                    <a t-if="record.x_shift_unassigned_count.raw_value" type="action" name="%(planning_sheet_action_view_shifts)d" context="{'shift_view_mode': 'unassigned'}" class="badge rounded-pill text-bg-warning"><field name="x_shift_unassigned_count"/> unassigned</a>
+                                    <a t-if="record.x_shift_conflict_count.raw_value" type="action" name="%(planning_sheet_action_view_shifts)d" context="{'shift_view_mode': 'conflict'}" class="badge rounded-pill text-bg-danger"><field name="x_shift_conflict_count"/> conflicts</a>
+                                </div>
+                                <div class="ms-auto p-2">
+                                    <field name="x_user_id" widget="many2one_avatar_user"/>
+                                </div>
+                            </footer>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!--
+        Action
+    -->
+    <record id="planning_sheet_action" model="ir.actions.act_window">
+        <field name="name">Planning Sheets</field>
+        <field name="res_model">x_planning.sheet</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="planning_sheet_view_search"/>
+        <field name="context">{'search_default_filter_upcoming': 1}</field>
+    </record>
+
+</odoo>

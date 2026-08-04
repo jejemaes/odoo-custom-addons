@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!--
+        Actions
+    -->
+    <record id="planning_shift_action_take_it" model="ir.actions.server">
+        <field name="name">Take Shift</field>
+        <field name="model_id" ref="model_planning_shift"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+
+partner = env.user.partner_id
+shifts = records or record
+for shift in shifts:
+    if not shift.x_partner_id:
+        # sudo: a planning user (read-only on shifts) is allowed to self-assign an unassigned shift
+        shift.sudo().write({"x_partner_id": partner.id})
+
+]]></field>
+    </record>
+
+</odoo>

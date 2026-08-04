@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Model -->
+    <record id="model_planning_sheet" model="ir.model">
+        <field name="name">Planning sheet</field>
+        <field name="model">x_planning.sheet</field>
+        <field name="is_mail_thread" eval="False"/>
+        <field name="is_mail_activity" eval="False"/>
+    </record>
+
+    <!-- Fields -->
+    <record id="planning_sheet_field_name" model="ir.model.fields">
+        <field name="name">x_name</field>
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Name</field>
+        <field name="model">x_planning.sheet</field>
+        <field name="model_id" ref="model_planning_sheet"/>
+        <field name="required" eval="True"/>
+    </record>
+
+    <record id="planning_sheet_field_date_start" model="ir.model.fields">
+        <field name="name">x_date_start</field>
+        <field name="ttype">date</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Start Date</field>
+        <field name="model">x_planning.sheet</field>
+        <field name="model_id" ref="model_planning_sheet"/>
+        <field name="required" eval="True"/>
+    </record>
+
+    <record id="planning_sheet_field_date_end" model="ir.model.fields">
+        <field name="name">x_date_end</field>
+        <field name="ttype">date</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">End Date</field>
+        <field name="model">x_planning.sheet</field>
+        <field name="model_id" ref="model_planning_sheet"/>
+        <field name="required" eval="True"/>
+    </record>
+
+    <record id="planning_sheet_field_note" model="ir.model.fields">
+        <field name="name">x_note</field>
+        <field name="ttype">html</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Note</field>
+        <field name="model">x_planning.sheet</field>
+        <field name="model_id" ref="model_planning_sheet"/>
+    </record>
+
+    <record id="planning_sheet_field_active" model="ir.model.fields">
+        <field name="name">x_active</field>
+        <field name="ttype">boolean</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Active</field>
+        <field name="model">x_planning.sheet</field>
+        <field name="model_id" ref="model_planning_sheet"/>
+        <field name="on_delete" eval="False"/>
+    </record>
+
+    <record id="planning_sheet_default_value_active" model="ir.default">
+        <field name="field_id" ref="planning_sheet_field_active"/>
+        <field name="json_value">true</field>
+    </record>
+
+    <record id="planning_sheet_field_user_id" model="ir.model.fields">
+        <field name="name">x_user_id</field>
+        <field name="ttype">many2one</field>
+        <field name="copied" eval="True"/>
+        <field name="domain">[('share', '=', False)]</field>
+        <field name="field_description">Responsible</field>
+        <field name="model">x_planning.sheet</field>
+        <field name="model_id" ref="model_planning_sheet"/>
+        <field name="relation">res.users</field>
+    </record>
+
+    <record id="planning_sheet_field_shift_count" model="ir.model.fields">
+        <field name="name">x_shift_count</field>
+        <field name="ttype">integer</field>
+        <field name="field_description">Shift Count</field>
+        <field name="model">x_planning.sheet</field>
+        <field name="model_id" ref="model_planning_sheet"/>
+        <field name="readonly" eval="True"/>
+        <field name="store" eval="False"/>
+        <field name="depends">x_date_start,x_date_end</field>
+        <field name="compute"><![CDATA[
+for record in self:
+    count = 0
+    if record.x_date_start and record.x_date_end:
+        count = record.env["x_planning.shift"].search_count([
+            ("x_start_datetime", ">=", datetime.datetime.combine(record.x_date_start, datetime.time.min)),
+            ("x_start_datetime", "<=", datetime.datetime.combine(record.x_date_end, datetime.time.max)),
+        ])
+    record["x_shift_count"] = count
+]]></field>
+    </record>
+
+    <record id="planning_sheet_field_shift_conflict_count" model="ir.model.fields">
+        <field name="name">x_shift_conflict_count</field>
+        <field name="ttype">integer</field>
+        <field name="field_description">Conflicting Shift Count</field>
+        <field name="model">x_planning.sheet</field>
+        <field name="model_id" ref="model_planning_sheet"/>
+        <field name="readonly" eval="True"/>
+        <field name="store" eval="False"/>
+        <field name="depends">x_date_start,x_date_end</field>
+        <field name="compute"><![CDATA[
+self.env["x_planning.shift"].flush_model(["x_partner_id", "x_start_datetime", "x_end_datetime"])
+for record in self:
+    count = 0
+    if record.x_date_start and record.x_date_end:
+        record.env.cr.execute(
+            """
+            SELECT COUNT(DISTINCT s1.id)
+              FROM x_planning_shift s1
+              JOIN x_planning_shift s2
+                ON s1.x_partner_id = s2.x_partner_id
+               AND s1.id != s2.id
+               AND s1.x_start_datetime < s2.x_end_datetime
+               AND s2.x_start_datetime < s1.x_end_datetime
+             WHERE s1.x_partner_id IS NOT NULL
+               AND s1.x_start_datetime >= %s
+               AND s1.x_start_datetime <= %s
+            """,
+            (
+                datetime.datetime.combine(record.x_date_start, datetime.time.min),
+                datetime.datetime.combine(record.x_date_end, datetime.time.max),
+            ),
+        )
+        count = record.env.cr.fetchone()[0]
+    record["x_shift_conflict_count"] = count
+]]></field>
+    </record>
+
+    <record id="planning_sheet_field_shift_unassigned_count" model="ir.model.fields">
+        <field name="name">x_shift_unassigned_count</field>
+        <field name="ttype">integer</field>
+        <field name="field_description">Unassigned Shift Count</field>
+        <field name="model">x_planning.sheet</field>
+        <field name="model_id" ref="model_planning_sheet"/>
+        <field name="readonly" eval="True"/>
+        <field name="store" eval="False"/>
+        <field name="depends">x_date_start,x_date_end</field>
+        <field name="compute"><![CDATA[
+for record in self:
+    count = 0
+    if record.x_date_start and record.x_date_end:
+        count = record.env["x_planning.shift"].search_count([
+            ("x_start_datetime", ">=", datetime.datetime.combine(record.x_date_start, datetime.time.min)),
+            ("x_start_datetime", "<=", datetime.datetime.combine(record.x_date_end, datetime.time.max)),
+            ("x_partner_id", "=", False),
+        ])
+    record["x_shift_unassigned_count"] = count
+]]></field>
+    </record>
+
+</odoo>
