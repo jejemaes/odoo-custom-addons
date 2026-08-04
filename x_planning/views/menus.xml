@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    <record id="planning_main_menu" model="ir.ui.menu">
+        <field name="name">Planning</field>
+        <field name="web_icon_data" type="base64" file="x_planning/static/description/icon.svg"/>
+        <field name="sequence">45</field>
+    </record>
+
+        <record id="planning_main_sheets" model="ir.ui.menu">
+            <field name="action" ref="planning_sheet_action"/>
+            <field name="name">Planning</field>
+            <field name="parent_id" ref="planning_main_menu"/>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="planning_main_all_shifts" model="ir.ui.menu">
+            <field name="action" ref="planning_shift_my_action"/>
+            <field name="name">My Shifts</field>
+            <field name="parent_id" ref="planning_main_menu"/>
+            <field name="sequence">15</field>
+        </record>
+
+        <record id="planning_main_settings" model="ir.ui.menu" >
+            <field name="name">Settings</field>
+            <field name="parent_id" ref="planning_main_menu"/>
+            <field name="sequence">25</field>
+        </record>
+            <record id="planning_settings_role" model="ir.ui.menu" >
+                <field name="name">Roles</field>
+                <field name="action" ref="planning_role_action"/>
+                <field name="parent_id" ref="planning_main_settings"/>
+                <field name="sequence">5</field>
+            </record>
+
+</odoo>

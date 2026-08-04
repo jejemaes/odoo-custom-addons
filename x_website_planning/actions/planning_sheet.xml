@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!--
+        Automations
+    -->
+    <record id="action_planning_sheet_set_public_token" model="ir.actions.server">
+        <field name="name">Planning Sheet: Generate Public Token</field>
+        <field name="model_id" ref="x_planning.model_planning_sheet"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+
+for sheet in records:
+    if not sheet.x_public_token:
+        env.cr.execute("SELECT gen_random_uuid()")
+        sheet.write({"x_public_token": str(env.cr.fetchone()[0])})
+
+]]></field>
+    </record>
+
+    <record id="automation_rule_planning_sheet_set_public_token" model="base.automation">
+        <field name="name">Planning Sheet: Generate Public Token</field>
+        <field name="model_id" ref="x_planning.model_planning_sheet"/>
+        <field name="trigger">on_create_or_write</field>
+        <field name="filter_domain">[('x_public_token', '=', False)]</field>
+        <field name="action_server_ids" eval="[(4, ref('action_planning_sheet_set_public_token'))]"/>
+    </record>
+
+</odoo>

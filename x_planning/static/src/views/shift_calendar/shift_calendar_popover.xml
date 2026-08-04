@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="x_planning.PlanningShiftCalendarPopover.footer">
+        <a t-if="this.canTakeIt" href="#" class="btn btn-secondary o_planning_take_it" t-on-click="this.onTakeIt">I take it</a>
+        <t t-call="web.CalendarCommonPopover.footer"/>
+    </t>
+
+</templates>

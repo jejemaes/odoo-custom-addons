@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="planning_shift_generate_view_form" model="ir.ui.view">
+        <field name="name">x_planning.shift_generate.form</field>
+        <field name="model">x_planning.shift_generate</field>
+        <field name="arch" type="xml">
+            <form string="Generate Shifts">
+                <group>
+                    <group>
+                        <field name="x_sheet_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
+                        <field name="x_date"/>
+                    </group>
+                </group>
+                <field name="x_line_ids" nolabel="1">
+                    <list string="Lines" editable="bottom">
+                        <field name="x_role_id" options="{'no_create': True}"/>
+                        <field name="x_start_time" widget="float_time"/>
+                        <field name="x_end_time" widget="float_time"/>
+                        <field name="x_count"/>
+                    </list>
+                </field>
+                <footer>
+                    <button string="Generate Shifts" type="action" name="%(action_generate_shifts_from_sheet)d" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel" type="object" class="btn btn-secondary oe_inline"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="planning_shift_generate_action" model="ir.actions.act_window">
+        <field name="name">Generate Shifts</field>
+        <field name="res_model">x_planning.shift_generate</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="planning_shift_generate_view_form"/>
+        <field name="target">new</field>
+        <field name="context">{'default_x_sheet_id': active_id}</field>
+    </record>
+
+</odoo>

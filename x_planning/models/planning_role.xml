@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Model -->
+    <record id="model_planning_role" model="ir.model">
+        <field name="name">Project Stage</field>
+        <field name="model">x_planning.role</field>
+        <field name="is_mail_thread" eval="False"/>
+        <field name="is_mail_activity" eval="False"/>
+    </record>
+
+    <!-- Fields -->
+    <record id="planning_role_field_name" model="ir.model.fields">
+        <field name="name">x_name</field>
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Name</field>
+        <field name="model">x_planning.role</field>
+        <field name="model_id" ref="model_planning_role"/>
+        <field name="on_delete" eval="False"/>
+        <field name="required" eval="True"/>
+    </record>
+
+    <record id="planning_role_field_color" model="ir.model.fields">
+        <field name="ttype">integer</field>
+        <field name="field_description">Color</field>
+        <field name="model">x_planning.role</field>
+        <field name="model_id" ref="model_planning_role"/>
+        <field name="name">x_color</field>
+    </record>
+
+    <record id="planning_role_field_sequence" model="ir.model.fields">
+        <field name="ttype">integer</field>
+        <field name="field_description">Sequence</field>
+        <field name="model">x_planning.role</field>
+        <field name="model_id" ref="model_planning_role"/>
+        <field name="name">x_sequence</field>
+    </record>
+
+</odoo>
