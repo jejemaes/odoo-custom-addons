@@ -61,6 +61,18 @@
         <field name="json_value">"table"</field>
     </record>
 
+    <record id="project_project_template_field_use_deadline" model="ir.model.fields">
+        <field name="name">x_use_deadline</field>
+        <field name="ttype">boolean</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Use Deadlines</field>
+        <field name="help">Projects created from this template require a start and an end date, and task deadlines are computed from them.</field>
+        <field name="model">x_project.project.template</field>
+        <field name="model_id" ref="model_project_project_template"/>
+        <field name="on_delete" eval="False"/>
+        <field name="tracking">10</field>
+    </record>
+
     <record id="project_project_template_field_task_count" model="ir.model.fields">
         <field name="name">x_task_template_count</field>
         <field name="model">x_project.project.template</field>

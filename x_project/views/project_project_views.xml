@@ -38,6 +38,8 @@
                         </group>
                         <group name="project_project_detail_right">
                             <field name="x_user_id" widget="many2one_avatar_user"/>
+                            <field name="x_date_end" invisible="1"/>
+                            <field name="x_date_start" string="Project Dates" widget="daterange" options="{'end_date_field': 'x_date_end'}"/>
                         </group>
                     </group>
                     <notebook>
@@ -66,6 +68,8 @@
             <list string="Rental Bookings">
                 <field name="x_name"/>
                 <field name="x_user_id" options="{'no_create': True}"/>
+                <field name="x_date_start" optional="show"/>
+                <field name="x_date_end" optional="show"/>
             </list>
         </field>
     </record>

@@ -22,6 +22,10 @@
                         <group name="task_detail_right">
                             <field name="x_color" widget="color_picker"/>
                             <field name="x_priority" widget="priority"/>
+                            <field name="x_use_deadline" invisible="1"/>
+                            <field name="x_deadline_policy" invisible="not x_use_deadline"/>
+                            <field name="x_deadline_delay" invisible="not x_use_deadline or not x_deadline_policy"/>
+                            <field name="x_deadline_interval" invisible="not x_use_deadline or not x_deadline_policy" required="x_use_deadline and x_deadline_policy"/>
                         </group>
                     </group>
                     <notebook>

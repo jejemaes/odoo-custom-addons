@@ -85,18 +85,58 @@
         <field name="tracking">3</field>
     </record>
 
-<!--     <record id="project_task_template_field_deadline" model="ir.model.fields">
-        <field name="name">x_deadline</field>
-        <field name="ttype">datetime</field>
+    <record id="project_task_template_field_deadline_policy" model="ir.model.fields">
+        <field name="name">x_deadline_policy</field>
+        <field name="ttype">selection</field>
         <field name="copied" eval="True"/>
-        <field name="field_description">Deadline</field>
+        <field name="field_description">Deadline Policy</field>
         <field name="model">x_project.task.template</field>
         <field name="model_id" ref="model_project_task_template"/>
         <field name="on_delete" eval="False"/>
         <field name="required" eval="False"/>
-        <field name="tracking">5</field>
+        <field name="selection">[('before_project_begin', 'Before Project Start Date'), ('after_project_begin', 'After Project Start Date'), ('before_project_end', 'Before Project End Date'), ('after_project_end', 'After Project End Date')]</field>
     </record>
- -->
+
+    <record id="project_task_template_field_deadline_delay" model="ir.model.fields">
+        <field name="name">x_deadline_delay</field>
+        <field name="ttype">integer</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Deadline Delay</field>
+        <field name="model">x_project.task.template</field>
+        <field name="model_id" ref="model_project_task_template"/>
+        <field name="on_delete" eval="False"/>
+    </record>
+    <record id="project_task_template_field_deadline_delay_default_value" model="ir.default">
+        <field name="field_id" ref="project_task_template_field_deadline_delay"/>
+        <field name="json_value">1</field>
+    </record>
+
+    <record id="project_task_template_field_deadline_interval" model="ir.model.fields">
+        <field name="name">x_deadline_interval</field>
+        <field name="ttype">selection</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Deadline Interval</field>
+        <field name="model">x_project.task.template</field>
+        <field name="model_id" ref="model_project_task_template"/>
+        <field name="on_delete" eval="False"/>
+        <field name="selection">[('hours', 'Hours'), ('days', 'Days'), ('weeks', 'Weeks'), ('months', 'Months')]</field>
+    </record>
+    <record id="project_task_template_field_deadline_interval_default_value" model="ir.default">
+        <field name="field_id" ref="project_task_template_field_deadline_interval"/>
+        <field name="json_value">"days"</field>
+    </record>
+
+    <!-- Related Fields -->
+    <record id="project_task_template_field_use_deadline" model="ir.model.fields">
+        <field name="name">x_use_deadline</field>
+        <field name="ttype">boolean</field>
+        <field name="related">x_project_template_id.x_use_deadline</field>
+        <field name="field_description">Use Deadlines</field>
+        <field name="model">x_project.task.template</field>
+        <field name="model_id" ref="model_project_task_template"/>
+        <field name="readonly" eval="True"/>
+        <field name="store" eval="False"/>
+    </record>
 
     <!-- Reverse Fields -->
     <record id="project_project_template_field_task_ids" model="ir.model.fields">
