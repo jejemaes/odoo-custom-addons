@@ -7,28 +7,53 @@
         <field name="state">code</field>
         <field name="code"><![CDATA[
 
-if not record.x_project_template_id.x_stage_ids:
+template = record.x_project_template_id
+
+if not template.x_stage_ids:
     raise UserError("Template has no stage.")
+
+if template.x_use_deadline and (not record.x_date_start or not record.x_date_end):
+    raise UserError("This template requires a start date and an end date for the project.")
+
+if record.x_date_start and record.x_date_end and record.x_date_start > record.x_date_end:
+    raise UserError("The start date must be before the end date of the project.")
 
 project_values = {
     "x_name": record.x_name,
-    "x_mode": record.x_project_template_id.x_mode,
-    "x_color": record.x_project_template_id.x_color,
-    "x_stage_ids": [Command.link(stage.id) for stage in record.x_project_template_id.x_stage_ids]
+    "x_mode": template.x_mode,
+    "x_color": template.x_color,
+    "x_date_start": record.x_date_start,
+    "x_date_end": record.x_date_end,
+    "x_stage_ids": [Command.link(stage.id) for stage in template.x_stage_ids],
 }
 project = env["x_project.project"].create(project_values)
 
 
-stage = record.x_project_template_id.x_stage_ids[0]
+stage = template.x_stage_ids[0]
+relativedelta = dateutil.relativedelta.relativedelta
 
 task_data = []
-for task_template in record.x_project_template_id.x_task_template_ids:
+for task_template in template.x_task_template_ids:
+    deadline = False
+    policy = task_template.x_deadline_policy
+    if template.x_use_deadline and policy:
+        delta = relativedelta(**{task_template.x_deadline_interval or 'days': task_template.x_deadline_delay or 0})
+        if policy == 'before_project_begin' and project.x_date_start:
+            deadline = project.x_date_start - delta
+        elif policy == 'after_project_begin' and project.x_date_start:
+            deadline = project.x_date_start + delta
+        elif policy == 'before_project_end' and project.x_date_end:
+            deadline = project.x_date_end - delta
+        elif policy == 'after_project_end' and project.x_date_end:
+            deadline = project.x_date_end + delta
+
     task_data.append({
         "x_name": task_template.x_name,
         "x_sequence": task_template.x_sequence,
         "x_color": task_template.x_color,
         "x_notes": task_template.x_notes,
         "x_priority": task_template.x_priority,
+        "x_deadline": deadline,
         "x_user_ids": [Command.link(user.id) for user in task_template.x_user_ids],
         "x_stage_id": stage.id,
         "x_project_id": project.id,

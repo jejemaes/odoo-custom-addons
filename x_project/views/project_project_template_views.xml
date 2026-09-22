@@ -29,14 +29,18 @@
                     <group name="project_project_template_detail">
                         <group name="project_project_template_detail_left">
                             <field name="x_mode" widget="radio" options="{'horizontal': true}"/>
+                            <field name="x_use_deadline"/>
                         </group>
                     </group>
                     <notebook>
                         <page name="task_template_ids" string="Tasks">
                             <field name="x_task_template_ids" nolabel="1">
-                                <list>
+                                <list editable="bottom" open_form_view="1">
                                     <field name="x_sequence" widget="handle"/>
                                     <field name="x_name"/>
+                                    <field name="x_deadline_delay" column_invisible="not parent.x_use_deadline"/>
+                                    <field name="x_deadline_interval" column_invisible="not parent.x_use_deadline" invisible="not x_deadline_delay"/>
+                                    <field name="x_deadline_policy" column_invisible="not parent.x_use_deadline" invisible="not x_deadline_delay"/>
                                     <field name="x_color" widget="color_picker"/>
                                 </list>
                             </field>
