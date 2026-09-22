@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <record id="mail_alias_inbox" model="mail.alias">
+        <field name="alias_name">tickets</field>
+        <field name="alias_model_id" ref="x_expense.model_expense_expense"/>
+        <field name="alias_defaults" eval="str({'x_state': 'inbox'})"/>
+    </record>
+
+</odoo>

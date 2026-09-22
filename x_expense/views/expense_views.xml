@@ -150,6 +150,7 @@
                 <field name="x_analytic_account_id"/>
                 <filter string="My Expenses" name="my_expense" domain="[['x_user_id', '=', uid]]"/>
                 <separator/>
+                <filter string="Inbox" name="filter_state_inbox" domain="[['x_state', '=', 'inbox']]"/>
                 <filter string="To Submit" name="filter_state_draft" domain="[['x_state', '=', 'draft']]"/>
                 <filter string="To Approve" name="filter_state_submit" domain="[['x_state', '=', 'submit']]"/>
                 <filter string="To Pay" name="filter_state_approve" domain="[['x_state', '=', 'approved']]"/>

@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <record id="ir_cron_process_inbox_expense" model="ir.cron">
+        <field name="name">Expenses: Process Inbox</field>
+        <field name="model_id" ref="x_expense.model_expense_expense"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+system_user = env.ref("base.user_root")
+Partner = env["res.partner"].sudo()
+Users = env["res.users"].sudo()
+
+for expense in model.sudo().search([("x_state", "=", "inbox")]):
+    attachments = expense.message_ids.attachment_ids
+    if not attachments:
+        continue
+
+    message = expense.message_ids.sorted("id")[:1]
+    email = (message.email_from or "").split("<")[-1].split(">")[0].strip().lower()
+
+    # the person to reimbourse is the sender of the incoming email
+    partner = message.author_id
+    if not partner and email:
+        partner = Partner.search([("email_normalized", "=", email)], limit=1)
+
+    # the expense belongs to the internal user behind that email, if any
+    user = Users.search([("email_normalized", "=", email), ("share", "=", False)], limit=1) if email else Users
+
+    # one draft expense per attachment of the incoming email
+    for attachment in attachments:
+        model.sudo().create({
+            "x_name": attachment.name,
+            "x_state": "draft",
+            "x_date": (message.date or expense.create_date).date(),
+            "x_partner_id": partner.id,
+            "x_user_id": (user or system_user).id,
+            "x_file_content": attachment.raw,
+        })
+
+    expense.unlink()
+        ]]></field>
+    </record>
+
+</odoo>
