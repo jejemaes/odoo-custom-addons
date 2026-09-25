@@ -24,11 +24,11 @@
             <t t-set="outcome_lines_per_category" t-value="analytic_lines.filtered(lambda aal: aal.amount &lt;= 0.0).grouped('x_budget_category_id')"/>
             <t t-set="result" t-value="sum(analytic_lines.mapped('amount'))"/>
 
-            <!-- positions with planned lines but no matching analytic line yet still need to show up:
-                 place them by the sign of their planned amount (same convention as real lines above) -->
-            <t t-set="uncovered_positions" t-value="doc.x_position_ids.filtered(lambda p: p.x_category_id not in income_lines_per_category and p.x_category_id not in outcome_lines_per_category)"/>
-            <t t-set="income_lines_per_category" t-value="{**income_lines_per_category, **{p.x_category_id: doc.env['account.analytic.line'] for p in uncovered_positions if p.x_planned_amount > 0}}"/>
-            <t t-set="outcome_lines_per_category" t-value="{**outcome_lines_per_category, **{p.x_category_id: doc.env['account.analytic.line'] for p in uncovered_positions if p.x_planned_amount &lt;= 0}}"/>
+            <!-- planned (budget) lines are split the same way, per line: a position with both
+                 positive and negative planned lines shows up in both columns -->
+            <t t-set="planned_lines" t-value="doc.x_line_ids"/>
+            <t t-set="income_planned_per_category" t-value="planned_lines.filtered(lambda l: l.x_planned_amount > 0.0).grouped(lambda l: l.x_position_id.x_category_id)"/>
+            <t t-set="outcome_planned_per_category" t-value="planned_lines.filtered(lambda l: l.x_planned_amount &lt;= 0.0).grouped(lambda l: l.x_position_id.x_category_id)"/>
 
             <table class="table table-borderless mt-5">
                 <thead>
@@ -41,10 +41,12 @@
                     <tr>
                         <td class="align-top">
                             <t t-set="lines_by_category" t-value="outcome_lines_per_category"/>
+                            <t t-set="planned_by_category" t-value="outcome_planned_per_category"/>
                             <t t-call="x_budget.report_internal_document_budget_budget_column"/>
                         </td>
                         <td class="align-top">
                             <t t-set="lines_by_category" t-value="income_lines_per_category"/>
+                            <t t-set="planned_by_category" t-value="income_planned_per_category"/>
                             <t t-call="x_budget.report_internal_document_budget_budget_column"/>
                         </td>
                     </tr>
@@ -81,26 +83,31 @@
     </t>
 </template>
 
-<!-- one column (expenses or incomes): one mini-table per budget position, title row highlighted
-     with the category's color and carrying the column's total for that position -->
+<!-- one column (expenses or incomes): one mini-table per budget position that has at least one
+     planned or effective line of this column's sign, title row highlighted with the category's
+     color and carrying this column's (sign-filtered) total for that position -->
 <template id="report_internal_document_budget_budget_column">
-    <t t-set="position_categories" t-value="[c for c in lines_by_category if c in position_per_category]"/>
+    <t t-set="empty_lines" t-value="doc.env['account.analytic.line']"/>
+    <t t-set="empty_planned" t-value="doc.env['x_budget.budget.line']"/>
+    <t t-set="position_categories" t-value="[c for c in set(lines_by_category) | set(planned_by_category) if c in position_per_category]"/>
     <t t-foreach="sorted(position_categories, key=lambda c: (position_per_category[c].x_sequence, c.x_name))" t-as="category">
         <t t-set="position" t-value="position_per_category[category]"/>
         <t t-set="use_planned" t-value="position.x_budget_id.x_use_planned_amount"/>
+        <t t-set="planned_lines_here" t-value="planned_by_category.get(category, empty_planned)"/>
+        <t t-set="effective_lines_here" t-value="lines_by_category.get(category, empty_lines)"/>
         <table class="table table-sm mb-3">
             <thead>
                 <tr t-attf-class="o_budget_report_header_color_#{str(category.x_color)}">
                     <th t-if="use_planned" class="w-50 align-middle">
                         <div class="d-flex justify-content-between">
                             <b class="text-uppercase"><t t-esc="category.x_name"/></b>
-                            <b>Planned Total: <t t-out="position.x_planned_amount" t-options="{'widget': 'monetary', 'display_currency': doc.x_currency_id}"/></b>
+                            <b>Planned Total: <t t-out="sum(planned_lines_here.mapped('x_planned_amount'))" t-options="{'widget': 'monetary', 'display_currency': doc.x_currency_id}"/></b>
                         </div>
                     </th>
                     <th t-attf-class="align-middle #{'w-50' if use_planned else 'w-100'}">
                         <div class="d-flex justify-content-between">
                             <b t-if="not use_planned" class="text-uppercase"><t t-esc="category.x_name"/></b>
-                            <b class="ms-auto">Effective Total: <t t-out="sum(lines_by_category[category].mapped('amount'))" t-options="{'widget': 'monetary', 'display_currency': doc.x_currency_id}"/></b>
+                            <b class="ms-auto">Effective Total: <t t-out="sum(effective_lines_here.mapped('amount'))" t-options="{'widget': 'monetary', 'display_currency': doc.x_currency_id}"/></b>
                         </div>
                     </th>
                 </tr>
@@ -108,13 +115,13 @@
             <tbody>
                 <tr>
                     <td t-if="use_planned" class="w-50 align-top">
-                        <div t-foreach="position.x_budget_line_ids" t-as="planned_line" class="d-flex justify-content-between">
+                        <div t-foreach="planned_lines_here" t-as="planned_line" class="d-flex justify-content-between">
                             <span><t t-esc="planned_line.x_name"/></span>
                             <span><t t-out="planned_line.x_planned_amount" t-options="{'widget': 'monetary', 'display_currency': doc.x_currency_id}"/></span>
                         </div>
                     </td>
                     <td class="align-top">
-                        <div t-foreach="lines_by_category[category]" t-as="line" class="d-flex justify-content-between">
+                        <div t-foreach="effective_lines_here" t-as="line" class="d-flex justify-content-between">
                             <span><t t-esc="line.name"/></span>
                             <span><span t-field="line.amount"/></span>
                         </div>
@@ -131,13 +138,13 @@
                 <td t-if="doc.x_use_planned_amount" class="w-50">
                     <div class="d-flex justify-content-between">
                         <span class="text-uppercase">Total Planned</span>
-                        <span><t t-out="sum(position_per_category[c].x_planned_amount for c in position_categories)" t-options="{'widget': 'monetary', 'display_currency': doc.x_currency_id}"/></span>
+                        <span><t t-out="sum(sum(planned_by_category.get(c, empty_planned).mapped('x_planned_amount')) for c in position_categories)" t-options="{'widget': 'monetary', 'display_currency': doc.x_currency_id}"/></span>
                     </div>
                 </td>
                 <td t-attf-class="#{'w-50' if doc.x_use_planned_amount else 'w-100'}">
                     <div class="d-flex justify-content-between">
                         <span class="text-uppercase">Total Effective</span>
-                        <span><t t-out="sum(sum(lines_by_category[c].mapped('amount')) for c in position_categories)" t-options="{'widget': 'monetary', 'display_currency': doc.x_currency_id}"/></span>
+                        <span><t t-out="sum(sum(lines_by_category.get(c, empty_lines).mapped('amount')) for c in position_categories)" t-options="{'widget': 'monetary', 'display_currency': doc.x_currency_id}"/></span>
                     </div>
                 </td>
             </tr>
