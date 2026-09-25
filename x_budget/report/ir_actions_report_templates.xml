@@ -24,6 +24,12 @@
             <t t-set="outcome_lines_per_category" t-value="analytic_lines.filtered(lambda aal: aal.amount &lt;= 0.0).grouped('x_budget_category_id')"/>
             <t t-set="result" t-value="sum(analytic_lines.mapped('amount'))"/>
 
+            <!-- positions with planned lines but no matching analytic line yet still need to show up:
+                 place them by the sign of their planned amount (same convention as real lines above) -->
+            <t t-set="uncovered_positions" t-value="doc.x_position_ids.filtered(lambda p: p.x_category_id not in income_lines_per_category and p.x_category_id not in outcome_lines_per_category)"/>
+            <t t-set="income_lines_per_category" t-value="{**income_lines_per_category, **{p.x_category_id: doc.env['account.analytic.line'] for p in uncovered_positions if p.x_planned_amount > 0}}"/>
+            <t t-set="outcome_lines_per_category" t-value="{**outcome_lines_per_category, **{p.x_category_id: doc.env['account.analytic.line'] for p in uncovered_positions if p.x_planned_amount &lt;= 0}}"/>
+
             <table class="table table-borderless mt-5">
                 <thead>
                     <tr>
