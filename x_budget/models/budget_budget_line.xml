@@ -43,7 +43,7 @@
 
     <record id="model_budget_budget_line_field_planned_amount" model="ir.model.fields">
         <field name="name">x_planned_amount</field>
-        <field name="ttype">monetary</field>
+        <field name="ttype">float</field>
         <field name="copied" eval="True"/>
         <field name="field_description">Planned Amount</field>
         <field name="model">x_budget.budget.line</field>
@@ -94,7 +94,7 @@
 
     <record id="model_budget_budget_position_field_planned_amount" model="ir.model.fields">
         <field name="name">x_planned_amount</field>
-        <field name="ttype">monetary</field>
+        <field name="ttype">float</field>
         <field name="copied" eval="True"/>
         <field name="field_description">Planned Amount</field>
         <field name="model">x_budget.budget.position</field>
@@ -120,7 +120,7 @@ for record in self:
 
     <record id="model_budget_budget_position_field_practical_amount" model="ir.model.fields">
         <field name="name">x_practical_amount</field>
-        <field name="ttype">monetary</field>
+        <field name="ttype">float</field>
         <field name="copied" eval="True"/>
         <field name="field_description">Effective Amount</field>
         <field name="model">x_budget.budget.position</field>
@@ -151,7 +151,6 @@ for budget, positions in self.grouped('x_budget_id').items():
 ]]></field>
         <field name="store" eval="True"/>
     </record>
-
 
     <!--
         Budget Budget
