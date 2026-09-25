@@ -40,19 +40,19 @@
                     <t t-name="card">
                         <main t-att-data-id="record.id.raw_value">
                             <div class="d-flex align-items-baseline gap-1 p-2">
-                                <field name="x_name" class="text-truncate h1"/>
+                                <field name="x_name" class="text-truncate h2"/>
                             </div>
                             <div class="min-w-0 row me-2 mb-2">
                                 <div class="d-flex flex-column align-items-center col-6 border-end" t-if="record.x_use_planned_amount.raw_value">
                                     <p class="text-muted">Planned</p>
                                     <span t-attf-class="{{record.x_total_planned_amount.raw_value >= 0 ? 'text-success' : 'text-danger'}} h2">
-                                        <t t-esc="record.x_total_planned_amount.value"/>
+                                        <field name="x_total_planned_amount" widget="monetary" options="{'currency_field': 'x_currency_id'}" nolabel="1"/>
                                     </span>
                                 </div>
                                 <div class="d-flex flex-column align-items-center col-6 border-end">
                                     <p class="text-muted">Effective</p>
                                     <span t-attf-class="{{record.x_total_practical_amount.raw_value >= 0 ? 'text-success' : 'text-danger'}} h2">
-                                        <t t-esc="record.x_total_practical_amount.value"/>
+                                        <field name="x_total_practical_amount" widget="monetary" options="{'currency_field': 'x_currency_id'}" nolabel="1"/>
                                     </span>
                                 </div>
                             </div>
@@ -142,8 +142,8 @@
                                     <field name="x_sequence" widget="handle"/>
                                     <field name="x_color" widget="color_picker" string="" width="20"/>
                                     <field name="x_category_id" options="{'no_create': True}" domain="[('id', 'in', parent.x_selectable_category_ids)]"/>
-                                    <field name="x_planned_amount" width="180" column_invisible="not parent.x_use_planned_amount"/>
-                                    <field name="x_practical_amount" width="180"/>
+                                    <field name="x_planned_amount" widget="monetary" options="{'currency_field': 'x_currency_id'}" width="180" column_invisible="not parent.x_use_planned_amount"/>
+                                    <field name="x_practical_amount" widget="monetary" options="{'currency_field': 'x_currency_id'}" width="180"/>
                                 </list>
                                 <form>
                                     <sheet string="Budget Position">
@@ -157,7 +157,7 @@
                                                     <field name="x_currency_id" column_invisible="1"/>
                                                     <field name="x_sequence" widget="handle"/>
                                                     <field name="x_name"/>
-                                                    <field name="x_planned_amount" sum="Total" width="180"/>
+                                                    <field name="x_planned_amount" widget="monetary" options="{'currency_field': 'x_currency_id'}" sum="Total" width="180"/>
                                                 </list>
                                             </field>
                                         </group>
@@ -170,8 +170,8 @@
                         </page>
                     </notebook>
                     <group name="budget_totals" class="oe_subtotal_footer">
-                        <field name="x_total_planned_amount" invisible="not x_use_planned_amount" decoration-success="x_total_planned_amount &gt;= 0" decoration-danger="x_total_planned_amount &lt; 0" class="h2"/>
-                        <field name="x_total_practical_amount" decoration-success="x_total_practical_amount &gt;= 0" decoration-danger="x_total_practical_amount &lt; 0" class="h2"/>
+                        <field name="x_total_planned_amount" widget="monetary" options="{'currency_field': 'x_currency_id'}" invisible="not x_use_planned_amount" decoration-success="x_total_planned_amount &gt;= 0" decoration-danger="x_total_planned_amount &lt; 0" class="h2"/>
+                        <field name="x_total_practical_amount" widget="monetary" options="{'currency_field': 'x_currency_id'}" decoration-success="x_total_practical_amount &gt;= 0" decoration-danger="x_total_practical_amount &lt; 0" class="h2"/>
                     </group>
                 </sheet>
                 <chatter/>

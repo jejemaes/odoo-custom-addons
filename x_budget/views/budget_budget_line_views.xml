@@ -12,7 +12,7 @@
                 <field name="x_sequence" widget="handle"/>
                 <field name="x_position_id" options="{'no_create': True}"  domain="[('x_budget_id', '=', context.get('default_x_budget_id'))]"/>
                 <field name="x_name"/>
-                <field name="x_planned_amount"/>
+                <field name="x_planned_amount" widget="monetary" options="{'currency_field': 'x_currency_id'}"/>
             </list>
         </field>
     </record>
@@ -34,7 +34,7 @@
                     <group>
                         <field name="x_position_id"/>
                         <field name="x_budget_id"/>
-                        <field name="x_planned_amount"/>
+                        <field name="x_planned_amount" widget="monetary" options="{'currency_field': 'x_currency_id'}"/>
                     </group>
                 </sheet>
             </form>
