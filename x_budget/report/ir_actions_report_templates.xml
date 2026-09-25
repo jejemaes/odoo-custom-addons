@@ -54,14 +54,14 @@
                                 Effective Profit
                             </t><t t-else="">
                                 Effective Loss
-                            </t>: <t t-esc="result"/></p>
+                            </t>: <t t-out="result" t-options="{'widget': 'monetary', 'display_currency': doc.x_currency_id}"/></p>
 
                         <i t-if="doc.x_use_planned_amount" class="text-muted">
                             <t t-if="planned_result >= 0">
                                 Planned Profit
                             </t><t t-else="">
                                 Planned Loss
-                            </t>: <t t-esc="planned_result"/>
+                            </t>: <t t-out="planned_result" t-options="{'widget': 'monetary', 'display_currency': doc.x_currency_id}"/>
                         </i>
 
                     </div>
@@ -88,13 +88,13 @@
                     <th t-if="use_planned" class="w-50 align-middle">
                         <div class="d-flex justify-content-between">
                             <b class="text-uppercase"><t t-esc="category.x_name"/></b>
-                            <b>Planned Total: <t t-esc="position.x_planned_amount"/></b>
+                            <b>Planned Total: <t t-out="position.x_planned_amount" t-options="{'widget': 'monetary', 'display_currency': doc.x_currency_id}"/></b>
                         </div>
                     </th>
                     <th t-attf-class="align-middle #{'w-50' if use_planned else 'w-100'}">
                         <div class="d-flex justify-content-between">
                             <b t-if="not use_planned" class="text-uppercase"><t t-esc="category.x_name"/></b>
-                            <b class="ms-auto">Effective Total: <t t-esc="sum(lines_by_category[category].mapped('amount'))"/></b>
+                            <b class="ms-auto">Effective Total: <t t-out="sum(lines_by_category[category].mapped('amount'))" t-options="{'widget': 'monetary', 'display_currency': doc.x_currency_id}"/></b>
                         </div>
                     </th>
                 </tr>
@@ -104,7 +104,7 @@
                     <td t-if="use_planned" class="w-50 align-top">
                         <div t-foreach="position.x_budget_line_ids" t-as="planned_line" class="d-flex justify-content-between">
                             <span><t t-esc="planned_line.x_name"/></span>
-                            <span><t t-esc="planned_line.x_planned_amount"/></span>
+                            <span><t t-out="planned_line.x_planned_amount" t-options="{'widget': 'monetary', 'display_currency': doc.x_currency_id}"/></span>
                         </div>
                     </td>
                     <td class="align-top">
@@ -125,13 +125,13 @@
                 <td t-if="doc.x_use_planned_amount" class="w-50">
                     <div class="d-flex justify-content-between">
                         <span class="text-uppercase">Total Planned</span>
-                        <span><t t-esc="sum(position_per_category[c].x_planned_amount for c in position_categories)"/></span>
+                        <span><t t-out="sum(position_per_category[c].x_planned_amount for c in position_categories)" t-options="{'widget': 'monetary', 'display_currency': doc.x_currency_id}"/></span>
                     </div>
                 </td>
                 <td t-attf-class="#{'w-50' if doc.x_use_planned_amount else 'w-100'}">
                     <div class="d-flex justify-content-between">
                         <span class="text-uppercase">Total Effective</span>
-                        <span><t t-esc="sum(sum(lines_by_category[c].mapped('amount')) for c in position_categories)"/></span>
+                        <span><t t-out="sum(sum(lines_by_category[c].mapped('amount')) for c in position_categories)" t-options="{'widget': 'monetary', 'display_currency': doc.x_currency_id}"/></span>
                     </div>
                 </td>
             </tr>
