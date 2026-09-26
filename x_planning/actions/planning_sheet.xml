@@ -19,6 +19,8 @@ if record:
         ('x_start_datetime', '>=', date_start.strftime('%Y-%m-%d %H:%M:%S')),
         ('x_start_datetime', '<=', date_end.strftime('%Y-%m-%d %H:%M:%S')),
     ]
+    if record.x_role_ids:
+        domain.append(('x_role_id', 'in', record.x_role_ids.ids))
     context = {
         'default_x_start_datetime': date_start.strftime('%Y-%m-%d %H:%M:%S'),
         'initial_date': date_start.strftime('%Y-%m-%d %H:%M:%S'),
@@ -31,9 +33,8 @@ if record:
         context['search_default_filter_unassigned'] = 1
         display_name = env._('Unassigned Shifts of %s') % (record.display_name,)
     elif mode == 'conflict':
-        env["x_planning.shift"].flush_model(["x_partner_id", "x_start_datetime", "x_end_datetime"])
-        env.cr.execute(
-            """
+        env["x_planning.shift"].flush_model(["x_partner_id", "x_role_id", "x_start_datetime", "x_end_datetime"])
+        query = """
             SELECT DISTINCT s1.id
               FROM x_planning_shift s1
               JOIN x_planning_shift s2
@@ -44,9 +45,12 @@ if record:
              WHERE s1.x_partner_id IS NOT NULL
                AND s1.x_start_datetime >= %s
                AND s1.x_start_datetime <= %s
-            """,
-            (date_start, date_end),
-        )
+        """
+        params = [date_start, date_end]
+        if record.x_role_ids:
+            query += " AND s1.x_role_id IN %s"
+            params.append(tuple(record.x_role_ids.ids))
+        env.cr.execute(query, params)
         domain = [('id', 'in', [row[0] for row in env.cr.fetchall()])]
         display_name = env._('Conflicting Shifts of %s') % (record.display_name,)
 

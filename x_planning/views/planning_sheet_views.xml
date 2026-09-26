@@ -11,6 +11,7 @@
             <search string="Search">
                 <field name="x_name"/>
                 <field name="x_user_id"/>
+                <field name="x_role_ids"/>
                 <filter name="filter_upcoming" string="Upcoming / Ongoing" domain="[('x_date_end', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
                 <filter name="filter_past" string="Past" domain="[('x_date_end', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
                 <separator/>
@@ -48,6 +49,7 @@
                             </div>
                         </group>
                         <group name="sheet_detail_right">
+                            <field name="x_role_ids" widget="many2many_tags" options="{'color_field': 'x_color'}"/>
                             <field name="x_shift_count"/>
                             <field name="x_shift_unassigned_count"/>
                             <field name="x_shift_conflict_count"/>
@@ -71,6 +73,7 @@
             <list string="Planning Sheets">
                 <field name="x_name"/>
                 <field name="x_user_id" widget="many2one_avatar_user"/>
+                <field name="x_role_ids" widget="many2many_tags" options="{'color_field': 'x_color'}"/>
                 <field name="x_date_start"/>
                 <field name="x_date_end"/>
                 <field name="x_shift_count"/>
