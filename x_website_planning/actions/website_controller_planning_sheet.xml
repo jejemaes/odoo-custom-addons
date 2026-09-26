@@ -23,6 +23,8 @@ sheet_domain = [
     ('x_start_datetime', '>=', datetime.datetime.combine(sheet.x_date_start, datetime.time.min)),
     ('x_start_datetime', '<=', datetime.datetime.combine(sheet.x_date_end, datetime.time.max)),
 ]
+if sheet.x_role_ids:
+    sheet_domain.append(('x_role_id', 'in', sheet.x_role_ids.ids))
 
 error = False
 redirect_url = False

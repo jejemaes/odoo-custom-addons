@@ -11,7 +11,8 @@
                 <t t-if="sheet.x_user_id"> — Responsible: <t t-esc="sheet.x_user_id.name"/></t>
             </div>
 
-            <t t-set="shifts" t-value="sheet.env['x_planning.shift'].search([('x_start_datetime', '&gt;=', datetime.datetime.combine(sheet.x_date_start, datetime.time.min)), ('x_start_datetime', '&lt;=', datetime.datetime.combine(sheet.x_date_end, datetime.time.max))], order='x_start_datetime')"/>
+            <t t-set="shift_domain" t-value="[('x_start_datetime', '&gt;=', datetime.datetime.combine(sheet.x_date_start, datetime.time.min)), ('x_start_datetime', '&lt;=', datetime.datetime.combine(sheet.x_date_end, datetime.time.max))] + ([('x_role_id', 'in', sheet.x_role_ids.ids)] if sheet.x_role_ids else [])"/>
+            <t t-set="shifts" t-value="sheet.env['x_planning.shift'].search(shift_domain, order='x_start_datetime')"/>
             <t t-set="days" t-value="sorted(set([s.x_start_datetime.date() for s in shifts]))"/>
             <!-- Render times in the planning owner timezone, so the PDF and the public page always match -->
             <t t-set="tz" t-value="sheet.x_user_id.tz or sheet.env.company.partner_id.tz or 'UTC'"/>
