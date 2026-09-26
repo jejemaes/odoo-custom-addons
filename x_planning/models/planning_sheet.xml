@@ -75,6 +75,19 @@
         <field name="relation">res.users</field>
     </record>
 
+    <record id="planning_sheet_field_role_ids" model="ir.model.fields">
+        <field name="name">x_role_ids</field>
+        <field name="ttype">many2many</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Roles</field>
+        <field name="help">If set, only the shifts with one of these roles are shown for this sheet (web page, shifts action, report). Leave empty to show every role.</field>
+        <field name="model">x_planning.sheet</field>
+        <field name="model_id" ref="model_planning_sheet"/>
+        <field name="on_delete" eval="False"/>
+        <field name="relation">x_planning.role</field>
+        <field name="relation_table">x_planning_sheet_role_rel</field>
+    </record>
+
     <record id="planning_sheet_field_shift_count" model="ir.model.fields">
         <field name="name">x_shift_count</field>
         <field name="ttype">integer</field>
@@ -83,15 +96,18 @@
         <field name="model_id" ref="model_planning_sheet"/>
         <field name="readonly" eval="True"/>
         <field name="store" eval="False"/>
-        <field name="depends">x_date_start,x_date_end</field>
+        <field name="depends">x_date_start,x_date_end,x_role_ids</field>
         <field name="compute"><![CDATA[
 for record in self:
     count = 0
     if record.x_date_start and record.x_date_end:
-        count = record.env["x_planning.shift"].search_count([
+        domain = [
             ("x_start_datetime", ">=", datetime.datetime.combine(record.x_date_start, datetime.time.min)),
             ("x_start_datetime", "<=", datetime.datetime.combine(record.x_date_end, datetime.time.max)),
-        ])
+        ]
+        if record.x_role_ids:
+            domain.append(("x_role_id", "in", record.x_role_ids.ids))
+        count = record.env["x_planning.shift"].search_count(domain)
     record["x_shift_count"] = count
 ]]></field>
     </record>
@@ -104,14 +120,13 @@ for record in self:
         <field name="model_id" ref="model_planning_sheet"/>
         <field name="readonly" eval="True"/>
         <field name="store" eval="False"/>
-        <field name="depends">x_date_start,x_date_end</field>
+        <field name="depends">x_date_start,x_date_end,x_role_ids</field>
         <field name="compute"><![CDATA[
-self.env["x_planning.shift"].flush_model(["x_partner_id", "x_start_datetime", "x_end_datetime"])
+self.env["x_planning.shift"].flush_model(["x_partner_id", "x_role_id", "x_start_datetime", "x_end_datetime"])
 for record in self:
     count = 0
     if record.x_date_start and record.x_date_end:
-        record.env.cr.execute(
-            """
+        query = """
             SELECT COUNT(DISTINCT s1.id)
               FROM x_planning_shift s1
               JOIN x_planning_shift s2
@@ -122,12 +137,15 @@ for record in self:
              WHERE s1.x_partner_id IS NOT NULL
                AND s1.x_start_datetime >= %s
                AND s1.x_start_datetime <= %s
-            """,
-            (
-                datetime.datetime.combine(record.x_date_start, datetime.time.min),
-                datetime.datetime.combine(record.x_date_end, datetime.time.max),
-            ),
-        )
+        """
+        params = [
+            datetime.datetime.combine(record.x_date_start, datetime.time.min),
+            datetime.datetime.combine(record.x_date_end, datetime.time.max),
+        ]
+        if record.x_role_ids:
+            query += " AND s1.x_role_id IN %s"
+            params.append(tuple(record.x_role_ids.ids))
+        record.env.cr.execute(query, params)
         count = record.env.cr.fetchone()[0]
     record["x_shift_conflict_count"] = count
 ]]></field>
@@ -141,16 +159,19 @@ for record in self:
         <field name="model_id" ref="model_planning_sheet"/>
         <field name="readonly" eval="True"/>
         <field name="store" eval="False"/>
-        <field name="depends">x_date_start,x_date_end</field>
+        <field name="depends">x_date_start,x_date_end,x_role_ids</field>
         <field name="compute"><![CDATA[
 for record in self:
     count = 0
     if record.x_date_start and record.x_date_end:
-        count = record.env["x_planning.shift"].search_count([
+        domain = [
             ("x_start_datetime", ">=", datetime.datetime.combine(record.x_date_start, datetime.time.min)),
             ("x_start_datetime", "<=", datetime.datetime.combine(record.x_date_end, datetime.time.max)),
             ("x_partner_id", "=", False),
-        ])
+        ]
+        if record.x_role_ids:
+            domain.append(("x_role_id", "in", record.x_role_ids.ids))
+        count = record.env["x_planning.shift"].search_count(domain)
     record["x_shift_unassigned_count"] = count
 ]]></field>
     </record>
