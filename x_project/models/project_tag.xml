@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <!-- Model -->
+    <record id="model_project_tag" model="ir.model">
+        <field name="name">Project Tag</field>
+        <field name="model">x_project.tag</field>
+        <field name="is_mail_thread" eval="False"/>
+        <field name="is_mail_activity" eval="False"/>
+    </record>
+
+    <!-- Fields -->
+    <record id="project_tag_field_name" model="ir.model.fields">
+        <field name="name">x_name</field>
+        <field name="ttype">char</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Name</field>
+        <field name="model">x_project.tag</field>
+        <field name="model_id" ref="model_project_tag"/>
+        <field name="on_delete" eval="False"/>
+        <field name="required" eval="True"/>
+        <field name="translate">standard</field>
+    </record>
+
+    <record id="project_tag_field_color" model="ir.model.fields">
+        <field name="ttype">integer</field>
+        <field name="field_description">Color</field>
+        <field name="model">x_project.tag</field>
+        <field name="model_id" ref="model_project_tag"/>
+        <field name="name">x_color</field>
+    </record>
+
+    <!-- Reverse Fields -->
+
+    <record id="project_task_field_tag_ids" model="ir.model.fields">
+        <field name="name">x_tag_ids</field>
+        <field name="ttype">many2many</field>
+        <field name="copied" eval="True"/>
+        <field name="field_description">Tags</field>
+        <field name="model">x_project.task</field>
+        <field name="model_id" ref="model_project_task"/>
+        <field name="on_delete" eval="False"/>
+        <field name="relation">x_project.tag</field>
+        <field name="relation_table">x_project_task_tags_rel</field>
+    </record>
+
+</odoo>

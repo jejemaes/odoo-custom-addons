@@ -12,6 +12,7 @@
                 <field name="x_name"/>
                 <field name="x_user_ids"/>
                 <field name="x_stage_id"/>
+                <field name="x_tag_ids"/>
                 <separator/>
                 <filter name="filter_my_tasks" string="My Tasks" domain="[('x_user_ids', '=', uid)]"/>
                 <separator/>
@@ -47,6 +48,7 @@
                         <group name="task_detail_left">
                             <field name="x_project_id" readonly="1"/>
                             <field name="x_user_ids" widget="many2many_avatar_user"/>
+                            <field name="x_tag_ids" widget="many2many_tags" options="{'color_field': 'x_color', 'no_create_edit': True}"/>
                         </group>
                         <group name="task_detail_right">
                             <field name="x_color" widget="color_picker"/>
@@ -89,6 +91,7 @@
                 <field name="x_name"/>
                 <field name="x_project_id" column_invisible="1"/>
                 <field name="x_user_ids" widget="many2many_avatar_user" optional="show"/>
+                <field name="x_tag_ids" widget="many2many_tags" options="{'color_field': 'x_color'}" optional="show"/>
                 <field name="x_stage_color" column_invisible="1"/>
                 <field name="x_stage_id" widget="badge" options="{'no_open': True, 'color_field': 'x_stage_color'}" domain="[('x_project_ids', '=', x_project_id)]" optional="show"/>
                 <field name="x_deadline" optional="show" decoration-danger="x_deadline &lt; current_date"/>
@@ -143,6 +146,7 @@
                     </t>
                     <t t-name="card">
                         <field class="fw-bold fs-2" name="x_name"/>
+                        <field name="x_tag_ids" widget="many2many_tags" options="{'color_field': 'x_color'}"/>
                         <div class="pt-2 pb-2">
                             <field name="x_priority" widget="priority"/>
                             <field name="x_deadline" widget="remaining_days"/>
