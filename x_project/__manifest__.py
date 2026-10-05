@@ -13,10 +13,12 @@
         "models/project_stage.xml",
         "models/project_task.xml",
         "models/project_task_template.xml",
+        "models/project_tag.xml",
         # Actions
         "actions/project_task.xml",
         # UI
         "views/project_stage_views.xml",
+        "views/project_tag_views.xml",
         "views/project_task_views.xml",
         "views/project_task_template_views.xml",
         "views/project_project_views.xml",
