@@ -30,6 +30,13 @@
                 <field name="sequence">5</field>
             </record>
 
+            <record id="project_settings_tags" model="ir.ui.menu" >
+                <field name="name">Tags</field>
+                <field name="action" ref="project_tag_action"/>
+                <field name="parent_id" ref="project_main_settings"/>
+                <field name="sequence">10</field>
+            </record>
+
             <record id="project_settings_project_template" model="ir.ui.menu" >
                 <field name="name">Project Template</field>
                 <field name="action" ref="project_project_template_action"/>

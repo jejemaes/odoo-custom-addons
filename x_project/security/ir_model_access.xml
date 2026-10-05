@@ -58,6 +58,25 @@
         <field name="perm_write" eval="False"/>
     </record>
 
+    <record id="project_tag_rule_manager" model="ir.model.access" >
+        <field name="group_id" ref="group_project_manager"/>
+        <field name="model_id" ref="model_project_tag"/>
+        <field name="name">Project Tag group_manager</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="perm_write" eval="True"/>
+    </record>
+    <record id="project_tag_rule_user" model="ir.model.access" >
+        <field name="group_id" ref="group_project_user"/>
+        <field name="model_id" ref="model_project_tag"/>
+        <field name="name">Project Tag group_user</field>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+
     <!-- Template -->
     <record id="project_project_template_rule_manager" model="ir.model.access" >
         <field name="group_id" ref="group_project_manager"/>
